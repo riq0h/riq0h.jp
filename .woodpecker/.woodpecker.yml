@@ -10,7 +10,15 @@ steps:
     commands:
       - hugo -D
   deploy:
-    image: debian
+    image: appleboy/drone-scp
     secrets: [SSH]
-    commands:
-      - scp -i $SSH -P 4545 -r public riq0h@109.123.230.119:~/
+    settings:
+      host:
+       - mystech.ink
+      username: riq0h
+      password:
+        from_secret: $SSH
+      port: 4545
+      target: /home/riq0h/
+      source:
+        - public
