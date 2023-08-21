@@ -10,8 +10,6 @@ steps:
     commands:
       - hugo -D
   deploy:
-    image: minio/mc
-    secrets: [MINIO_URL, ACCESS_KEY, SECRET_KEY]
+    secrets: [SSH]
     commands:
-      - mc alias set minio $MINIO_URL $ACCESS_KEY $SECRET_KEY
-      - mc mirror --overwrite public/ minio/riq0h.jp/
+      - scp -i $SSH -P 4545 -r public riq0h@109.123.230.119:~/
