@@ -1,0 +1,17 @@
+clone:
+  git:
+    image: woodpeckerci/plugin-git
+    settings:
+      recursive: true
+
+steps:
+  build:
+    image: klakegg/hugo:ext-alpine
+    commands:
+      - hugo -D
+  deploy:
+    image: minio/mc
+    secrets: [MINIO_URL, ACCESS_KEY, SECRET_KEY]
+    commands:
+      - mc alias set minio $MINIO_URL $ACCESS_KEY $SECRET_KEY
+      - mc mirror --overwrite public/ minio/bgenc.net/

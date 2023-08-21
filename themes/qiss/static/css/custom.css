@@ -1,0 +1,31 @@
+body {
+    color: #333 !important;
+    line-height: 1.7 !important;
+}
+
+.title {
+    color: #000000 !important;
+}
+
+.title a {
+    color: #000000 !important;
+}
+
+.content {
+    font-size: 17.5px !important;
+    line-height: 1.7 !important;
+
+}
+
+.title.is-4 {
+    font-size: 27px !important;
+}
+
+body, button, input, select, textarea {
+    font-family: 'Noto Sans JP', sans-serif;
+}
+
+code {
+    font-family: SFMono-Regular, "Liberation Mono", Menlo, Consolas, monospace;
+    font-size: 13px !important;
+}

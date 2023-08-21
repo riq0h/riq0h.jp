@@ -1,0 +1,76 @@
+baseurl = "https://riq0h.jp/"
+languageCode = "ja"
+DefaultContentLanguage = "ja"
+HasCJKLanguage = true
+title = "点と接線。"
+theme = "qiss"
+copyright = "©2011 <a href=\"mailto:mail@riq0h.jp\">Rikuoh Tsujitani</a> | <a rel=\"me\" href=\"https://mystech.ink/@riq0h\">Fediverse</a> | <a href=\"https://riq0h.jp/index.xml\">RSS</a> | <a href=\"https://riq0h.jp/tags/novel\">小説</a>"
+Paginate = 8 # Number of posts per page
+enableRobotsTXT = true
+summarylength = 200
+
+[params.rss] # Adding this tag enables RSS feed
+includeContent = true # Includes whole content in rss
+authorName = "Rikuoh Tsujitani" # Author full name
+authorEmail = "mail@riq0h.jp" # Author email
+
+[services.rss]
+limit = 8
+
+[params.assets]
+customCSS = ["css/custom.css"]
+
+[params.info]
+enableSocial = true # Adds OpenGraph and Twitter cards
+homeTitle = "点と接線。" # Title for home page
+poweredby = false # Adds powered by hugo and kiss below Copyright
+related = false # Includes related articles at the bottom of the article
+codeCopy = false # Add copy button above code blocks
+taxonomiesCount = false # Add taxonomies count
+
+[params.opengraph.facebook]
+admins = [] # array of Facebook IDs
+appID = ""
+pageID = ""
+
+[params.opengraph.twitter]
+page = "riq0h" # Twitter Page username. If not set, params.social.twitter will be used.
+
+[params]
+twitterID = "@riq0h"
+images = ["siteicon.png"]
+dateformat = "2006/01/02"
+
+[params.social]
+twitter = ""
+github = ""
+email = ""
+linkedin = ""
+facebook = ""
+instagram = ""
+codepen = ""
+rss = "index.xml" # Add this to show RSS button in social.
+
+[params.social.config]
+platforms = ["github","facebook","twitter","instagram","email","codepen","linkedin"]
+
+[taxonomies]
+tag ="tags"
+
+[markup.goldmark.renderer]
+unsafe = true
+
+[permalinks]
+post = "/:year/:month/:day/:15:04:05/"
+
+[markup]
+  [markup.highlight]
+    codeFences = true
+    guessSyntax = true
+    hl_Lines = ""
+    lineNoStart = 1
+    lineNos = false
+    lineNumbersInTable = false
+    noClasses = true
+    style = "dracula"
+    tabWidth = 2
