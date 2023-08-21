@@ -10,17 +10,15 @@ steps:
     commands:
       - hugo -D
   deploy:
-    image: appleboy/drone-scp
-    secrets: [HOST, SSH, PORT]
+    image: drillster/drone-rsync
+    secrets: [HOTS, SSH, PORT]
     settings:
-      host:
+      hosts:
         from_secret: HOST
-      username: riq0h
+      user: riq0h
       key:
         from_secret: SSH
-      port: 
+      port:
         from_secret: PORT
-      target: /var/www/html/
-      source:
-        - public
-      overwrite: true
+      source: public
+      target: /var/www/html
