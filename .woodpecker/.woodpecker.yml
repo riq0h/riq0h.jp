@@ -17,7 +17,7 @@ steps:
        - mystech.ink
       username: riq0h
       password:
-        from_secret: $SSH
+        from_secret: SSH
       port: 4545
       target: /home/riq0h/
       source:
