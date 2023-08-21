@@ -14,4 +14,4 @@ steps:
     secrets: [MINIO_URL, ACCESS_KEY, SECRET_KEY]
     commands:
       - mc alias set minio $MINIO_URL $ACCESS_KEY $SECRET_KEY
-      - mc mirror --overwrite public/ minio/bgenc.net/
+      - mc mirror --overwrite public/ minio/riq0h.jp/
