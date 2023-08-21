@@ -10,7 +10,7 @@ steps:
     commands:
       - hugo -D
   deploy:
-    image: klakegg/hugo:ext-alpine
+    image: debian
     secrets: [SSH]
     commands:
       - scp -i $SSH -P 4545 -r public riq0h@109.123.230.119:~/
