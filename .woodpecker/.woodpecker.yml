@@ -19,6 +19,7 @@ steps:
       key:
         from_secret: SSH
       port: 4545
-      target: /home/riq0h/
+      target: /var/www/html/
       source:
         - public
+      overwrite: true
