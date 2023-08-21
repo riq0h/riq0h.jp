@@ -11,14 +11,15 @@ steps:
       - hugo -D
   deploy:
     image: appleboy/drone-scp
-    secrets: [SSH]
+    secrets: [HOST, SSH, PORT]
     settings:
       host:
-       - 109.123.230.119
+        from_secret: HOST
       username: riq0h
       key:
         from_secret: SSH
-      port: 4545
+      port: 
+        from_secret: PORT
       target: /var/www/html/
       source:
         - public
