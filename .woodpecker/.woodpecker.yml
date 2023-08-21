@@ -14,7 +14,7 @@ steps:
     secrets: [SSH]
     settings:
       host:
-       - mystech.ink
+       - 109.123.230.119
       username: riq0h
       password:
         from_secret: SSH
