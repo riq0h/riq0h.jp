@@ -11,7 +11,7 @@ steps:
       - hugo -D
   deploy:
     image: minio/mc
-    secrets: [ACCESS_KEY, SECRET_KEY]
+    secrets: [MINIO_URL, ACCESS_KEY, SECRET_KEY]
     commands:
-      - mc alias set minio $ACCESS_KEY $SECRET_KEY
+      - mc alias set minio $MINIO_URL $ACCESS_KEY $SECRET_KEY
       - mc mirror --overwrite public/ minio/riq0h.jp/
