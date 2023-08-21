@@ -17,7 +17,7 @@ steps:
        - 109.123.230.119
       username: riq0h
       password:
-        from_secret: SSH
+        from_secret: $SSH
       port: 4545
       target: /home/riq0h/
       source:
