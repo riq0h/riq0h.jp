@@ -11,11 +11,12 @@ steps:
       - hugo -D
   deploy:
     image: drillster/drone-rsync
-    secrets: [HOTS, SSH, PORT]
+    secrets: [USER, HOTS, SSH, PORT]
     settings:
       hosts:
         from_secret: HOST
-      user: riq0h
+      user:
+        from_secret: USER
       key:
         from_secret: SSH
       port:
