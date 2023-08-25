@@ -8,7 +8,7 @@ steps:
   build:
     image: klakegg/hugo:ext-alpine
     commands:
-      - hugo -D
+      - hugo
   deploy:
     image: drillster/drone-rsync
     secrets: [USER, HOTS, SSH, PORT]
