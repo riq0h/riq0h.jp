@@ -1,6 +1,6 @@
 ---
 title: "MailuでWeb UI付きのメールサーバを所有する"
-date: 2023-08-26T11:40:24+09:00
+date: 2023-08-26T11:42:25+09:00
 draft: true
 tags: ['tech']
 ---
