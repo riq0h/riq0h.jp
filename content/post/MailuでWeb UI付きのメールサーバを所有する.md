@@ -94,7 +94,7 @@ WEBSITE=https://mail.あんたのドメイン
 
 
 ## ポートとリバースプロキシの設定
-[公式のドキュメント](https://mailu.io/master/compose/requirements.html#hardware-considerations)にはメールプロコトルに関わるすべてのポートを開放するよう記されているが、大半のユーザはもっぱらSSL接続のIMAP/SMTPしか利用しないと思われる。よって、最低限度に留めてポートの開放を行う。特に25番ポートはよく攻撃の標的にされるので極力閉じておきたい。
+[公式のドキュメント](https://mailu.io/master/compose/requirements.html#hardware-considerations)にはメールプロトコルに関わるすべてのポートを開放するよう記されているが、大半のユーザはもっぱらSSL接続のIMAP/SMTPしか利用しないと思われる。よって、最低限度に留めてポートの開放を行う。特に25番ポートはよく攻撃の標的にされるので極力閉じておきたい。
 
 ```zsh
 $ ufw allow 80
