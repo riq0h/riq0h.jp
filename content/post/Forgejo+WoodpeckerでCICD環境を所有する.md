@@ -211,7 +211,7 @@ Forgejoのユーザ設定から「アプリケーション」に進んで「OAut
 
 ここで生成された`クライアントID`と`クライアントシークレット`の値がそれぞれ`docker-compose.yml`の`WOODPECKER_GITEA_CLIENT`と`WOODPECKER_GITEA_SECRET`に符合する。後者は一度しか表示されない。ついでに`WOODPECKER_AGENT_SECRET`の欄を`openssl rand -hex 32`で乱数を出力して埋める。
 
-`docker-compose down`で一旦コンテナを終了させてから`docker-compose up -d`で再起動して、Woodpecker用に割り当てたサブドメインにアクセスする。認証が要求されるのでForgejoで作成したアカウント情報を用いる。「＋Add repository」の項目をクリックしてForgejoのリポジトリを追加できたらひとまず成功と見てよい。
+`docker-compose down`で一旦コンテナを終了させてから`docker-compose up -d`で再起動して、Woodpecker用に割り当てたサブドメインにアクセスする。認証が要求されるのでForgejoで作成したアカウント情報を用いる。「＋Add repository」の項目をクリックしてForgejoのリポジトリを追加できたらひとまず成功と見ていいだろう。
 
 以降は対象のリポジトリ直下に`.woodpecker/*.yml`のディレクトリ構造でコンテナファイルを作り、目的に適った内容のパイプラインを実行させる形となる。したがって、ForgejoとWoodpeckerの構築作業は以上で終了である。
 
