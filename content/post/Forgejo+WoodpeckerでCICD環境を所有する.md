@@ -181,14 +181,14 @@ server {
 
 初期設定を編集したい場合は`forgejo/gitea/conf/app.ini`という大層紛らわしいディレクトリの下に生成されるファイルで変更できる。なお、Woodpeckerとの連携に際して以下の追記が求められる。
 
-```conf
+```ini
 [webhook]
 ALLOWED_HOST_LIST = external,loopback
 ```
 
 また、一人で使用するなら新規登録機能は予め封じておいた方が無難だ。ただし、初期設定で管理者アカウントを作らず先に登録を無効化するとブラウザ経由でログインする方法がなくなってしまうのでこの設定は後に行う。
 
-```conf
+```ini
 [service]
 DISABLE_REGISTRATION = true
 REQUIRE_SIGNIN_VIEW = false
