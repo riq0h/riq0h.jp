@@ -196,12 +196,7 @@ REGISTER_EMAIL_CONFIRM = false
 ALLOW_ONLY_EXTERNAL_REGISTRATION = false
 ```
 
-一通りの設定が済んだらWebページの右上の＋マークから「新しいリポジトリ」を作成して`git clone`や`git push`の動作を確認する。ちなみに、SSHキーの登録はユーザ設定の「SSH/GPGキー」から行える。`docker-compose.yml`の`ports`で指定したポート番号がSSH通信に用いられるので、それに応じたポートを開ける。
-
-```zsh
-ufw allow 4444
-ufw reload
-```
+一通りの設定が済んだらWebページの右上の＋マークから「新しいリポジトリ」を作成して`git clone`や`git push`の動作を確認する。ちなみに、SSHキーの登録はユーザ設定の「SSH/GPGキー」から行える。`docker-compose.yml`の`ports`で指定したポート番号がSSH通信に用いられる。
 
 
 ## Woodpeckerの設定

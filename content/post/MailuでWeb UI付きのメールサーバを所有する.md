@@ -93,17 +93,7 @@ WEBSITE=https://mail.あんたのドメイン
 ```
 
 
-## ポートとリバースプロキシの設定
-[公式のドキュメント](https://mailu.io/master/compose/requirements.html#hardware-considerations)にはメールプロトコルに関わるすべてのポートを開放するよう記されているが、大半のユーザはもっぱらSSL接続のIMAP/SMTPしか利用しないと思われる。よって、最低限度に留めてポートの開放を行う。特に25番ポートはよく攻撃の標的にされるので極力閉じておきたい。
-
-```zsh
-$ ufw allow 80
-$ ufw allow 443
-$ ufw allow 993
-$ ufw allow 465
-$ ufw reload
-```
-
+## リバースプロキシの設定
 続いて、リバースプロキシの設定を書く。前述の通り管理画面およびWebメールクライアント用と、メールサーバ用の2つのファイルを用意する。
 
 ```nginx
