@@ -235,7 +235,7 @@ docker-compose exec synapse register_new_matrix_user -c /data/homeserver.yaml ht
 
 
 ## 機能の確認
-最後に、Matrixプロトコルの醍醐味である連合機能を検証する。「ルーム」の横の＋ボタンから前述の`servers`に列挙したサーバに属するルームを検索できる。ルームへの初回参加には仕様上かなりの時間がかかるが、参加後はDiscordやSlackとほとんど同じように使える。
+最後に、Matrixプロトコルの醍醐味である連合機能を検証する。「ルーム」の横の＋ボタンから前述の`servers`に列挙したサーバに属するルームを検索できる。ルームへの初回参加には仕様上かなりの時間がかかるが、参加後はDiscordやSlackとほとんど同じようにE2EE対応のテキストチャット、VoIP、ビデオ通話などが使える。
 
 ![](/img/213.png)
 （大規模Mastodonインスタンスで知られるFedibirdの雑談ルームにお邪魔したところ、さっそく鯖缶に捕捉された。）
