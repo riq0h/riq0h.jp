@@ -110,7 +110,7 @@ server {
 **■カレンダー**  
 癖のないカレンダー。Web UIやCalDAVに対応したアプリケーションを通じて使う。iOSは標準アプリからドメインを入力するだけで追加可能だが、Androidの場合は少々ややこしい手順を踏まなければならない。まずは[DAVx](https://f-droid.org/packages/at.bitfire.davdroid/)をF-droidから入手して、諸々のパーミッション設定を済ませる。後述のToDoリスト（タスク）との連携を望む人は予め「Tasks」にチェックを入れておく。
 
-ドメインとNextcloudのユーザ情報を登録するとひとまず同期の準備が整う。次にCalDAVに対応した任意のカレンダーアプリを導入する。おすすめは[Simple Calender Pro](https://f-droid.org/packages/com.simplemobiletools.calendar.pro/)だ。ミニマルに機能が整っている。DAVxが機能していれば自動的にNextcloudのカレンダー情報が認識される。
+ドメインとNextcloudのユーザ情報を登録するとひとまず同期の準備が整う。次にCalDAVに対応した任意のカレンダーアプリを導入する。おすすめは[Simple Calendar Pro](https://f-droid.org/packages/com.simplemobiletools.calendar.pro/)だ。ミニマルに機能が整っている。DAVxが機能していれば自動的にNextcloudのカレンダー情報が認識される。
 
 こうしてみるとGoogleのカレンダーがいかに思考停止で扱える優れものだったかよく解る。しかし、多少面倒でも巨大資本に抗する選択肢が用意されているのは喜ばしい。とはいえさすがにAndroid側でシステム的にCalDAVを読み込んでくれたっていいじゃないかとは思う。
 
