@@ -23,7 +23,7 @@ tags: ['tech']
 
 アーカイブされて座して死を待つのみとなったプラグインと、コミュニティで維持していくと明言されているプラグインとでは、中身が同じでも将来性には雲泥の差がある。そのうち`:%s/null_ls/none_ls/cg`とかで定義の書き換えぐらいはするのかもしれないが、やる気がない寄りでもその程度ならギリできなくはない。
 
-実際に数日使ってみて、なんら不具合が起きないことを確認した。下記の通り、既存の設定で完全に動作している。null-ls.nvimに管理機能を付与する[mason-null-ls.nvim](https://github.com/jay-babu/mason-null-ls.nvim)も問題なく動く。本体の実質的な存続が決まったからにはこれらの連携プラグインも当面は廃止されないだろう。
+実際に数日使ってみて、なんら不具合が起きないことを確認した。下記の通り、既存の設定で完全に動作している。null-ls.nvimに[mason.nvim](https://github.com/williamboman/mason.nvim)由来の管理機能を付与する[mason-null-ls.nvim](https://github.com/jay-babu/mason-null-ls.nvim)も問題なく動く。本体の実質的な存続が決まったからにはこれらの連携プラグインも当面は廃止されないだろう。
 
 ```lua
 --none-ls.nvim
