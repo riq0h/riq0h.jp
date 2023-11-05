@@ -48,7 +48,6 @@ null_ls.setup({
 })
 
 vim.keymap.set('n', '<leader>p', function() vim.lsp.buf.format { async = true } end)
-vim.keymap.set('v', '<leader>p', function() vim.lsp.buf.format { async = true } end)
 ```
 
 efm-langserverに無事移行できたモチベPro Maxな方々はともかく、現状あまりテンションがアガっていない我々はとりあえずnone-ls.nvimでよくないか？　すでに大方の機能は揃っているゆえ他の目新しいプラグインに飛びつく必要性も特にない。数年先の話は判らないけども、その時はその時で設定を100行ぐらい書き換えてやってもいい気分がどこからか生えてきているんじゃないか。
