@@ -97,7 +97,7 @@ manを検索して表示する。いちいちググるよりmanを読む方が�
 本稿では2つの例の紹介に留めるが、[公式Wiki](https://github.com/junegunn/fzf/wiki/Examples)にはまだまだ数多くの設定例が掲載されている。ぜひ参照されたし。個人的にはGitやDockerの操作を簡便化させるものが特に良さそうだと感じた。
 
 
-## fzfを利用したtmuxの運用改善
+## fzfを応用したtmuxの運用改善
 たいへんややこしい名前だが[tmux-fzf](https://github.com/sainnhe/tmux-fzf)というtmuxプラグインが存在する。上に書いた`fzf-tmux`コマンドとは別物だ。しかしtmuxとfzfの利用が前提のプラグインなのでまずもって無関係ではない。ますますややこしい。簡単に説明すると、tmuxのsessionやwindowの管理をfzfで行うプラグインである。
 
 ![](/img/229.gif)
