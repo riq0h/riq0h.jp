@@ -11,7 +11,7 @@ steps:
       - hugo
   deploy:
     image: plugins/drone-rsync
-    secrets: [USER, HOTS, SSH, PORT]
+    secrets: [USER, HOST, SSH, PORT]
     settings:
       hosts:
         from_secret: HOST
