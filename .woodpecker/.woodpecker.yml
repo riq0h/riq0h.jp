@@ -10,7 +10,7 @@ steps:
     commands:
       - hugo
   deploy:
-    image: drillster/drone-rsync
+    image: plugins/drone-rsync
     secrets: [USER, HOTS, SSH, PORT]
     settings:
       hosts:
