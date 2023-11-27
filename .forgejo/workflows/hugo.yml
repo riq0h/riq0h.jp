@@ -1,0 +1,25 @@
+clone:
+  git:
+    image: woodpeckerci/plugin-git
+    settings:
+      recursive: true
+
+steps:
+  build:
+    image: klakegg/hugo:ext-alpine
+    commands:
+      - hugo
+  deploy:
+    image: drillster/drone-rsync
+    secrets: [USER, HOTS, SSH, PORT]
+    settings:
+      hosts:
+        from_secret: HOST
+      user:
+        from_secret: USER
+      key:
+        from_secret: SSH
+      port:
+        from_secret: PORT
+      source: public
+      target: /var/www/html
