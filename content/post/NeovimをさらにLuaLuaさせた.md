@@ -72,7 +72,6 @@ vim.keymap.set("n", "<leader>j", ":<C-u>Jaq<CR>", { silent = true })
 splitしたwindowの枠に色をつける……たったそれだけのことが予想以上の視認性向上をもたらしめるのはまさに目からうろこだった。特に`laststatus = 3`にして単一のstatusしか表示させていない人はとても助かるだろう。以下に設定例を示す。
 
 ```lua
---colorful-winsep
 require("colorful-winsep").setup({
 	highlight = {
 		bg = "",
