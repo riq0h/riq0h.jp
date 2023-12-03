@@ -67,6 +67,7 @@ vim.keymap.set("n", "<leader>j", ":<C-u>Jaq<CR>", { silent = true })
 
 なにげにコンパイル言語もすぐに走らせられるので言語学習のお供にも役立つ。
 
+
 ## [colorful-winsep.nvim](https://github.com/nvim-zh/colorful-winsep.nvim)
 ![](/img/231.png)
 splitしたwindowの枠に色をつける……たったそれだけのことが予想以上の視認性向上をもたらしめるのはまさに目からうろこだった。特に`laststatus = 3`にして単一のstatusしか表示させていない人はとても助かるだろう。以下に設定例を示す。
@@ -81,6 +82,7 @@ require("colorful-winsep").setup({
 ```
 
 実際にはstatusをよく確認すればファイルパスの違いで見分けはつかなくもないが、編集位置を高速で移動している最中に直感を得るのはなかなか難しい。他方、自分の好みの色でハイライトされていると一瞬の躊躇なく迷わずに済む。
+
 
 ## [nvim-dap](https://github.com/mfussenegger/nvim-dap)
 Neovimを含む現代のエディタがLSP（Language Server Protocol）の恩恵を受けているのはよく知られた話だ。いつになく気前のよいMicrosoftがオープンソースで公開してくれているので、我々は種々の仕組みを通してそれらを利用できる。同様に、実はデバッガもDAP（Debug Adapter Protocol）なる仕様が公開されており、今やNeovim上でIDE並みのデバッグ環境が手に入る。
@@ -133,6 +135,7 @@ require("dap-python").setup(vim.fn.stdpath("data") .. "/mason/packages/debugpy/v
 ```
 
 なお、Javaに至ってはあまりにも設定が面倒臭すぎて動作検証を放棄してしまった。Masonのjdtlsを使ってうまくやれた人がいたら逆に教えてほしい。
+
 
 ## [nvim-dap-ui](https://github.com/rcarriga/nvim-dap-ui)
 ![](/img/232.gif)
