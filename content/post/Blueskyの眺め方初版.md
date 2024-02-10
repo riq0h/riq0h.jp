@@ -1,6 +1,6 @@
 ---
 title: "Blueskyの眺め方 初版"
-date: 2024-02-09T21:44:28+09:00
+date: 2024-02-10T21:44:28+09:00
 draft: false
 tags: ['essay', 'tech']
 ---
