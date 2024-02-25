@@ -80,7 +80,7 @@ PDS_PORT=4567
 openssl ecparam --name secp256k1 --genkey --noout --outform DER | tail --bytes=+8 | head --bytes=32 | xxd --plain --cols 32
 ```
 
-別に桁数を満たしていればなんでもいいじゃないか、と思っていたが、どうやら生成アルゴリズムにSecp256k1（楕円曲線暗号）を用いていないとダメらしい。ちなみにこのアルゴリズムはBitcoinにも使われているんだとか。怒られが発生した場合はおそらく`xxd`が入っていないので`apt install xxd`で適宜導入する。
+別に桁数を満たしていればなんでもいいじゃないか、と思っていたが、どうやら生成アルゴリズムにSecp256k1（楕円曲線暗号）を用いていないとダメらしい。このアルゴリズムはBitcoinにも使われているんだとか。怒られが発生した場合はおそらく`xxd`が入っていないので`apt install xxd`で適宜導入する。
 
 
 ## PDSの稼働
@@ -113,7 +113,7 @@ Most API routes are under /xrpc/
 
 ## pdsadminの使い方
 
-アカウントの作成などを行える`pdsadmin`コマンドだが、インストールスクリプトを用いずに構築した我々が使うと環境変数を読んでくれないため正しく動かない。そこで`/pds/pdsadmin/`に移動してから`PDS_ENV_FILE=../service/.env bash account.sh list`の形式で`.env`ファイルを直接指定して実行する。ちなみにこのコマンドはPDSに登録されているアカウントの一覧を表示してくれる。
+アカウントの作成などを行える`pdsadmin`コマンドだが、インストールスクリプトを用いずに構築した我々が使うと環境変数を読んでくれないため正しく動かない。そこで`/pds/pdsadmin/`に移動してから`PDS_ENV_FILE=../service/.env bash account.sh list`の形式で`.env`ファイルを直接指定して実行する。ちなみにこれはPDSに登録されているアカウントの一覧を表示してくれる。
 
 ```zsh
 $ PDS_ENV_FILE=../service/.env bash account.sh list
