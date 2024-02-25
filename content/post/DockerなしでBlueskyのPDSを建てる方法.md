@@ -95,7 +95,7 @@ Description=Bluesky PDS Service
 WorkingDirectory=/home/あんたのユーザ名/pds/service
 ExecStart=/usr/bin/node --enable-source-maps index.js
 Restart=no
-EnvironmentFile=/home/bsky/pds/service/.env
+EnvironmentFile=/home/あんたのユーザ名/pds/service/.env
 
 [Install]
 WantedBy=default.target
