@@ -1,7 +1,7 @@
 ---
 title: "Entering"
 date: 2023-04-30T23:21:25+09:00
-draft: true
+draft: false
 tags: ['novel']
 ---
 
