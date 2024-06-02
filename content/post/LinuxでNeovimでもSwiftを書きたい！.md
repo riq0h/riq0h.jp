@@ -17,7 +17,7 @@ tags: ['tech']
 
 
 ## 言語環境の手動インストール
-Neovimで言語サーバを扱う場合、通常は[mason-lspconfig.nvim](https://github.com/williamboman/mason-lspconfig.nvim)などで簡単に導入できるようにするのが一般的だが、悲しいかなSwiftの言語サーバ[SourceKit-LSP](https://github.com/apple/sourcekit-lsp)は対応リストに含まれていない。したがってプラグインを用いないマニュアル方式で言語サーバを認識させる必要がある。
+Neovimで言語サーバを扱う場合、通常は[mason-lspconfig.nvim](https://github.com/williamboman/mason-lspconfig.nvim)などで簡単に導入できるようにするのが一般的だが、悲しいかなSwiftの言語サーバ[SourceKit-LSP](https://github.com/apple/sourcekit-lsp)は対応リストに含まれていない。したがってマニュアル的な形式で言語サーバを認識させる必要がある。
 
 Arch Linuxの場合はAURから`swift-bin`パッケージをインストールすると簡単に導入できる。Ubuntuなど他のディストリビューションは[公式サイト](https://www.swift.org/download/)から手動でファイルを取得する。これを下記の要領で展開して任意の場所に配置していく。
 
@@ -47,7 +47,7 @@ PATHが通っていれば言語サーバも`sourcekit-lsp`コマンドで起動�
 
 
 ## Neovimの設定および動作確認
-あえて本記事を読んでどうにかしたいと思っている人はすでにある程度の設定を組んでいると思われる。そこで細かい部分は割愛してざっくりコード例を載せる。この例ではNeovimの組み込み機能を用いているので別途追加すべきプラグインは特にない。
+あえて本記事を読んでどうにかしたいと思っている人はすでにある程度の設定を組んでいると思われる。そこで細かい部分は割愛してざっくりコード例を載せる。この例では[nvim-lspconfig](https://github.com/neovim/nvim-lspconfig)の導入を要する。他にvim-lspやcoc.nvimを用いた例もあり、[公式ドキュメント](https://github.com/apple/sourcekit-lsp/tree/main/Editors)で詳細を確認できる。
 
 ```lua
 require("lspconfig").sourcekit.setup({
