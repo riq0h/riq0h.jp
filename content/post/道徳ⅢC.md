@@ -2,7 +2,7 @@
 title: "道徳ⅢC"
 date: 2024-09-02T17:50:19+09:00
 draft: false
-tags: ['essay']
+tags: ['poem']
 ---
 
 ![](/img/332.png)
