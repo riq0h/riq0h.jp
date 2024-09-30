@@ -49,7 +49,7 @@ sources = cmp.config.sources({
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 ```
 
-`max_item_count`は補完候補の最大量で`keyword_length`は補完が発動する最小のキーワード数を意味する。デフォルト値で差し支えなければ削っても構わない。上記では他にも補完ソースが記述されているが、当然ながらどれも個別に設定していなければ動かない点に留意されたし。
+`max_item_count`は補完候補の最大量で`keyword_length`は補完が発動する最小のキーワード数を意味する。デフォルト値で差し支えなければ削っても構わない。上記では他にも補完ソースが記述されているが、当然ながらどれも個別に設定していないと動かない点に留意されたし。
 
 ```lua
 local lspkind = require("lspkind")
