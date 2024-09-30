@@ -32,7 +32,6 @@ require("copilot").setup({
 --lazy
 { "zbirenbaum/copilot-cmp", config = true, event = "InsertEnter" },
 
-
 --nvim-cmp
 local cmp = require("cmp")
 
@@ -101,7 +100,6 @@ CopilotChat.nvimは名前通りCopilotとの対話機能を提供するプラグ
 { "CopilotC-Nvim/CopilotChat.nvim", build = "make tiktoken" },
 
 --CopilotChat
-
 local select = require("CopilotChat.select")
 
 require("CopilotChat").setup({
