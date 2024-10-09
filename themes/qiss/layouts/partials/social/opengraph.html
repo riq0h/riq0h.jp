@@ -63,8 +63,8 @@
     <meta property='article:expiration_time' content='{{ .ExpiryDate.Format $dateFormat }}'/>
   {{- end -}}
 {{- else -}}
-  {{- if not .Site.Lastmod.IsZero -}}
-    <meta property='og:updated_time' content='{{ .Site.Lastmod.Format $dateFormat }}'/>
+  {{- if not .Site.LastDate.IsZero -}}
+    <meta property='og:updated_time' content='{{ .Site.LastDate.Format $dateFormat }}'/>
   {{- end -}}
 {{- end -}}
 
