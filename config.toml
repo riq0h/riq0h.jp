@@ -72,5 +72,5 @@ post = "/:year/:month/:day/:15:04:05/"
     lineNos = true
     lineNumbersInTable = false
     noClasses = true
-    style = "onedark"
+    style = "evergarden"
     tabWidth = 2
