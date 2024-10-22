@@ -6,7 +6,7 @@ clone:
 
 steps:
   build:
-    image: klakegg/hugo:0.136.0
+    image: floryn90/hugo:0.136.3-alpine
     commands:
       - hugo
   deploy:
