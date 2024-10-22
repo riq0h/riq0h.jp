@@ -6,7 +6,7 @@ clone:
 
 steps:
   build:
-    image: klakegg/hugo:ext-alpine
+    image: klakegg/hugo:0.136.0
     commands:
       - hugo
   deploy:
