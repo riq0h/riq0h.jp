@@ -5,9 +5,11 @@ HasCJKLanguage = true
 title = "点と接線。"
 theme = "qiss"
 copyright = "©2011 <a href=\"mailto:mail@riq0h.jp\">Rikuoh Tsujitani</a> | <a rel=\"me\" href=\"https://mystech.ink/@riq0h\">Fediverse</a> | <a href=\"https://keyoxide.org/48DD5CD37CAE0C69E1637DE2010F09DEA298C717\">Keyoxide<a/> | <a href=\"https://riq0h.jp/index.xml\">RSS</a> | <a href=\"https://riq0h.jp/tags/novel\">小説</a>"
-Paginate = 8 # Number of posts per page
 enableRobotsTXT = true
 summarylength = 200
+
+[pagination]
+pagerSize = 5
 
 [params.rss] # Adding this tag enables RSS feed
 includeContent = true # Includes whole content in rss
