@@ -31,24 +31,25 @@ tags: ['tech']
 使用するパッケージマネージャはlazy.nvimとする。まずは上記の形でプラグインを導入する。`event`の発火タイミングは好みで構わない。インストール後、Neovimを再起動して`:SourcegraphLogin`を実行すると、ブラウザが開いてログイン認証（OAuth）が実行される。認証経路にはGitHubやGoogleアカウントなどが用意されている。
 
 ログインに成功するとブラウザ上で再度、エディタの再起動を促される。ここからようやくCodyの諸機能を試せる。リポジトリのページには"This plugin is currently experimental"などと謙遜した一文が記されているものの、基本的な機能はすでに網羅されている印象だ。
+```
+:CodyAsk ~  
+    Ask a question about the current selection.
 
->:CodyAsk ~  
->    Ask a question about the current selection.
->
->:CodyExplain ~  
->    Ask a question about the current selection.
->
->:CodyChat{!} {title} ~  
->    State a new cody chat, with an optional {title}
->
->:CodyToggle ~  
->    Toggles the current Cody Chat window.
->
->:CodyTask {task_description} ~  
->    Instruct Cody to perform a task on selected text.
->
->:CodyRestart ~  
->    Restarts Cody and Sourcegraph, clearing all state.
+:CodyExplain ~  
+    Ask a question about the current selection.
+
+:CodyChat{!} {title} ~  
+    State a new cody chat, with an optional {title}
+
+:CodyToggle ~  
+    Toggles the current Cody Chat window.
+
+:CodyTask {task_description} ~  
+    Instruct Cody to perform a task on selected text.
+
+:CodyRestart ~  
+    Restarts Cody and Sourcegraph, clearing all state.
+```
 
 `CodyChat`はCodyと対話形式のチャットを行うコマンドで、実行すると専用のフローティングウインドウが展開される。しかし実際には`CodyToggle`を任意のキーにマップする方が出し入れが可能なぶん便利だ。また、`CodyAsk`と`CodyExplain`は前者が引数（任意の質問文）を必須とするのに対して、後者は選択範囲の内容を自動的に解説してくれる。
 
@@ -56,7 +57,7 @@ tags: ['tech']
 
 一方、`CodyTask`は指定された引数（命令文）の要求を満たすコードを会話文なしで出力する。フローティングウインドウ上でエンターを押すと、出力されたコードがそのままNeovimのバッファに展開される。選択範囲を指定して実行した場合は元のコードを置換する形で機能する。なにをしてほしいかが明確ならこっちの方が効率的かもしれない。
 
-```lazy
+```lua
 require("sg").setup()
 vim.keymap.set("n", "<leader>9", ":<C-u>CodyToggle<CR>", { silent = true })
 vim.keymap.set("v", "<leader>0", ":<C-u>CodyTask ")
