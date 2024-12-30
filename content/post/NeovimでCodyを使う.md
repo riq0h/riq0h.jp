@@ -60,8 +60,8 @@ tags: ['tech']
 ```lua
 require("sg").setup()
 vim.keymap.set("n", "<leader>9", ":<C-u>CodyToggle<CR>", { silent = true })
-vim.keymap.set("v", "<leader>0", ":<C-u>CodyTask ")
-vim.keymap.set("v", "<leader>-", ":<C-u>CodyAsk ")
+vim.keymap.set("v", "<leader>0", ":CodyTask ")
+vim.keymap.set("v", "<leader>-", ":CodyAsk ")
 ```
 
 最後に自動補完プラグインのnvim-cmpとの連携を行う。といっても連携機能自体がCodyのプラグインに含まれているので、nvim-cmpのソース設定にCodyを追加するだけで済む。[lspkind.nvim](https://github.com/onsails/lspkind.nvim)を用いた補完候補のピクトグラム表示については、GitHubのような専用の絵文字が見当たらなかったのでさしあたり雪の結晶で代用した。
