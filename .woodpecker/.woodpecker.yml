@@ -8,7 +8,7 @@ steps:
   build:
     image: floryn90/hugo:latest
     commands:
-      - hugo --noBuildLock
+      - hugo
   deploy:
     image: drillster/drone-rsync
     secrets: [USER, HOST, SSH, PORT]
