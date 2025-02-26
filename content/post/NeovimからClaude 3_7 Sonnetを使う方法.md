@@ -35,7 +35,7 @@ require("avante").setup({
 		provider = "telescope",
 	},
 	behaviour = {
-        auto_suggestions = false, -- 試験的機能につき無効化を推奨
+		auto_suggestions = false, -- 試験的機能につき無効化を推奨
 		auto_set_highlight_group = true,
 		auto_set_keymaps = true,
 		auto_apply_diff_after_generation = false,
