@@ -2,7 +2,7 @@
 title: "SearXNGでメタ検索エンジンを所有する"
 date: 2023-08-20T09:13:55+09:00
 draft: false
-tags: ['tech']
+tags: ["tech"]
 ---
 
 Mastodonインスタンスを建ててからというもの、VPSの持て余した計算資源を活用すべく様々なOSSを探し回っている。中でもとりわけ印象深かったのがメタ検索エンジンの[SearXNG](https://github.com/searxng/searxng)だ。今や検索エンジンすらセルフホストすることができる。これを使えばGoogleやBingの検索結果をまとめて睥睨しつつ、プライバシー情報は彼らに一切与えない悪魔的所業が可能となる。
@@ -17,8 +17,8 @@ Mastodonインスタンスを建ててからというもの、VPSの持て余し
 
 単に利用するぶんには公開インスタンスの[一覧](https://searx.space)から適当なページを選ぶか、もしくは僕の[インスタンス](https://search.mystech.ink)を使ってくれても構わないが、自前で運用すればプライバシー保護をより万全に固められる。そこで、本稿ではDockerを利用した構築方法を記す。
 
-
 ## ファイルの取得および編集
+
 まずは必要なファイルの取得から始める。すでにSearXNGを実行するユーザが作成されていて、`docker`および`docker-compose`が導入されているものとする。なお、一部のコマンドは実行に`sudo`が要求される。
 
 ```zsh
@@ -127,8 +127,8 @@ search:
   autocomplete: "google"
 server:
   # base_url is defined in the SEARXNG_BASE_URL environment variable, see .env and docker-compose.yml
-  secret_key: "ここにコピーした英数字を貼り付ける"  # change this!
-  limiter: false  # can be disabled for a private instance
+  secret_key: "ここにコピーした英数字を貼り付ける" # change this!
+  limiter: false # can be disabled for a private instance
   image_proxy: true
 ui:
   static_use_hash: true
@@ -138,8 +138,8 @@ redis:
 
 `secret_key`に先ほどの英数字を貼り付ける。ここで他の項目を変更しても差し支えはないが一旦使ってからでも遅くはない。とりあえずこれで本体周りのファイル編集は完了となる。
 
-
 ## nginxの設定
+
 nginxはすでに導入されているものとする。まずは`/etc/nginx/site-enabled/`に任意の名前で.confファイルを作る。もしSSL化に必要な鍵ファイルを用意していない場合は、[この記事](https://riq0h.jp/2023/07/22/204725/)の「SSLの対応をCloudflareに丸投げする」の項目を参考にして、鍵ファイルを設置する。一度行えばすべてのWebサービスで併用可能なのでぜひともやってもらいたい。
 
 ```nginx
@@ -164,8 +164,8 @@ server {
 
 上記の形でリバースプロキシを記述する。保存後、`nginx -t`を実行して問題がなければ`systemctl restart nginx`で再起動を行う。
 
-
 ## サーバ起動と既知のバグの対処
+
 SearXNGのユーザで`docker-compose up`を実行する。おそらくエラーが出てくると思われる。これはSearXNGのDockerイメージが持つ既知のバグで、初回のみ特定の記述を編集すれば解決できる。`docker-compose.yml`を開き、下記の箇所をコメントアウトする。
 
 ```docker
@@ -184,8 +184,8 @@ $ ufw reload
 
 以上の設定が正しく反映されていれば任意のURLでSearXNGのトップページが表示されるはずだ。適当なフレーズで検索したり、各種設定を操作して挙動に障りがなければ構築作業は終了である。
 
-
 ## Tips
+
 **■検索が遅い。**  
 正直な話、各検索エンジンの間に自前のサーバを挟んでいる時点で原理的にどうあがいてもミリ秒単位の遅延は免れない。不必要な検索エンジンを設定から除外すると多少は改善される。
 

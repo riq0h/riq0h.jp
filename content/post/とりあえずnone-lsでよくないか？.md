@@ -2,7 +2,7 @@
 title: "とりあえずnone-ls.nvimでよくないか？ / null-ls.nvimの保守的代替"
 date: 2023-11-05T08:56:28+09:00
 draft: false
-tags: ['tech']
+tags: ["tech"]
 ---
 
 夏真っ盛りのある日、Neovimの超有名プラグインが爆発四散した。[null-ls.nvim](https://github.com/jose-elias-alvarez/null-ls.nvim)はLSPの規格に合わないLinterやFormatterを言語サーバのように動作させられる画期的なクライアントだった。ほぼコピペの設定で完結する簡便さは同プラグインを事実上のデファクトスタンダードの座に押し上げた。
@@ -15,9 +15,9 @@ tags: ['tech']
 
 考えるまでもなく当たり前だ。そもそもそれらすべてが単独のプラグインとして存在しているのかも定かではない。だからこそnull-ls.nvimやefm-langserverといったアプローチが生まれたのだった。然らば、やはり重い腰をあげて設定ファイルを増やさなければならないか……？　そう思っていたところへ、吉報が降って湧いた。[none-ls.nvim](https://github.com/nvimtools/none-ls.nvim)の登場だ。なんでもnull-ls.nvimをコミュニティベースで保守的に維持していくという。リポジトリには以下の説明が記されている。
 
->**none-ls.nvim**  
->null-ls.nvim Reloaded, maintained by the community.  
->Only the repo name is changed for compatibility concerns. All the API and future changes will keep in place as-is.  
+> **none-ls.nvim**  
+> null-ls.nvim Reloaded, maintained by the community.  
+> Only the repo name is changed for compatibility concerns. All the API and future changes will keep in place as-is.
 
 本当だろうな？　やる気があったら100行だって設定を書き換えるが、そうでない時は一文字たりとも変えたくない僕のいい加減さをなめるなよ。残念だが無駄な試行錯誤を経た今はだいぶ後者寄りだ。そう疑いつつ以前のnull-ls.nvimの設定はそのままに、リポジトリの名前だけ変えて再導入したところ、**マジで完璧に動いた。** どうやら看板に偽りはないようだ。
 
@@ -51,7 +51,6 @@ vim.keymap.set('n', '<leader>p', function() vim.lsp.buf.format { async = true } 
 ```
 
 efm-langserverに無事移行できたモチベPro Maxな方々はともかく、現状あまりテンションがアガっていない我々はとりあえずnone-ls.nvimでよくないか？　すでに大方の機能は揃っているゆえ他の目新しいプラグインに飛びつく必要性も特にない。数年先の話は判らないけども、その時はその時で設定を100行ぐらい書き換えてやってもいい気分がどこからか生えてきているんじゃないか。
-
 
 ![](/img/221.gif)
 

@@ -4,13 +4,12 @@ date: 2022-10-21T15:08:48+09:00
 draft: false
 tags: ["tech"]
 ---
+
 この記事は[「NeovimをちょっとLuaLuaさせた」](https://riq0h.jp/2022/03/15/174239/)の続編である。あれからさらにいくつかのLua製プラグインを導入したので紹介していきたい。本シリーズはinit.luaとpacker.nvimへの移行体験を綴った「NeovimをむっちゃLuaLuaさせた」を以て最終回を迎える予定だ。（大嘘）
 
 ……まあたぶん、使用するプラグインがほぼすべてLua製になったとかでない限り、そこまで徹底して鞍替えする気にはならないと思う。なにしろ現在使用しているプラグインマネージャのdein.vimとはずいぶん長い付き合いだし、設定の書き方にもだいぶ慣れている。それに、他のマネージャを選ぶならpacker.nvimより[vim-jetpack](https://github.com/tani/vim-jetpack)の方がミニマルで良さそうだ。いずれにしても今のところ移行の意思はまったくない。
 
 とりわけ既存のプラグインをLua製のものに置き換えていくにあたって、後発とて必ずしも上位互換にはなりえないことが分かったので現状はまだinit.vimとよろしくやっていく形になるだろう。なお、以下に続く設定はあくまで僕個人の例なので注意されたし。大半のプラグインを遅延起動させているため、当該の設定をコピペして用いる場合は`dein_lazy.toml`に書かないと機能しない。
-
-
 
 ## [indent-blankline.nvim](https://github.com/lukas-reineke/indent-blankline.nvim)
 
@@ -27,7 +26,7 @@ tags: ["tech"]
  lua << EOF
  vim.opt.list = true
  vim.opt.listchars:append "eol:↴"
- 
+
  require('indent_blankline').setup {
      show_end_of_line = true,
  }
@@ -102,7 +101,7 @@ EOF
  lua << EOF
  require('hlslens').setup()
  local kopts = {noremap = true, silent = true}
- 
+
  vim.api.nvim_set_keymap('n', 'n',
      [[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]],
      kopts)
@@ -113,7 +112,7 @@ EOF
  vim.api.nvim_set_keymap('n', '#', [[#<Cmd>lua require('hlslens').start()<CR>]], kopts)
  vim.api.nvim_set_keymap('n', 'g*', [[g*<Cmd>lua require('hlslens').start()<CR>]], kopts)
  vim.api.nvim_set_keymap('n', 'g#', [[g#<Cmd>lua require('hlslens').start()<CR>]], kopts)
- 
+
  vim.api.nvim_set_keymap('n', '<Leader>x', ':noh<CR>', kopts)
 EOF
 '''
@@ -199,6 +198,7 @@ EOF
 この設定例ではソースとしてファイル検索、絞り込み、バッファ一覧、ヘルプタグ、レジスタ履歴、LSPとの連携機能を利用している。要ripgrep。また、[telescope-frecency.nvim](https://github.com/nvim-telescope/telescope-frecency.nvim)を別途導入することで標準のoldfilesより高度なMRU（Most Recently Used）を使えるように仕上げている。現状はこれで十分だが習熟次第ではさらなる拡張の余地がありそうだ。
 
 ## [registers.nvim](https://github.com/tversteeg/registers.nvim)
+
 コードをヤンクした後に他所でddしたらレジスタが上書きされてしまった！ ……なんて面倒を防ぐためのプラグイン。レジスタの中身をすべて一覧表示できる。僕みたいなコピペマンには絶対に欠かせない。Telescopeに乗り換えるまではよくお世話になっていた。デフォルト設定では`"`キーで展開される。
 
 ![](/img/159.png)
@@ -219,5 +219,6 @@ EOF
 <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/1RIE9evNiaPTV7PrVSuqWG?utm_source=generator" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
 
 ## あわせて読ませたい
+
 ・[Neovimを完全にLuaLuaさせた](https://riq0h.jp/2023/01/20/210601/)  
 シリーズ最終章。感動のフィナーレ。

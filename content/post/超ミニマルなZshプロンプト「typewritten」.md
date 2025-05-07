@@ -4,6 +4,7 @@ date: 2022-10-15T16:27:31+09:00
 draft: false
 tags: ["tech"]
 ---
+
 ![](https://raw.githubusercontent.com/reobin/typewritten/main/docs/_media/typewritten.gif)
 
 以前、[この記事](https://riq0h.jp/2021/03/22/201320/)でPreztoに付属するPureというプロンプトを紹介したが、最近よりミニマルなものを発見したので共有しておきたい。[typewritten](https://github.com/reobin/typewritten)は特に機能性を求めず、極めて簡素な外観を好む人に最適な選択肢だ。

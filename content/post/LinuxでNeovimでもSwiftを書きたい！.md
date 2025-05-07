@@ -2,7 +2,7 @@
 title: "LinuxでNeovimでもSwiftを書きたい！"
 date: 2024-06-02T19:11:27+09:00
 draft: false
-tags: ['tech']
+tags: ["tech"]
 ---
 
 転職して約一ヶ月。予想に反してiOSアプリ開発案件にアサインされたため業務時間中は常にMacを使っている。皆さんもよくご存知の通り、iOSアプリの開発にはMacが必須だからだ。リモートワークでは貸与されたMacを使うし、実機検証用のiPhoneも傍らに置いてある。半分Appleアンチで知られる僕も今やすっかり林檎林檎している。じきに取り囲まれて林檎シロップ漬けと化すことだろう。
@@ -15,8 +15,8 @@ tags: ['tech']
 
 もちろんエディタはNeovimでなければならない。Linux環境と同じくらいエディタがNeovimなのも重要だ。Xcodeにも割とこなれたVimキーバインドが存在しているが物足りない。IntelliJ IDEAほど高機能でもない。そんなわけで、僕はNeovimでSwiftを勉強する気持ちを固めたのだった。
 
-
 ## 言語環境の手動インストール
+
 Neovimで言語サーバを扱う場合、通常は[mason-lspconfig.nvim](https://github.com/williamboman/mason-lspconfig.nvim)などで簡単に導入できるようにするのが一般的だが、悲しいかなSwiftの言語サーバ[SourceKit-LSP](https://github.com/apple/sourcekit-lsp)は対応リストに含まれていない。したがってマニュアル的な形式で言語サーバを認識させる必要がある。
 
 Arch Linuxの場合はAURから`swift-bin`パッケージをインストールすると簡単に導入できる。Ubuntuなど他のディストリビューションは[公式サイト](https://www.swift.org/download/)から手動でファイルを取得する。これを下記の要領で展開して任意の場所に配置していく。
@@ -45,8 +45,8 @@ if i % 3 == 0 && i % 5 == 0 {
 
 PATHが通っていれば言語サーバも`sourcekit-lsp`コマンドで起動可能になっているはずだ。ここまでうまくやれていれば話を次の段階に進められる。
 
-
 ## Neovimの設定および動作確認
+
 あえて本記事を読んでどうにかしたいと思っている人はすでにある程度の設定を組んでいると思われる。そこで細かい部分は割愛してざっくりコード例を載せる。この例では[nvim-lspconfig](https://github.com/neovim/nvim-lspconfig)の導入を要する。他にvim-lspやcoc.nvimを用いた例もあり、[公式ドキュメント](https://github.com/apple/sourcekit-lsp/tree/main/Editors)で詳細を確認できる。
 
 ```lua
@@ -63,6 +63,7 @@ require("lspconfig").sourcekit.setup({
 ![](/img/295.png)
 
 ## 総評
+
 これでLinux、NeovimでもSwiftの学習に最低限文化的な環境が得られた。ちなみに教本は技術評論社の[Swift実践入門](https://gihyo.jp/dp/ebook/2020/978-4-297-11214-1)を読んでいる。正直よく分からなかったオプショナル型の理解が一層深まっ太郎になった。
 
 別に勉強するだけならPlaygroundのVimキーバインドで我慢すればいいんじゃないかって？ まあそれは確かにそうだ。

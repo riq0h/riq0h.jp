@@ -2,7 +2,7 @@
 title: "DockerなしでBlueskyのPDSを建てる方法"
 date: 2024-02-25T08:58:04+09:00
 draft: false
-tags: ['tech']
+tags: ["tech"]
 ---
 
 晴れてBlueskyの連合がスタートした。厳密には、我々はBlueskyの構成要素の一つであるPDS（Personal Data Storage）をセルフホスティングできるようになった。これにより各ユーザは自分のデータを自らの管理下に置くことができる。また、他ユーザの登録を許可しているPDSに移動すれば権威的ではない他の個人にデータを預けられる。
@@ -16,7 +16,6 @@ tags: ['tech']
 今回の方法はなんらかの理由で**80番/443番ポートが埋まっている**、**構築にサブドメインを用いるつもりでいる**、**有料のSSL証明書を買いたくない**、**その他、Dockerを使いたくない**、などといった条件を満たしてる変人でなければ、ほとんど行う必要のない煩雑な手続きを踏んでいる。このことは予め了承してほしい。
 
 ちなみに、ぶっちゃけると具体的な記述部分は[このページ](https://benharri.org/bluesky-pds-without-docker/)をかなりパクっている。英語に抵抗がない人はこっちを読んだ方が絶対に早い。本稿はあくまで日本語情報の提供を目的にしている。
-
 
 ## nginxのリバースプロキシを書く
 
@@ -51,7 +50,6 @@ Cloudflareは二階層（`aaa.bbb.com`）までしか無料でSSL証明書を配
 
 もちろん本稿では二つ目の方法を紹介する。リバースプロキシを書き終えたら`nginx -t`で文法をチェックした後に`systemctl restart nginx`で再起動を行う。
 
-
 ## データの取得と.envファイルの作成
 
 ここからはユーザ権限で作業を行う。任意のディレクトリ下にて`git clone https://github.com/bluesky-social/pds`を実行してPDSの構築に必要なデータを取得する。`/pds/service`に移動後、下記の要領で`.env`ファイルを作る。
@@ -82,7 +80,6 @@ openssl ecparam --name secp256k1 --genkey --noout --outform DER | tail --bytes=+
 
 別に桁数を満たしていればなんでもいいじゃないか、と思っていたが、どうやら生成アルゴリズムにSecp256k1（楕円曲線暗号）を用いていないとダメらしい。このアルゴリズムはBitcoinにも使われているんだとか。怒られが発生した場合はおそらく`xxd`が入っていないので`apt install xxd`で適宜導入する。
 
-
 ## PDSの稼働
 
 `/pds/service`にて`pnpm install --production --frozen-lockfile`を実行する。`pnpm`を導入していない場合は`npm install -g pnpm`で入れる。データ格納用のフォルダも`mkdir -p data/blocks`で作成しておく。最後に、systemdのユニット定義ファイルを書く。以降はroot権限での作業となる。
@@ -104,12 +101,11 @@ WantedBy=default.target
 このファイルは`pds.service`などの名前で`/etc/systemd/system/`直下に保存する。`systemctl daemon-reload`を実行してから`systemctl start pds`でサーバを稼働させる。一連の設定が正しく行われていれば、ブラウザでベースドメインにアクセスした時に下記のメッセージが表示される。
 
 ```
-This is an AT Protocol Personal Data Server (PDS): https://github.com/bluesky-social/atproto  
+This is an AT Protocol Personal Data Server (PDS): https://github.com/bluesky-social/atproto
 Most API routes are under /xrpc/
 ```
 
 以上でサーバの構築作業は完了である。
-
 
 ## pdsadminの使い方
 
@@ -126,7 +122,6 @@ riq0h.mystech.ink  mail@riq0h.jp  did:plc:dqlihaiieq7lpjkwv6x62y4a
 
 なお、カスタムハンドルを設定しなくてもユーザのフォローや投稿は可能だが、他のユーザからは常に「invalid handle」と表示されていて明らかに異常者にしか見えない。趣味でなければ正気に戻しておく方が無難だろう。
 
-
 ## アップデートの方法
 
 標準で用意されている`pdsadmin update`はDocker環境を前提にしているゆえ今回の構築手法では機能しない。代わりにリポジトリを`git pull`で更新して実質的にアップデートを行う。更新後は忘れずに依存ファイルを再取得する。
@@ -138,7 +133,6 @@ $ cd service
 $ pnpm install --production --frozen-lockfile
 $ systemctl restart pds
 ```
-
 
 ## おわりに
 

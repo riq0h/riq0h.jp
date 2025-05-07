@@ -2,9 +2,11 @@
 title: "Google AnalyticsをやめてGoatCounterに乗り換えた"
 date: 2021-03-26T11:28:15+09:00
 draft: false
-tags: ["tech","diary"]
+tags: ["tech", "diary"]
 ---
+
 ## 経緯
+
 このブログのアクセス数は、記事が増えるにつれてごく僅かずつではあるものの上昇している。なぜそれが判るのかと言えば、皆さんもよくご存知のGoogle Analyticsでアクセス解析を行っていたからである。全体の傾向として、エッセイ記事はTwitter経由の来訪がほとんどを占め、技術的な内容の記事は検索からの流入が多かった。だからといって書く記事の内容や優先度が変わるわけではないが、蓄積されたデータを眺めるのはただそれだけでもけっこう楽しい。
 
 しかし僕はGoogle Analyticsに従前から強い不満を抱いていた。こっちが知りたいのはせいぜい記事ごとのアクセス数と、閲覧に用いられた端末の関連情報くらいのもので、かのサービスに搭載されたマーケティング用の膨大な機能は無用の長物でしかなかった。
@@ -14,6 +16,7 @@ tags: ["tech","diary"]
 もちろん、Google Analyticsの本領はどう考えてもそっちの方――マーケティングとしてのアクセス解析であり、得られたデータを活用して利益誘導を働きかけるためのツールだ。僕の文句が筋違いなのは理解している。しからば、もっと自身に適した他の道具にさっさと乗り換える方が賢明に違いない。
 
 ## Easy web analytics. No tracking of personal data.
+
 アクセス解析ツールは多く存在するが、無料で軽量、余計な機能がないものとなるとだいぶ数は絞られてくる。ぼちぼち検索して見つけた中から[GoatCounter](https://www.goatcounter.com/)というサービスを選んだ。
 
 ![](https://static.zgo.at/screenshot3.png)
@@ -24,7 +27,11 @@ tags: ["tech","diary"]
 導入方法も非常に簡単で、前述の公式サイトから会員登録を済ませた後、自身のWebサイトのheadタグ内に下記のコードをコピペするだけで済む。Gatsby向けには専用のプラグインも[用意されている。](https://www.gatsbyjs.com/plugins/gatsby-plugin-goatcounter/)
 
 ```html
-<script data-goatcounter="https://登録したID.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
+<script
+  data-goatcounter="https://登録したID.goatcounter.com/count"
+  async
+  src="//gc.zgo.at/count.js"
+></script>
 ```
+
 さっそく自分の端末で試行してみたが、アクセス数の反映には体感的に5秒とかからなかった。ほぼリアルタイムといって差し支えない。ページビューが月10万を越えると有料プランに移行しなければならないが、個人ブログ程度にそこまで大量のアクセスが到来するおそれはまずないだろう。Google Analyticsからここに移行してみると、これまでいかに煩雑な画面に視界が煩わされていたかよく解る。

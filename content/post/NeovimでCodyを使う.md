@@ -2,13 +2,13 @@
 title: "NeovimでCodyを使う"
 date: 2024-12-30T10:00:20+09:00
 draft: false
-tags: ['tech']
+tags: ["tech"]
 ---
 
 今日、コード生成AIは巷にあふれかえっているが、いち消費者の我々としては無料で補える範囲が広いのに越したことはない。最近いくつか触った中で[Cody](https://sourcegraph.com/cody)と呼ばれるツールが特にサービス精神に旺盛だと感じたので紹介したい。
 
-
 # Cody Free vs GitHub Copilot Free
+
 **■無制限のコード補完**  
 任意のエディタ上でのコード補完は制限なく行える。対話形式でのレスポンスを求めていない人にはうってつけと思われる。対して、GitHub Copilot Freeは月2000回までに制限されている。
 
@@ -20,8 +20,8 @@ tags: ['tech']
 
 以上の比較から、業界の雄たるGitHub Copilotと比べても極めて優良な無料プランを有していると考えられる。有料機能を含めた詳細な比較は[ここ](https://sourcegraph.com/compare/copilot-vs-cody)から確認できる。
 
-
 # NeovimでCodyを使う
+
 しかし、どんなに寛大なサービスであってもNeovimで使えなければ僕としては話にならない。Web上ではNeovimとの連携に関する情報が掲載されていなかったので危うく解散しかけたが、公式のリポジトリを探してみるとちゃんとプラグインが[提供されていた。](https://github.com/sourcegraph/sg.nvim)総員集合！ というわけで、さっそく設定を行っていく。
 
 ```lua
@@ -31,23 +31,24 @@ tags: ['tech']
 使用するパッケージマネージャはlazy.nvimとする。まずは上記の形でプラグインを導入する。`event`の発火タイミングは好みで構わない。インストール後、Neovimを再起動して`:SourcegraphLogin`を実行すると、ブラウザが開いてログイン認証（OAuth）が実行される。認証経路にはGitHubやGoogleアカウントなどが用意されている。
 
 ログインに成功するとブラウザ上で再度、エディタの再起動を促される。ここからようやくCodyの諸機能を試せる。リポジトリのページには"This plugin is currently experimental"などと謙遜した一文が記されているものの、基本的な機能はすでに網羅されている印象だ。
+
 ```
-:CodyAsk ~  
+:CodyAsk ~
     Ask a question about the current selection.
 
-:CodyExplain ~  
+:CodyExplain ~
     Ask a question about the current selection.
 
-:CodyChat{!} {title} ~  
+:CodyChat{!} {title} ~
     State a new cody chat, with an optional {title}
 
-:CodyToggle ~  
+:CodyToggle ~
     Toggles the current Cody Chat window.
 
-:CodyTask {task_description} ~  
+:CodyTask {task_description} ~
     Instruct Cody to perform a task on selected text.
 
-:CodyRestart ~  
+:CodyRestart ~
     Restarts Cody and Sourcegraph, clearing all state.
 ```
 
@@ -87,8 +88,8 @@ vim.keymap.set("v", "<leader>-", ":CodyAsk ")
 
 ![](/img/355.png)
 
-
 ## 総評
+
 後発なだけあってこなれ感があるのかCopilotよりも全体的に使用体験が良い。Experimentalなどと書かれている割には常用可能なクオリティに達していると評価できる。プログラミングに強いClaude 3.5 Sonnetを無料で潤沢に扱えるのもかなりのアドバンテージと言える。
 
 以上の理由から僕はGitHub Copilot Proを解約してCodyに乗り換えることにした。万が一、無料の範囲で補えなくなるほど多用するとしても、その時にはCody Proを契約するだろう。中身はほぼ共通のLLMでも巨大資本に対して有力な競合他社が現れるのはとてもありがたい。

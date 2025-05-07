@@ -2,8 +2,9 @@
 title: "Neovimを完全にLuaLuaさせた"
 date: 2023-01-20T21:06:01+09:00
 draft: false
-tags: ['tech']
+tags: ["tech"]
 ---
+
 [前回の記事](https://riq0h.jp/2022/10/21/150848/)の続編にして最終章の幕開けである。ついにinit.lua化は果たされ、主だったプラグインはどれもLua製に置き換わった。プラグイン総数が50前後しかないカジュアルユーザの僕でも丸一日かかったがやるだけの価値はあったと思いたい。
 
 今や業務以外ではエディタをVim一本に絞りきれるところまで馴染んだ。主流のプラグインマネージャがNeoBundleの時代からVimに触れてきた割にはずいぶん手間を食ったものだ。「Vimはサブ武器です」と尻込みしていた頃とはうってかわり、Vimはもう僕のメイン武器となった。
@@ -72,8 +73,8 @@ vim.api.nvim_create_autocmd({ 'BufReadPost' }, {
 
 ベテランユーザにとって以上の実践例は本質を無視した邪悪な所業かもしれないが、とにかく有効なinit.luaを仕立てる上ではこんな大雑把な理解でも一応差し支えはない。そのうちちゃんと`:help lua-guide`を読むから許してほしい。
 
-
 ## [lazy.nvim](https://github.com/folke/lazy.nvim)
+
 init.lua化の次に取り掛かるのはプラグインマネージャの移行だ。今まで使っていたdein.vimにはなんの不満もないどころか、むしろ離れがたいとさえ感じているがLua化の欲望には抗えない。どうせやるからには真のルアラーを目指していきたい。まあ、真のルアラーは設定をコピペで書いたりはしないんだろうけど。
 
 かつてLua製のプラグインマネージャといえばpacker.nvimの存在感が大きかった。僕もinit.lua化を果たした暁には半ば自動的にそれに移行するものと考えていたが、昨年の晩秋に突如現れた[lazy.nvim](https://github.com/folke/lazy.nvim)の新進気鋭ぶりが凄まじく、せっかくならと新しい方を試すことにした。
@@ -102,6 +103,7 @@ init.lua化の次に取り掛かるのはプラグインマネージャの移行
 lazy.nvimの作者曰く、遅延設定を最強に極めると90以上のプラグインを抱えていても10ms台で立ち上がるらしい。僕の周りでもベテランユーザたちが次々と30ms台を達成している。残念ながら上記の中途半端なやり方では50msを切るか切らないかが精一杯だが、それでもデフォルト設定の2倍近く高速化できたので当面はこれで納得しておく。
 
 ## [nvim-cmp](https://github.com/hrsh7th/nvim-cmp)
+
 補完プラグインも例によってLua製に置き換えた。僕は補完プラグインについてはShougoware一筋（neocomplete.vim→deoplete.nvim→ddc.vim）だったが、当初の懸念とは裏腹にこのnvim-cmpは使っていてなんの不満も感じない。Neovim界隈で事実上のデファクトスタンダートと認められているのも納得の完成度と言える。大衆人気を得るプラグインにありがちなおせっかいさも見られず、自分でキーマップやソースを設定しなければならないところも好印象だ。
 
 たとえばLSPと連携するための[cmp-nvim-lsp](https://github.com/hrsh7th/cmp-nvim-lsp)、バッファ内のワードを拾う[cmp-buffer](https://github.com/hrsh7th/cmp-buffer)、コマンドラインの入力を補完してくれる[cmp-cmdline](https://github.com/hrsh7th/cmp-cmdline)などが挙げられる。ソース群の種類はddc.vimに引けをとらず豊富で、なにがなくて困るというよりはトレンドを掴む方がかえって大変かもしれない。以下に僕の設定を示す。
@@ -180,7 +182,7 @@ vim.cmd('let g:vsnip_filetypes = {}')
 
 ```Lua
 {'hrsh7th/nvim-cmp', event = 'InsertEnter, CmdlineEnter'},
-{'hrsh7th/cmp-nvim-lsp', event = 'InsertEnter'}, 
+{'hrsh7th/cmp-nvim-lsp', event = 'InsertEnter'},
 {'hrsh7th/cmp-buffer', event = 'InsertEnter'},
 {'hrsh7th/cmp-path', event = 'InsertEnter'},
 {'hrsh7th/cmp-vsnip', event = 'InsertEnter'},
@@ -199,17 +201,18 @@ vim.cmd('let g:vsnip_filetypes = {}')
 ![](/img/174.gif)
 
 ## [telescope-file-browser.nvim](https://github.com/nvim-telescope/telescope-file-browser.nvim)
+
 昨今のファイラと言えば[fern.vim](https://github.com/lambdalisue/fern.vim)がよく知られている。しかし今の僕には可能なかぎりNeovimをLuaLuaさせたいモチベが堆積しており、Telescopeをファイラに仕立てた本プラグインをチョイスした。当然ながら操作方法はTelescopeそのもので、あとはファイル管理に関わるショートカットキーさえ覚えればすでに手に馴染んだも同然である。
 
 ![](/img/175.gif)
 
 他のファジーファインダーを使っている人もこれを目当てにTelescopeに移行すべきかと訊かれたら「そこまでではない」と答えるが、突出した特長がない代わりに一通りの機能は揃っているためTelescopeユーザには一度試してもらいたいファイラだ。デフォルトでAltキーを占有しているところは若干気に入らないものの、その気になれば容易に変更できるのでtmuxやi3wmユーザでも不都合はないだろう。
 
-
 ## おわりに
+
 init.lua化、プラグインマネージャ、補完プラグイン、ファイラと立て続けに大がかりな移行を終えた現在、もはや完全にNeovimをLuaLuaさせたと言っても過言ではないはずだ。よって本シリーズはこれにて一旦の完結を見るが、今後もなにか面白い発見があれば随時紹介していきたい。もし読者の皆さんに「あまり知られていないが自分はこれがないと生きていけない」というようなプラグインがあったらぜひ教えていただきたい。
 
-
 ## あわせて読ませたい
+
 ・[NeovimをさらにLuaLuaさせた](https://riq0h.jp/2023/12/03/103850/)  
 主にDAPとLSPの関連プラグインについて書いた待望の番外編。

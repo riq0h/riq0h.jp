@@ -2,8 +2,9 @@
 title: "GitHubにStorageの使いすぎを怒られた"
 date: 2021-04-05T9:43:48+09:00
 draft: false
-tags: ["tech","diary"]
+tags: ["tech", "diary"]
 ---
+
 ![](/img/16.png)
 
 10MBいくかも怪しい静的サイトでいくらなんでもそれはおかしいと思ったが、結論から言うとこれは**artifact**と呼ばれる、GitHub Actionsを実行してホスティングサービス等にdeployされる過程で発生する生成物が原因だった。
@@ -18,7 +19,7 @@ name: Remove old artifacts
 on:
   schedule:
     # Every day at 1am
-    - cron: '0 1 * * *'
+    - cron: "0 1 * * *"
 
 jobs:
   remove-old-artifacts:
@@ -26,13 +27,13 @@ jobs:
     timeout-minutes: 10
 
     steps:
-    - name: Remove old artifacts
-      uses: c-hive/gha-remove-artifacts@v1
-      with:
-        age: '1 weeks'
-        # Optional inputs
-        # skip-tags: true
-        # skip-recent: 5
+      - name: Remove old artifacts
+        uses: c-hive/gha-remove-artifacts@v1
+        with:
+          age: "1 weeks"
+          # Optional inputs
+          # skip-tags: true
+          # skip-recent: 5
 ```
 
 上記のコードをymlファイルの形で対象のリポジトリの`.github/workflows`直下に保存してpushすれば、指定されたcronのサイクルに基づいてartifactの削除が行われる。引用元は1ヶ月前までのファイルを維持する旨の記述だったが、僕はもっと短くても特に差し支えがないので1週間にした。実行後、GitHub Storageを確認すると目論見通り空き容量が増えていた。

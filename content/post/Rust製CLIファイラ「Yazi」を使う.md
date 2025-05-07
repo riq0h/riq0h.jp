@@ -9,8 +9,8 @@ tags: ["tech"]
 
 CLIのファイラはすでに色々ある。古くには[ranger](https://github.com/ranger/ranger)があるし、Goで書かれたミニマルな[lf](https://github.com/gokcehan/lf)というのもある。実際、後者の方をたまに使っていた。とはいえ、まあ、せっかくなので新しいものを試したい。そこで、今回は[Yazi](https://github.com/sxyazi/yazi)を選んだ。それにしても自分がRustを書いているわけじゃないのにRust製って言われたら気になってしまうのはなんでだろうね。マイナー界のミーハーかな。
 
-
 ## 導入
+
 Arch Linuxなら`pacman -S yazi`で簡単に手に入る。macOSもbrewが使えるなら`brew install yazi`で入手可能だ。[公式ドキュメント](https://yazi-rs.github.io/docs/installation)では同時に`fd`や`fzf`などもインストールするように指南されているが、どうせ皆さんはとっくに入れていることだろう。対して、Ubuntuなどだと若干面倒くさい。公式リポジトリにパッケージが用意されていないのでCargo経由で導入する必要がある。
 
 ```zsh
@@ -21,8 +21,8 @@ cargo install --locked yazi-fm yazi-cli
 
 インストールを済ませてシェルを読み込み直すと`yazi`でファイラが立ち上がる。CLIファイラらしいVim-likeな操作体系はもとより、カスタマイズされたVim風のstatuslineが特徴的と言える。デフォルト設定ではここに容量や権限などファイルに関するあらゆる情報が集約される。
 
-
 ## 設定
+
 各機能の概要は[ここ](https://yazi-rs.github.io/features)を観た方が早い。対応するアプリケーションの起動やファイルのコピー、リネームはもちろんのこと、先に挙げた他のCLIツールと連携した応用的な操作も行える。複数のファイル名を一括で編集できるバルクリネームも地味に便利だ。以前は[mmv](https://github.com/itchyny/mmv)を使っていたが、こっちにまとめられる見込みが高い。
 
 一方、僕の感覚ではチカチカ光るstatuslineやカラースキームがやや疎ましい。幸いにもYaziはカスタマイズ性に長けているので、適宜自分好みに設定を加えて改良を施していく。このツールの設定ファイルには基本設定を司る`yazi.toml`と、外観を司る`theme.toml`、そして外部プラグインの読み込みと設定を担当する`init.lua`が存在する。他にキーマップを変更する`keymap.toml`もあるが、本稿では扱わない。
@@ -32,6 +32,7 @@ cargo install --locked yazi-fm yazi-cli
 ```zsh
 ya pack -a Chromium-3-Oxide/everforest-medium
 ```
+
 ```toml
 #theme.toml
 [flavor]
@@ -90,6 +91,7 @@ files = [
 ```zsh
 ya pack -a yazi-rs/plugins:no-status
 ```
+
 ```lua
 --init.lua
 require("no-status"):setup()
@@ -99,8 +101,8 @@ require("no-status"):setup()
 
 ![](/img/346.png)
 
-
 ## 総評
+
 既存のファイラと比べて他のCLIツールとの連携に長けている印象を受けた。たとえばデフォルト設定で起動中にZキーを押すとfzfが立ち上がり、ファジーファインダー経由で目的のディレクトリに移動できる。移動後はファイラ特有の操作を引き続き行えるのでfzf単体よりも利便性が高い。同様に、fdやzoxideとの連携にも対応している。
 
 この手のCLIツール群とファイラはしばしば対立的に扱われがちだが、Yaziの世界観においては両者がうまく融和できているように感じる。なにより、痒いところに手をサイボーグ化してでも届かせると言わんばかりの豊富なカスタマイズ性はターミナル世界の住民にとても馴染み深い。

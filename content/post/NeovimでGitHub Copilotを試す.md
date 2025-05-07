@@ -2,7 +2,7 @@
 title: "NeovimでGitHub Copilotを試す"
 date: 2024-09-30T21:30:09+09:00
 draft: false
-tags: ['tech']
+tags: ["tech"]
 ---
 
 LLMの技術的成果が日に日に突きつけられて喉元まで迫っているのを感じる今日この頃、さすがにろくに使いこなせないのでは困るため、ついにGitHub Copilotを試すことにした。LLMを応用した検索エンジン（[perplexity.ai](https://www.perplexity.ai)）は以前から使っていたが、開発環境と密に統合されるとどんな具合になるのかはやはり気になるところである。
