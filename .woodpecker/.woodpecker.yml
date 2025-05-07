@@ -12,15 +12,6 @@ steps:
 
   deploy:
     image: drillster/drone-rsync
-    environment:
-      USER:
-        from_secret: USER
-      HOST:
-        from_secret: HOST
-      SSH:
-        from_secret: SSH
-      PORT:
-        from_secret: PORT
     settings:
       hosts:
         from_secret: HOST
