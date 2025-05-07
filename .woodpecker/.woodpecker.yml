@@ -9,9 +9,18 @@ steps:
     image: hugomods/hugo:base
     commands:
       - hugo --noBuildLock
+
   deploy:
     image: drillster/drone-rsync
-    secrets: [USER, HOST, SSH, PORT]
+    environment:
+      USER:
+        from_secret: USER
+      HOST:
+        from_secret: HOST
+      SSH:
+        from_secret: SSH
+      PORT:
+        from_secret: PORT
     settings:
       hosts:
         from_secret: HOST
