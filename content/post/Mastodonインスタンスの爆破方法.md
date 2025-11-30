@@ -52,7 +52,7 @@ mastodon@f7b2ce1d610b:~$
 
 ![](/img/434.png)
 
-自己破壊処理は非常に時間を要するので、数日ほど待ってからコンテナまたはプロセスを終了する。Docker環境なら`docker volume rm mastodon_redis mastodon_postgres`などで関連のボリュームもまとめて削除してよい。非Docker環境なら単純に作業ディレクトリを削除するだけで済む。
+自己破壊処理は非常に時間を要するので、1、2日ほど待ってからコンテナまたはプロセスを終了する。一応、自己破壊コマンドを再度入力すると進捗を教えてもらえる。処理完了後、Docker環境なら`docker volume rm mastodon_redis mastodon_postgres`などで関連のボリュームをまとめて削除してもよい。非Docker環境は単純に作業ディレクトリを削除するだけで済む。
 
 ## リバースプロキシの設定を変更し、410 Goneを送信する
 
