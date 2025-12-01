@@ -28,3 +28,11 @@ code {
     font-family: SFMono-Regular, "Liberation Mono", Menlo, Consolas, monospace;
     font-size: 13px !important;
 }
+
+.content .letter-embed {
+    margin-bottom: 1em !important;
+}
+
+.letter-embed {
+    margin-bottom: 1em !important;
+}
