@@ -43,6 +43,8 @@ tags: ["tech"]
 
 準備が整ったら作業ディレクトリに入り、`tootctl self-destruct`コマンドを入力する。これはMastodonが提供している自己破壊機能で、既知のすべてのサーバに対して交信を永久に終了するアクティビティを送信する。他のサーバ群がそれを正常に処理すると、対象のインスタンスは以降どこからも認識されなくなる。まさにFediverseのスペースデブリを化す。
 
+ActivityPub実装の習わしとして、インスタンスの閉鎖前にはすべてのFF関係を手動でアンフォローしておくべきとの作法も長らく伝えられてきているが、少なくともMastodonにおいてはこのコマンドを実行すればそういった手順は不要となる。下記の通り、運用ドメインと承諾の意思をそれぞれ入力して先に進む。
+
 ```bash
 mastodon@f7b2ce1d610b:~$ tootctl self-destruct
 Type in the domain of the server to confirm: mystech.ink
