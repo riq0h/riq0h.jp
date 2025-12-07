@@ -107,7 +107,8 @@ MastodonはJSON APIを介してReactで埋め込み部分をレンダリング�
       let lastHeight = 0;
 
       function notifyHeight() {
-        const height = Math.max(
+        const article = document.querySelector('article');
+        const height = article ? article.offsetHeight + 1 : Math.max(
           document.documentElement.scrollHeight,
           document.body.scrollHeight,
         );
@@ -154,7 +155,7 @@ MastodonはJSON APIを介してReactで埋め込み部分をレンダリング�
     })();
 ```
 
-本機能の実装では、上記の通り`postMessage`で親ウインドウに高さを通知し、`MutationObserver`と`ResizeObserver`で動的なリサイズに対応した。画像の読み込みも監視して、全体のサイズが確定してから描写を開始する仕組みだ。大抵の環境ではうまく働いてくれると思う。
+本機能の実装では、上記の通り`postMessage`で親ウインドウに高さを通知し、`MutationObserver`と`ResizeObserver`で動的なリサイズに対応した。画像の読み込みも監視して、全体のサイズが確定してから描写を開始する仕組みだ。特定の解像度での見切れを防止するために1pxの余白も追加している。大抵の環境ではうまく働いてくれると思う。
 
 フロントエンド側には埋め込みコードのコピーボタンを設置してある。任意の投稿の時刻表示から詳細画面に遷移して、右下のクリップボードアイコンをクリックすると埋め込みコードを取得できる。こうした便利アイコンをあえてまとめずに横に並べていくと、そのうち昔のマッキントッシュのようなレトロ感を出せると期待している。
 
