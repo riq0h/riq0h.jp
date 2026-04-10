@@ -4,6 +4,7 @@ clone:
     settings:
       recursive: true
       partial: false
+      depth: 1
 
 steps:
   build:
