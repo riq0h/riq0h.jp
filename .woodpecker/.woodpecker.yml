@@ -3,6 +3,7 @@ clone:
     image: woodpeckerci/plugin-git
     settings:
       recursive: true
+      partial: false
 
 steps:
   build:
