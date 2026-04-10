@@ -30,6 +30,33 @@ tags: ["tech"]
 
 しかしLinux環境であってもUSBケーブルで繋がっている以上は認識できるはずだ。`lsusb`してみると`Microchip USB2734 Hub`が見えた。この端末のUSBコントローラだ。ここでおもむろに会社支給のClaude Maxを起動し、デバイスに対してコントロール転送を試みるスクリプトを書かせた。アドレス空間を満遍なくスキャンしてゼロ値ではない値を持つレジスタを特定させる。
 
+```python
+#...省略
+    for req_type in [0xC0, 0xC1]:
+        type_name = "Device" if req_type == 0xC0 else "Interface"
+        for request in range(0, 0x20):
+            for wValue in [0x0000, 0x0001, 0x0002, 0x0006, 0x0008]:
+                for wIndex in [0x0000, 0x0001]:
+                    try:
+                        result = dev.ctrl_transfer(req_type, request, wValue, wIndex, 16, timeout=500)
+                        if result is not None and len(result) > 0:
+                            hex_str = ' '.join(f'{b:02X}' for b in result)
+                            print(f"  {type_name} Req=0x{request:02X} Val=0x{wValue:04X} Idx=0x{wIndex:04X} → [{hex_str}]")
+                    except usb.core.USBError:
+                        pass
+
+    for wVal in range(0, 16):
+        for wIdx in range(0, 4):
+            try:
+                result = dev.ctrl_transfer(0xC1, 0x09, wVal, wIdx, 8, timeout=500)
+                if result is not None and len(result) > 0:
+                    hex_str = ' '.join(f'{b:02X}' for b in result)
+                    print(f"  Req=0x09 Val=0x{wVal:04X} Idx=0x{wIdx:04X} → [{hex_str}]")
+            except usb.core.USBError:
+                pass
+#...省略
+```
+
 次に評価版ソフトウェアに含まれるソースコードをClaudeに読み込ませてAPI仕様を特定する。`MchpUsbOpenID(VendorID=0x424, ProductID=0x2734)`で接続できるらしい。続いてUSBチップのメーカーの[公式リポジトリ](https://github.com/MicrochipTech/USB-Hub-Linux-Examples)からGPIOレジスタアドレス（`0x0830`/`0x0834`/`0x0838`）とアクセス方法（`bReq=0x03` 書込 / `bReq=0x04` 読取）を確認する。
 
 仕上げにDirectionレジスタに出力ビットを設定し、OutputレジスタをHIGHに設定して`lsusb` すると、ついに端末の内蔵デバイス（SONY RC-S634、Intel RealSense D415など）が認識された！ 簡単に言っているようだがClaudeの力を借りても小一時間くらいはかかった。というわけで、まとめると以下の仕様が判明した。
@@ -38,9 +65,9 @@ tags: ["tech"]
 
 | レジスタ      | アドレス | 読み取り    | 書き込み    | ビット意味                   |
 | ------------- | -------- | ----------- | ----------- | ---------------------------- |
-| **Direction** | `0x0830` | `bReq=0x04` | `bReq=0x03` | 1=出力, 0=入力               |
-| **Output**    | `0x0834` | `bReq=0x04` | `bReq=0x03` | 1=HIGH, 0=LOW                |
-| **Input**     | `0x0838` | `bReq=0x04` | -           | 現在のGPIO値（読み取り専用） |
+| Direction     | 0x0830   | bReq=0x04   | bReq=0x03   | 1=出力, 0=入力               |
+| Output        | 0x0834   | bReq=0x04   | bReq=0x03   | 1=HIGH, 0=LOW                |
+| Input         | 0x0838   | bReq=0x04   | -           | 現在のGPIO値（読み取り専用） |
 
 USB コントロール転送パラメータ:
 
