@@ -16,12 +16,12 @@ tags: ["tech"]
 ```
 | デバイス               | VID:PID     | GPIO   | 用途                     |
 | ---------------------- | ----------- | ------ | ------------------------ |
-| SONY RC-S634/UA        | `054c:06c2` | GPIO 1 | NFC/FeliCaカードリーダ   |
-| Ricoh KBCR-S03MU       | `05ca:18e8` | GPIO 2 | OCRカメラ (UVC)          |
-| Futaba TouchController | `1008:1039` | GPIO 3 | タッチパネル             |
-| Intel RealSense D415   | `8086:0ad3` | GPIO 6 | 顔認証カメラ (RGB+Depth) |
-| SMI USB Display        | `090c:7680` | GPIO 8 | ディスプレイ (800x480)   |
-| VIA Labs VL813 Hub     | `2109:2813` | -      | 内部USBハブ              |
+| SONY RC-S634/UA        |  054c:06c2  | GPIO 1 | NFC/FeliCaカードリーダ   |
+| Ricoh KBCR-S03MU       |  05ca:18e8  | GPIO 2 | OCRカメラ (UVC)          |
+| Futaba TouchController |  1008:1039  | GPIO 3 | タッチパネル             |
+| Intel RealSense D415   |  8086:0ad3  | GPIO 6 | 顔認証カメラ (RGB+Depth) |
+| SMI USB Display        |  090c:7680  | GPIO 8 | ディスプレイ (800x480)   |
+| VIA Labs VL813 Hub     |  2109:2813  | -      | 内部USBハブ              |
 ```
 
 つまり実態としては、この端末はUSBハブの先に色々なデバイスがくっついた外部タッチパネルに近い。公式のSDKやDLL、評価版ソフトウェアなどはC#で書かれていてWindows環境を前提とする趣が強い。もし端末を利用するアプリケーションを開発したい場合、おのずと技術選定もそれに倣う形となるだろう。
