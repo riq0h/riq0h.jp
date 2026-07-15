@@ -13,13 +13,13 @@
   --w-footer: 400;   /* フッター */
   --w-strong: 600;   /* 太字 */
 
-  --c-text: #0d0d0d;
+  --c-text: #080808;
   --c-heading: #000;
   --c-meta: #666;
   --c-muted: #666;
   --c-sep: #aaa;
   --c-underline: #888;
-  --c-rule: #0d0d0d;
+  --c-rule: #080808;
   --c-quiet-rule: #ddd;
   --c-bg: #fff;
   --c-footer-link: #222;
