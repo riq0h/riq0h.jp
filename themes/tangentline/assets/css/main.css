@@ -286,6 +286,10 @@ img { max-width: 100%; height: auto; }
 .entry-content p img { display: block; margin: 1.6em auto; }
 
 .entry-content .letter-embed { margin-bottom: 1em; }
+/* embed.jsが読み込み後にcontainer.style.marginを0で上書きするため、
+   letter-embed自体ではなく、間に挟まるscriptタグの次の要素側に
+   空白行ぶんの余白を足す */
+.entry-content .letter-embed + script + * { margin-top: 1.5em; }
 
 /* ==========================================================================
    ページャ
