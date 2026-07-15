@@ -1,0 +1,41 @@
+/* ==========================================================================
+   OGPカード(ビルド時にヘッドレスChromiumで撮影する専用ページ用。
+   実サイトのHTMLとしては配信されない)
+   ========================================================================== */
+html { overflow-y: hidden; scrollbar-gutter: auto; }
+
+.ogcard {
+  width: 1200px;
+  height: 630px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--c-bg);
+}
+
+.ogcard-inner { width: 1020px; }
+
+.ogcard .site-title { font-size: 40px; }
+
+.ogcard .entry-meta {
+  font-size: 22px;
+  margin-bottom: 28px;
+}
+
+.ogcard .entry-title {
+  font-size: 56px;
+  line-height: 1.35;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.ogcard .list-title {
+  font-size: 44px;
+  font-weight: var(--w-title);
+  color: var(--c-heading);
+  text-align: center;
+  font-feature-settings: "palt";
+}

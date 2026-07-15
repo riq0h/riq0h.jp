@@ -22,6 +22,19 @@ post = "/:year/:month/:day/:15:04:05/"
 [services.rss]
 limit = 8
 
+[outputFormats.ogcard]
+mediaType = "text/html"
+baseName = "ogcard"
+isPlainText = false
+notAlternative = true
+
+[outputs]
+home = ["html", "rss", "ogcard"]
+section = ["html", "ogcard"]
+taxonomy = ["html", "ogcard"]
+term = ["html", "ogcard"]
+page = ["html", "ogcard"]
+
 [markup]
   [markup.goldmark.renderer]
   unsafe = true
@@ -35,9 +48,6 @@ limit = 8
   lineNumbersInTable = false
   noClasses = false
   tabWidth = 2
-
-[params]
-images = ["siteicon.png"]
 
 [params.footer]
 

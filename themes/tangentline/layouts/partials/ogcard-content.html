@@ -1,0 +1,32 @@
+{{- $css := resources.Get "css/main.css" | minify | fingerprint -}}
+{{- $ogcss := resources.Get "css/ogcard.css" | minify | fingerprint -}}
+<!doctype html>
+<html lang="{{ site.Language.Locale }}">
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.bunny.net">
+<link href="https://fonts.bunny.net/css?family=noto-serif-jp:300,400,500,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ $css.RelPermalink }}">
+<link rel="stylesheet" href="{{ $ogcss.RelPermalink }}">
+</head>
+<body>
+<div class="ogcard">
+  <div class="ogcard-inner">
+    <header class="masthead">
+      <p class="site-title">{{ partial "hang-title.html" site.Title }}</p>
+    </header>
+    {{- if eq .Kind "page" }}
+    <div class="entry-meta">
+      <time>{{ .Date.Format "2006年1月2日" }}</time>
+      {{- with .Params.tags }}
+      <span class="entry-tags">{{- range . }}<a>#{{ . }}</a>{{ end -}}</span>
+      {{- end }}
+    </div>
+    <h1 class="entry-title">{{ .Title }}</h1>
+    {{- else if not .IsHome }}
+    <p class="list-title">{{ .Title }}</p>
+    {{- end }}
+  </div>
+</div>
+</body>
+</html>
