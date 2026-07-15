@@ -80,7 +80,7 @@ img { max-width: 100%; height: auto; }
 }
 
 .site-title {
-  font-size: 1.9rem;
+  font-size: 2rem;
   font-weight: var(--w-title);
   letter-spacing: .12em;
   color: var(--c-heading);
@@ -102,7 +102,7 @@ img { max-width: 100%; height: auto; }
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  font-size: .83rem;
+  font-size: .875rem;
   font-weight: var(--w-meta);
   color: var(--c-meta);
 }
@@ -110,7 +110,7 @@ img { max-width: 100%; height: auto; }
 .entry-tags a { color: var(--c-meta); margin-left: .8em; }
 
 .entry-title {
-  font-size: 1.43rem;
+  font-size: 1.5rem;
   font-weight: var(--w-title);
   line-height: 1.6;
   margin: .35rem 0 .85rem;
@@ -122,7 +122,7 @@ img { max-width: 100%; height: auto; }
 .entry-title a { color: var(--c-heading); }
 
 .entry-summary {
-  font-size: 1.04rem;
+  font-size: 1.09rem;
   text-align: justify;
 }
 
@@ -130,11 +130,11 @@ img { max-width: 100%; height: auto; }
    記事ページ
    ========================================================================== */
 .entry-single .entry-title {
-  font-size: 1.47rem;
+  font-size: 1.55rem;
   margin: .4rem 0 2.2rem;
 }
 
-.entry-content { font-size: 1.04rem; }
+.entry-content { font-size: 1.09rem; }
 
 .entry-content p {
   margin-bottom: 1em;
@@ -156,7 +156,7 @@ img { max-width: 100%; height: auto; }
 .entry-content strong { font-weight: var(--w-strong); }
 
 .entry-content h2 {
-  font-size: 1.31rem;
+  font-size: 1.375rem;
   font-weight: var(--w-title);
   line-height: 1.6;
   margin: 2.8em 0 1em;
@@ -166,7 +166,7 @@ img { max-width: 100%; height: auto; }
 }
 
 .entry-content h3, .entry-content h4, .entry-content h5, .entry-content h6 {
-  font-size: 1.19rem;
+  font-size: 1.25rem;
   font-weight: var(--w-h3);
   line-height: 1.6;
   margin: 2.2em 0 1em;
@@ -195,7 +195,7 @@ img { max-width: 100%; height: auto; }
 .entry-content table {
   border-collapse: collapse;
   margin: 0 0 1.4em;
-  font-size: .86rem;
+  font-size: .9rem;
   max-width: 100%;
   overflow-x: auto;
   display: block;
@@ -221,7 +221,7 @@ img { max-width: 100%; height: auto; }
 .entry-content .highlight pre {
   padding: 1.1em 1.3em;
   overflow-x: auto;
-  font-size: .71rem;
+  font-size: .75rem;
   line-height: 1.4;
   background: var(--c-code-bg);
 }
@@ -297,7 +297,7 @@ img { max-width: 100%; height: auto; }
 .pager {
   display: flex;
   justify-content: space-between;
-  font-size: .84rem;
+  font-size: .88rem;
   font-weight: var(--w-pager);
   margin-top: 2.4rem;
 }
@@ -308,16 +308,16 @@ img { max-width: 100%; height: auto; }
    タグページ・タグ索引・404
    ========================================================================== */
 .term-title {
-  font-size: 1.22rem;
+  font-size: 1.28rem;
   font-weight: var(--w-title);
   color: var(--c-heading);
   margin-bottom: 2rem;
 }
 
-.tag-index { list-style: none; font-size: 1.04rem; }
+.tag-index { list-style: none; font-size: 1.09rem; }
 .tag-index li { display: inline-block; margin: 0 1em .5em 0; }
 
-.notfound { text-align: center; font-size: 1.04rem; }
+.notfound { text-align: center; font-size: 1.09rem; }
 .notfound p { margin-bottom: 1em; }
 .notfound a {
   text-decoration: underline;
@@ -336,7 +336,7 @@ img { max-width: 100%; height: auto; }
   font-weight: var(--w-footer);
 }
 
-.footer-links { font-size: .84rem; }
+.footer-links { font-size: .88rem; }
 .footer-links a { color: var(--c-footer-link); }
 .footer-links .sep { color: var(--c-sep); margin: 0 .6em; }
 
@@ -355,7 +355,7 @@ img { max-width: 100%; height: auto; }
 }
 
 .footer-copyright {
-  font-size: .74rem;
+  font-size: .78rem;
   letter-spacing: .15em;
   color: var(--c-muted);
   margin-top: .7rem;
@@ -366,5 +366,5 @@ img { max-width: 100%; height: auto; }
    ========================================================================== */
 @media (max-width: 768px) {
   .container { padding: 2rem 1.2rem 1.6rem; }
-  .site-title { font-size: 1.62rem; }
+  .site-title { font-size: 1.7rem; }
 }
