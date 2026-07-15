@@ -30,6 +30,7 @@ html { overflow-y: hidden; scrollbar-gutter: auto; }
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .ogcard .list-title {
