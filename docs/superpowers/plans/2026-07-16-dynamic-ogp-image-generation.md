@@ -26,7 +26,7 @@
 1. `.Permalink`/`.RelPermalink`はページ送り(`/page/2/`等)のコンテキスト内でも**常にページ1の正規URLを指す**(実測: `public/page/2/index.html`の`<link rel="canonical">`は`https://riq0h.jp/`)。したがって`head.html`の`og:image`タグに`{{ .Permalink }}og.png`を使えば、ページ送りに対する特別な分岐は一切不要。
 2. `[outputs]`テーブルはHugoの種別(kind)ごとに独立しており、キーに挙げていない種別(404など)は既存のデフォルト出力を保ったままになる。404を`[outputs]`に一切書かないことで、404ページのOGP除外は自然に達成される。
 3. カスタム出力フォーマット(`mediaType = "text/html"`, `baseName = "ogcard"`)を`home`/`section`/`taxonomy`/`term`/`page`の`[outputs]`に追加すると、`layouts/_default/list.ogcard.html`(list系: home/section/taxonomy/term)と`layouts/_default/single.ogcard.html`(page)がそれぞれ正しく解決される(実機で確認済み)。
-4. ページ送りが有効な一覧ページでは、**ページ送り由来の`/page/N/ogcard.html`も生成されてしまう**(実測: `/tags/tech/page/2/ogcard.html`等)。これは`scripts/generate-og-images.sh`側でパス中に`/page/`を含むものを除外・削除することで対処する(テンプレート側での`.Paginator`分岐は不要)。
+4. ページ送りの複製問題について: `.Paginator`を直接参照するテンプレート(検証用の簡易テンプレートで確認)ではページ送り由来の`/page/N/ogcard.html`も生成されてしまうが、**`ogcard-content.html`パーシャル(および`.Paginator`を一切参照しない`list.ogcard.html`/`single.ogcard.html`)ではHugoはそもそもページ送り分の`ogcard.html`を生成しない**(Task 1実装後に実機で再確認済み: `find public -name 'ogcard.html' -path '*/page/*'`は0件)。つまりテンプレートが`.Paginator`に一切触れない限り、Hugoの出力フォーマット生成はページ送りの複製を作らない。`scripts/generate-og-images.sh`側の`*/page/*`除外ロジックは、将来テンプレートが`.Paginator`を参照するようになった場合に備えた保険として残すが、現状は発火しない安全策。
 5. `hugomods/hugo:base`(Alpine 3.24.1)には`apk add --no-cache chromium`で`chromium`/`chromium-browser`の両バイナリが入り、`--headless=new --disable-gpu --no-sandbox --window-size=1200,630 --screenshot=...`で正しく1200×630のPNGが撮れることを実機で確認済み。`wget`/`timeout`/`dirname`/`find`はAlpineに標準搭載、`python3`は別途`apk add`が必要。
 6. **Chromiumの`--screenshot`モードは、ページが存在しない・接続できない場合でも常に終了コード0を返し、エラーページをそのままスクリーンショットとして書き出す。**したがって終了コードだけでは失敗を検知できない。`timeout`コマンドでラップして異常終了/ハングを検知しつつ、出力ファイルが`-s`(存在してサイズ0超)であることも合わせて確認する設計にする。
 7. Woodpecker CIの各ステップは同一ワークスペースを共有するため(既存の`deploy`ステップが`build`の`public/`をそのまま参照していることからも既知)、新しい`ogimages`ステップは`build`が生成した`public/`にそのままアクセスできる。
@@ -226,7 +226,7 @@ Expected:
 ```
 
 Run: `find public -name 'ogcard.html' -path '*/page/*' | head -3`
-Expected: 1件以上のパスが出る(ページ送りにも複製が生成されることの確認。Task 4で除外する)
+Expected: 出力なし(0件)。`ogcard-content.html`は`.Paginator`を参照しないため、Hugoはページ送り分の`ogcard.html`をそもそも生成しない(検証済みの前提事実 4を参照)
 
 タグが複数ある記事でも正しく表示されることを確認する(`content/post/Google AnalyticsをやめてGoatCounterに乗り換えた.md`, date=2021-03-26T11:28:15+09:00, tags=["tech","diary"]):
 
