@@ -12,6 +12,12 @@ steps:
     commands:
       - hugo --noBuildLock
 
+  ogimages:
+    image: hugomods/hugo:base
+    commands:
+      - apk add --no-cache chromium python3
+      - sh ./scripts/generate-og-images.sh
+
   deploy:
     image: drillster/drone-rsync
     settings:
