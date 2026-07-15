@@ -36,8 +36,8 @@
   --w-meta: 400;
   --w-pager: 400;
   --w-strong: 600;
-  --c-text: #1a1a1a;
-  --c-rule: #1a1a1a;
+  --c-text: #333;
+  --c-rule: #333;
   --c-footer-link: #333;
   --c-muted: #999;
 }
@@ -332,7 +332,7 @@ img { max-width: 100%; height: auto; }
   font-weight: var(--w-footer);
 }
 
-.footer-links { font-size: .78rem; }
+.footer-links { font-size: .84rem; }
 .footer-links a { color: var(--c-footer-link); }
 .footer-links .sep { color: var(--c-sep); margin: 0 .6em; }
 
@@ -351,7 +351,7 @@ img { max-width: 100%; height: auto; }
 }
 
 .footer-copyright {
-  font-size: .68rem;
+  font-size: .74rem;
   letter-spacing: .15em;
   color: var(--c-muted);
   margin-top: .7rem;
