@@ -336,7 +336,7 @@ img { max-width: 100%; height: auto; }
   font-weight: var(--w-footer);
 }
 
-.footer-links { font-size: .88rem; }
+.footer-links { font-size: .84rem; }
 .footer-links a { color: var(--c-footer-link); }
 .footer-links .sep { color: var(--c-sep); margin: 0 .6em; }
 
@@ -355,7 +355,7 @@ img { max-width: 100%; height: auto; }
 }
 
 .footer-copyright {
-  font-size: .78rem;
+  font-size: .74rem;
   letter-spacing: .15em;
   color: var(--c-muted);
   margin-top: .7rem;
