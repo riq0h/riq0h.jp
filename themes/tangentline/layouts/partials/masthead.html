@@ -1,5 +1,5 @@
 <header class="masthead">
-  {{ if .IsHome }}
+  {{ if and .IsHome (eq .Paginator.PageNumber 1) }}
   <h1 class="site-title">{{ partial "hang-title.html" site.Title }}</h1>
   {{ else }}
   <p class="site-title"><a href="{{ site.Home.RelPermalink }}">{{ partial "hang-title.html" site.Title }}</a></p>
