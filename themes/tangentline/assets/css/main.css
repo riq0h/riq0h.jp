@@ -15,14 +15,14 @@
 
   --c-text: #080808;
   --c-heading: #000;
-  --c-meta: #666;
-  --c-muted: #666;
+  --c-meta: #444;
+  --c-muted: #444;
   --c-sep: #aaa;
   --c-underline: #888;
   --c-rule: #080808;
   --c-quiet-rule: #ddd;
   --c-bg: #fff;
-  --c-footer-link: #666;
+  --c-footer-link: #444;
   --c-code-bg: #f0f0f0;
 }
 
@@ -38,8 +38,8 @@
   --w-strong: 600;
   --c-text: #333;
   --c-rule: #333;
-  --c-footer-link: #666;
-  --c-muted: #666;
+  --c-footer-link: #444;
+  --c-muted: #444;
 }
 
 /* ==========================================================================
