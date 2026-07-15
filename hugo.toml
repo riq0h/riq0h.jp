@@ -1,0 +1,59 @@
+baseURL = "https://riq0h.jp/"
+locale = "ja"
+defaultContentLanguage = "ja"
+hasCJKLanguage = true
+title = "点と接線。"
+theme = "tangentline"
+copyright = "©2011 辻谷陸王"
+enableRobotsTXT = true
+summaryLength = 200
+capitalizeListTitles = false
+pluralizeListTitles = false
+
+[pagination]
+pagerSize = 5
+
+[taxonomies]
+tag = "tags"
+
+[permalinks]
+post = "/:year/:month/:day/:15:04:05/"
+
+[services.rss]
+limit = 8
+
+[markup]
+  [markup.goldmark.renderer]
+  unsafe = true
+
+  [markup.highlight]
+  codeFences = true
+  guessSyntax = true
+  hl_Lines = ""
+  lineNoStart = 1
+  lineNos = false
+  lineNumbersInTable = false
+  noClasses = false
+  tabWidth = 2
+
+[params]
+images = ["siteicon.png"]
+
+[params.footer]
+
+[[params.footer.links]]
+name = "Fediverse"
+url = "https://letter.mystech.ink/@riq0h"
+me = true
+
+[[params.footer.links]]
+name = "Keyoxide"
+url = "https://keyoxide.org/48DD5CD37CAE0C69E1637DE2010F09DEA298C717"
+
+[[params.footer.links]]
+name = "RSS"
+url = "/index.xml"
+
+[[params.footer.links]]
+name = "小説"
+url = "/tags/novel"

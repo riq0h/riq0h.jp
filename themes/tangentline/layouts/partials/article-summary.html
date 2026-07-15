@@ -1,0 +1,12 @@
+<article class="entry">
+  <div class="entry-meta">
+    <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006年1月2日" }}</time>
+    {{ with .Params.tags }}
+    <span class="entry-tags">
+      {{- range . }}<a href="/tags/{{ . | urlize }}/">#{{ . }}</a>{{ end -}}
+    </span>
+    {{ end }}
+  </div>
+  <h2 class="entry-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ if .Draft }} ::Draft{{ end }}</h2>
+  <p class="entry-summary">{{ .Summary | plainify | safeHTML }}</p>
+</article>

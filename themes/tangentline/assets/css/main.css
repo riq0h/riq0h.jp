@@ -1,0 +1,366 @@
+/* ==========================================================================
+   tangentline — デザイントークン
+   ========================================================================== */
+:root {
+  --font-body: "Noto Serif JP", "Noto Serif CJK JP", "Yu Mincho", "Hiragino Mincho ProN", serif;
+  --font-mono: SFMono-Regular, "Liberation Mono", Menlo, Consolas, monospace;
+
+  --w-title: 300;    /* 題字・記事タイトル・h2 */
+  --w-h3: 500;       /* h3以下の小見出し */
+  --w-body: 400;     /* 本文 */
+  --w-meta: 500;     /* 日付・タグ */
+  --w-pager: 500;    /* ページャ */
+  --w-footer: 400;   /* フッター */
+  --w-strong: 600;   /* 太字 */
+
+  --c-text: #0d0d0d;
+  --c-heading: #000;
+  --c-meta: #666;
+  --c-muted: #777;
+  --c-sep: #aaa;
+  --c-underline: #888;
+  --c-rule: #0d0d0d;
+  --c-quiet-rule: #ddd;
+  --c-bg: #fff;
+  --c-footer-link: #1a1a1a;
+  --c-code-bg: #f0f0f0;
+}
+
+/* --------------------------------------------------------------------------
+   ゴシック切替プロファイル
+   フッターの「ゴシック」リンク(toggle-font.js)が data-font 属性を切り替える。
+   -------------------------------------------------------------------------- */
+:root[data-font="gothic"] {
+  --font-body: "Noto Sans JP", "Noto Sans CJK JP", sans-serif;
+  --w-body: 400;
+  --w-meta: 400;
+  --w-pager: 400;
+  --w-strong: 600;
+  --c-text: #1a1a1a;
+  --c-rule: #1a1a1a;
+  --c-footer-link: #333;
+  --c-muted: #999;
+}
+
+/* ==========================================================================
+   リセット・ベース
+   ========================================================================== */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { -webkit-text-size-adjust: 100%; overflow-y: scroll; scrollbar-gutter: stable; }
+
+body {
+  font-family: var(--font-body);
+  font-weight: var(--w-body);
+  color: var(--c-text);
+  background: var(--c-bg);
+  line-height: 1.5;
+  text-spacing-trim: space-first; /* 対応ブラウザのみ */
+}
+
+.container {
+  max-width: 850px;
+  margin: 0 auto;
+  padding: 2.4rem 1.5rem 2rem;
+}
+
+a { color: inherit; text-decoration: none; }
+a:hover, a:focus { text-decoration: underline; text-underline-offset: 3px; }
+
+img { max-width: 100%; height: auto; }
+
+/* ==========================================================================
+   マストヘッド
+   ========================================================================== */
+.masthead {
+  text-align: center;
+  padding-bottom: 1.2rem;
+  margin-bottom: 2.6rem;
+  border-bottom: 1px solid var(--c-rule);
+}
+
+.site-title {
+  font-size: 1.9rem;
+  font-weight: var(--w-title);
+  letter-spacing: .12em;
+  color: var(--c-heading);
+}
+
+.site-title a { color: var(--c-heading); }
+.site-title a:hover, .site-title a:focus { text-decoration: none; }
+
+/* 題字末尾の約物ぶら下げ: 字送り1文字ぶん+字間(.12em)2回ぶんを相殺し、
+   本体を光学的中央に置く */
+.site-title .hang { margin-right: calc(-1em - .24em); }
+
+/* ==========================================================================
+   記事一覧
+   ========================================================================== */
+.entry { margin-bottom: 3.2rem; }
+
+.entry-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: .83rem;
+  font-weight: var(--w-meta);
+  color: var(--c-meta);
+}
+
+.entry-tags a { color: var(--c-meta); margin-left: .8em; }
+
+.entry-title {
+  font-size: 1.43rem;
+  font-weight: var(--w-title);
+  line-height: 1.6;
+  margin: .35rem 0 .85rem;
+  color: var(--c-heading);
+  font-feature-settings: "palt";
+  overflow-wrap: break-word;
+}
+
+.entry-title a { color: var(--c-heading); }
+
+.entry-summary {
+  font-size: 1.04rem;
+  text-align: justify;
+}
+
+/* ==========================================================================
+   記事ページ
+   ========================================================================== */
+.entry-single .entry-title {
+  font-size: 1.47rem;
+  margin: .4rem 0 2.2rem;
+}
+
+.entry-content { font-size: 1.04rem; }
+
+.entry-content p {
+  margin-bottom: 1em;
+  text-align: justify;
+  overflow-wrap: break-word;
+}
+
+.entry-content a {
+  text-decoration: underline;
+  text-decoration-color: var(--c-underline);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+
+.entry-content a:hover, .entry-content a:focus {
+  text-decoration-color: var(--c-text);
+}
+
+.entry-content strong { font-weight: var(--w-strong); }
+
+.entry-content h2 {
+  font-size: 1.31rem;
+  font-weight: var(--w-title);
+  line-height: 1.6;
+  margin: 2.8em 0 1em;
+  color: var(--c-heading);
+  font-feature-settings: "palt";
+  overflow-wrap: break-word;
+}
+
+.entry-content h3, .entry-content h4, .entry-content h5, .entry-content h6 {
+  font-size: 1.19rem;
+  font-weight: var(--w-h3);
+  line-height: 1.6;
+  margin: 2.2em 0 1em;
+  color: var(--c-heading);
+  font-feature-settings: "palt";
+}
+
+.entry-content ul, .entry-content ol {
+  margin: 0 0 1em;
+  padding-left: 1.6em;
+}
+
+.entry-content li { margin-bottom: .2em; }
+
+.entry-content blockquote {
+  margin: 0 1em 1em;
+  color: #555;
+}
+
+.entry-content hr {
+  border: none;
+  border-top: 1px solid var(--c-quiet-rule);
+  margin: 2em 0;
+}
+
+.entry-content table {
+  border-collapse: collapse;
+  margin: 0 0 1.4em;
+  font-size: .86rem;
+  max-width: 100%;
+  overflow-x: auto;
+  display: block;
+}
+
+.entry-content th, .entry-content td {
+  border-bottom: 1px solid var(--c-quiet-rule);
+  padding: .4em .6em;
+  text-align: left;
+}
+
+.entry-content code {
+  font-family: var(--font-mono);
+  font-size: .85em;
+  background: var(--c-code-bg);
+  padding: .15em .35em;
+}
+
+/* コードブロック: Chroma(class出力)+ 自作のライトテーマ。
+   彩度のある色は使わず、既存の色トークン(--c-text/--c-meta/--c-muted)と
+   太字・斜体の組み合わせだけで意味を示す(活版印刷的な、無彩色の配色)。 */
+.entry-content .highlight { margin: 0 0 1.4em; }
+.entry-content .highlight pre {
+  padding: 1.1em 1.3em;
+  overflow-x: auto;
+  font-size: .71rem;
+  line-height: 1.4;
+  background: var(--c-code-bg);
+}
+.entry-content .highlight code { font-size: 1em; background: none; padding: 0; }
+
+.entry-content .chroma { color: var(--c-text); }
+
+.entry-content .chroma .k,
+.entry-content .chroma .kc,
+.entry-content .chroma .kd,
+.entry-content .chroma .kn,
+.entry-content .chroma .kp,
+.entry-content .chroma .kr,
+.entry-content .chroma .kt,
+.entry-content .chroma .ow { font-weight: 700; }
+.entry-content .chroma .kd { font-style: italic; }
+
+.entry-content .chroma .nc,
+.entry-content .chroma .no,
+.entry-content .chroma .nn,
+.entry-content .chroma .nv,
+.entry-content .chroma .vg,
+.entry-content .chroma .vi,
+.entry-content .chroma .nf,
+.entry-content .chroma .na,
+.entry-content .chroma .nx {
+  color: var(--c-meta);
+  font-weight: 700;
+  font-style: italic;
+}
+.entry-content .chroma .nb,
+.entry-content .chroma .bp { font-weight: 700; font-style: italic; }
+.entry-content .chroma .nt { color: var(--c-meta); font-weight: 700; }
+
+.entry-content .chroma .s,
+.entry-content .chroma .s1,
+.entry-content .chroma .s2,
+.entry-content .chroma .sa,
+.entry-content .chroma .sb,
+.entry-content .chroma .sc,
+.entry-content .chroma .sd,
+.entry-content .chroma .se,
+.entry-content .chroma .sh,
+.entry-content .chroma .si,
+.entry-content .chroma .sr,
+.entry-content .chroma .ss,
+.entry-content .chroma .sx,
+.entry-content .chroma .dl {
+  color: var(--c-meta);
+  font-style: italic;
+}
+
+.entry-content .chroma .c,
+.entry-content .chroma .ch,
+.entry-content .chroma .cm,
+.entry-content .chroma .c1 { color: var(--c-muted); font-style: italic; }
+.entry-content .chroma .cs,
+.entry-content .chroma .cp,
+.entry-content .chroma .cpf { color: var(--c-muted); font-weight: 700; }
+
+.entry-content figure { margin: 1.6em 0; text-align: center; }
+.entry-content p img { display: block; margin: 1.6em auto; }
+
+.entry-content .letter-embed { margin-bottom: 1em; }
+
+/* ==========================================================================
+   ページャ
+   ========================================================================== */
+.pager {
+  display: flex;
+  justify-content: space-between;
+  font-size: .84rem;
+  font-weight: var(--w-pager);
+  margin-top: 2.4rem;
+}
+
+.pager a { color: var(--c-text); }
+
+/* ==========================================================================
+   タグページ・タグ索引・404
+   ========================================================================== */
+.term-title {
+  font-size: 1.22rem;
+  font-weight: var(--w-title);
+  color: var(--c-heading);
+  margin-bottom: 2rem;
+}
+
+.tag-index { list-style: none; font-size: 1.04rem; }
+.tag-index li { display: inline-block; margin: 0 1em .5em 0; }
+
+.notfound { text-align: center; font-size: 1.04rem; }
+.notfound p { margin-bottom: 1em; }
+.notfound a {
+  text-decoration: underline;
+  text-decoration-color: var(--c-underline);
+  text-underline-offset: 4px;
+}
+
+/* ==========================================================================
+   フッター
+   ========================================================================== */
+.site-footer {
+  text-align: center;
+  margin-top: 2.8rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--c-rule);
+  font-weight: var(--w-footer);
+}
+
+.footer-links { font-size: .78rem; }
+.footer-links a { color: var(--c-footer-link); }
+.footer-links .sep { color: var(--c-sep); margin: 0 .6em; }
+
+.footer-font-toggle {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  cursor: pointer;
+  color: var(--c-footer-link);
+}
+.footer-font-toggle:hover, .footer-font-toggle:focus {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.footer-copyright {
+  font-size: .68rem;
+  letter-spacing: .15em;
+  color: var(--c-muted);
+  margin-top: .7rem;
+}
+
+/* ==========================================================================
+   モバイル
+   ========================================================================== */
+@media (max-width: 768px) {
+  .container { padding: 2rem 1.2rem 1.6rem; }
+  .site-title { font-size: 1.62rem; }
+}

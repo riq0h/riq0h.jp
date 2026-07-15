@@ -1,0 +1,16 @@
+{{ define "main" }}
+<article class="entry entry-single">
+  <div class="entry-meta">
+    {{ if not .Date.IsZero }}<time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006年1月2日" }}</time>{{ end }}
+    {{ with .Params.tags }}
+    <span class="entry-tags">
+      {{- range . }}<a href="/tags/{{ . | urlize }}/">#{{ . }}</a>{{ end -}}
+    </span>
+    {{ end }}
+  </div>
+  <h1 class="entry-title">{{ .Title }}{{ if .Draft }} ::Draft{{ end }}</h1>
+  <div class="entry-content">
+    {{ .Content }}
+  </div>
+</article>
+{{ end }}

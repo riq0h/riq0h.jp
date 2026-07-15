@@ -1,0 +1,6 @@
+User-agent: *
+
+Sitemap: {{ "sitemap.xml" | absURL }}
+
+User-agent: Twitterbot
+Disallow:

@@ -1,0 +1,12 @@
+<nav class="pager">
+  <span class="pager-newer">
+    {{- if .Paginator.HasPrev -}}
+    <a href="{{ .Paginator.Prev.URL }}"><span class="pager-sym-l">〈</span>&ensp;新しい記事</a>
+    {{- end -}}
+  </span>
+  <span class="pager-older">
+    {{- if .Paginator.HasNext -}}
+    <a href="{{ .Paginator.Next.URL }}">古い記事&ensp;<span class="pager-sym-r">〉</span></a>
+    {{- end -}}
+  </span>
+</nav>

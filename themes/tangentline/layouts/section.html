@@ -1,0 +1,7 @@
+{{ define "main" }}
+{{ $paginator := .Paginate (where .Pages "Params.hidden" "ne" true) }}
+{{ range $paginator.Pages }}
+{{ partial "article-summary.html" . }}
+{{ end }}
+{{ partial "pager.html" . }}
+{{ end }}

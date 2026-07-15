@@ -1,0 +1,8 @@
+{{- $t := . -}}
+{{- $m := findRE `[。、．，！？]$` $t -}}
+{{- if $m -}}
+{{- $p := index $m 0 -}}
+{{- strings.TrimSuffix $p $t -}}<span class="hang">{{ $p }}</span>
+{{- else -}}
+{{- $t -}}
+{{- end -}}

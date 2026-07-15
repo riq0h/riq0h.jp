@@ -1,0 +1,8 @@
+{{ define "main" }}
+{{ $pages := where site.RegularPages "Params.hidden" "ne" true }}
+{{ $paginator := .Paginate $pages }}
+{{ range $paginator.Pages }}
+{{ partial "article-summary.html" . }}
+{{ end }}
+{{ partial "pager.html" . }}
+{{ end }}

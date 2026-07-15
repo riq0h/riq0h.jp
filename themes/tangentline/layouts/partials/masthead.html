@@ -1,0 +1,7 @@
+<header class="masthead">
+  {{ if .IsHome }}
+  <h1 class="site-title">{{ partial "hang-title.html" site.Title }}</h1>
+  {{ else }}
+  <p class="site-title"><a href="{{ site.Home.RelPermalink }}">{{ partial "hang-title.html" site.Title }}</a></p>
+  {{ end }}
+</header>

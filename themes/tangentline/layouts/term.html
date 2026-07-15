@@ -1,0 +1,8 @@
+{{ define "main" }}
+<h1 class="term-title">#{{ .Title }}</h1>
+{{ $paginator := .Paginate (where .Pages "Params.hidden" "ne" true) }}
+{{ range $paginator.Pages }}
+{{ partial "article-summary.html" . }}
+{{ end }}
+{{ partial "pager.html" . }}
+{{ end }}

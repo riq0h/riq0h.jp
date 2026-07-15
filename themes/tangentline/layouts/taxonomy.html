@@ -1,0 +1,7 @@
+{{ define "main" }}
+<ul class="tag-index">
+  {{ range .Data.Terms.Alphabetical }}
+  <li><a href="{{ .Page.RelPermalink }}">#{{ .Page.Title }}</a></li>
+  {{ end }}
+</ul>
+{{ end }}

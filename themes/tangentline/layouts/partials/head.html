@@ -1,0 +1,35 @@
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+(function () {
+  try {
+    if (localStorage.getItem("font") === "gothic") {
+      document.documentElement.setAttribute("data-font", "gothic");
+    }
+  } catch (e) {}
+})();
+</script>
+{{ if .IsHome -}}
+<title>{{ site.Title }}</title>
+{{- else -}}
+<title>{{ .Title }} | {{ site.Title }}</title>
+{{- end }}
+<link rel="canonical" href="{{ .Permalink }}">
+{{ template "_internal/opengraph.html" . }}
+{{ template "_internal/twitter_cards.html" . }}
+{{ with .OutputFormats.Get "rss" -}}
+<link rel="alternate" type="application/rss+xml" title="{{ site.Title }}" href="{{ .Permalink }}">
+{{- end }}
+<link rel="preconnect" href="https://fonts.bunny.net">
+<link href="https://fonts.bunny.net/css?family=noto-serif-jp:300,400,500,700|noto-sans-jp:300,400,600&display=swap" rel="stylesheet">
+{{ $css := resources.Get "css/main.css" | minify | fingerprint }}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+{{ partial "math.html" . }}
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#ffffff">
+<script async src="https://analytics.mystech.ink/script.js" data-website-id="fa470223-8408-40fc-8779-5a6abc6cc521"></script>
+</head>

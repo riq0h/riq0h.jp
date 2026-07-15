@@ -1,0 +1,12 @@
+<footer class="site-footer">
+  <p class="footer-links">
+    {{- range $i, $l := site.Params.footer.links -}}
+    {{- if $i }}<span class="sep">｜</span>{{ end -}}
+    <a href="{{ $l.url }}"{{ if $l.me }} rel="me"{{ end }}>{{ $l.name }}</a>
+    {{- end -}}
+    <span class="sep">｜</span><button type="button" id="font-toggle" class="footer-font-toggle">ゴシック</button>
+  </p>
+  <p class="footer-copyright">{{ site.Copyright }}</p>
+</footer>
+{{ $js := resources.Get "js/toggle-font.js" | minify | fingerprint }}
+<script defer src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}"></script>

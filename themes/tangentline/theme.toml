@@ -1,0 +1,7 @@
+name = "tangentline"
+license = "MIT"
+description = "A classic, flat, letterpress-inspired Hugo theme for riq0h.jp"
+min_version = "0.146.0"
+
+[author]
+name = "Rikuoh Tsujitani"
