@@ -16,6 +16,11 @@ for i in $(seq 1 30); do
   sleep 0.2
 done
 
+if ! kill -0 "$SERVER_PID" 2>/dev/null; then
+  echo "ERROR: our http.server (pid $SERVER_PID) is not running; port $PORT may already be in use by another process" >&2
+  exit 1
+fi
+
 find "$PUBLIC_DIR" -name 'ogcard.html' > /tmp/og-ogcard-list.txt
 
 FAILED=0
