@@ -16,12 +16,6 @@
       <p class="site-title">{{ partial "hang-title.html" site.Title }}</p>
     </header>
     {{- if eq .Kind "page" }}
-    <div class="entry-meta">
-      <time>{{ .Date.Format "2006年1月2日" }}</time>
-      {{- with .Params.tags }}
-      <span class="entry-tags">{{- range . }}<a>#{{ . }}</a>{{ end -}}</span>
-      {{- end }}
-    </div>
     <h1 class="entry-title">{{ .Title }}</h1>
     {{- else if not .IsHome }}
     <p class="list-title">{{ .Title }}</p>
