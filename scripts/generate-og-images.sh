@@ -46,6 +46,18 @@ while IFS= read -r f; do
     cp "$FALLBACK_PNG" "$dir/og.png"
     FAILED=1
   fi
+
+  # Twitter/X re-encodes opaque PNGs to lossy JPEG, which introduces visible
+  # artifacts on this design's thin lines and hairline rule. A PNG with any
+  # alpha channel is kept as-is, so nudge one corner pixel to 99% opacity
+  # (imperceptible) purely to keep the PNG format on that platform. og.png is
+  # already valid at this point either way, so a failure here is a warning,
+  # not a build failure.
+  if ! magick "$dir/og.png" -alpha set -channel A -fx "(i==0&&j==0)?0.99:1" "PNG32:$dir/og.png" 2>/tmp/og-magick.log; then
+    echo "WARN: alpha-pixel post-processing failed for $dir/og.png (kept as-is)" >&2
+    cat /tmp/og-magick.log >&2
+  fi
+
   rm -f "$f"
 done < /tmp/og-ogcard-list.txt
 

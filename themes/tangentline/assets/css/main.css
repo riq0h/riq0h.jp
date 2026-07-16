@@ -2,7 +2,7 @@
    tangentline — デザイントークン
    ========================================================================== */
 :root {
-  --font-body: "Noto Serif JP", "Noto Serif CJK JP", "Yu Mincho", "Hiragino Mincho ProN", serif;
+  --font-body: "Noto Serif JP", "Noto Serif CJK JP", "Yu Mincho", "Hiragino Mincho ProN", "Noto Serif", serif;
   --font-mono: SFMono-Regular, "Liberation Mono", Menlo, Consolas, monospace;
 
   --w-title: 300;    /* 題字・記事タイトル・h2 */

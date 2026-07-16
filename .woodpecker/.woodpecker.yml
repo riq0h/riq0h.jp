@@ -15,7 +15,7 @@ steps:
   ogimages:
     image: hugomods/hugo:base
     commands:
-      - apk add --no-cache chromium python3
+      - apk add --no-cache chromium python3 imagemagick font-noto
       - sh ./scripts/generate-og-images.sh
 
   deploy:
