@@ -16,10 +16,10 @@ html { overflow-y: hidden; scrollbar-gutter: auto; }
 
 .ogcard-inner { width: 1020px; }
 
-.ogcard .site-title { font-size: 45px; }
+.ogcard .site-title { font-size: 42px; }
 
 .ogcard .entry-meta {
-  font-size: 36px;
+  font-size: 32px;
   margin-bottom: 24px;
 }
 
