@@ -110,7 +110,7 @@ img { max-width: 100%; height: auto; }
 .entry-tags a { color: var(--c-meta); margin-left: .8em; }
 
 .entry-title {
-  font-size: 1.5rem;
+  font-size: 1.55rem;
   font-weight: var(--w-title);
   line-height: 1.6;
   margin: .35rem 0 .85rem;
@@ -195,7 +195,7 @@ img { max-width: 100%; height: auto; }
 .entry-content table {
   border-collapse: collapse;
   margin: 0 0 1.4em;
-  font-size: .9rem;
+  font-size: .875rem;
   max-width: 100%;
   overflow-x: auto;
   display: block;
@@ -297,7 +297,7 @@ img { max-width: 100%; height: auto; }
 .pager {
   display: flex;
   justify-content: space-between;
-  font-size: .88rem;
+  font-size: .875rem;
   font-weight: var(--w-pager);
   margin-top: 2.4rem;
 }
@@ -308,7 +308,7 @@ img { max-width: 100%; height: auto; }
    タグページ・タグ索引・404
    ========================================================================== */
 .term-title {
-  font-size: 1.28rem;
+  font-size: 1.25rem;
   font-weight: var(--w-title);
   color: var(--c-heading);
   margin-bottom: 2rem;
@@ -337,7 +337,7 @@ img { max-width: 100%; height: auto; }
   font-weight: var(--w-footer);
 }
 
-.footer-links { font-size: .84rem; }
+.footer-links { font-size: .875rem; }
 .footer-links a { color: var(--c-footer-link); }
 .footer-links .sep { color: var(--c-sep); margin: 0 .6em; }
 
@@ -357,7 +357,7 @@ img { max-width: 100%; height: auto; }
 }
 
 .footer-copyright {
-  font-size: .74rem;
+  font-size: .75rem;
   letter-spacing: .15em;
   color: var(--c-muted);
   margin-top: .7rem;
