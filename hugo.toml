@@ -11,7 +11,7 @@ capitalizeListTitles = false
 pluralizeListTitles = false
 
 [pagination]
-pagerSize = 5
+pagerSize = 4
 
 [taxonomies]
 tag = "tags"
