@@ -36,7 +36,7 @@ while IFS= read -r f; do
   esac
   url="http://localhost:$PORT${rel}"
   if timeout 20 chromium --headless=new --disable-gpu --no-sandbox \
-      --window-size=1200,630 --force-device-scale-factor=2 --virtual-time-budget=1500 \
+      --window-size=1200,630 --virtual-time-budget=1500 \
       --screenshot="$dir/og.png" "$url" >/tmp/og-chromium.log 2>&1 \
      && [ -s "$dir/og.png" ]; then
     :
