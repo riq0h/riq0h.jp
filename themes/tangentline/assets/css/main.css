@@ -112,7 +112,7 @@ img { max-width: 100%; height: auto; }
 .entry-title {
   font-size: 1.55rem;
   font-weight: var(--w-title);
-  line-height: 1.6;
+  line-height: 1.4;
   margin: .35rem 0 .85rem;
   color: var(--c-heading);
   font-feature-settings: "palt";
@@ -158,7 +158,7 @@ img { max-width: 100%; height: auto; }
 .entry-content h2 {
   font-size: 1.375rem;
   font-weight: var(--w-title);
-  line-height: 1.6;
+  line-height: 1.4;
   margin: 2.8em 0 1em;
   color: var(--c-heading);
   font-feature-settings: "palt";
@@ -168,7 +168,7 @@ img { max-width: 100%; height: auto; }
 .entry-content h3, .entry-content h4, .entry-content h5, .entry-content h6 {
   font-size: 1.25rem;
   font-weight: var(--w-h3);
-  line-height: 1.6;
+  line-height: 1.4;
   margin: 2.2em 0 1em;
   color: var(--c-heading);
   font-feature-settings: "palt";
