@@ -24,6 +24,7 @@
   --c-bg: #fff;
   --c-footer-link: #555;
   --c-code-bg: #f0f0f0;
+  --c-code-text: #333;
 }
 
 /* --------------------------------------------------------------------------
@@ -210,13 +211,14 @@ img { max-width: 100%; height: auto; }
 .entry-content code {
   font-family: var(--font-mono);
   font-size: .85em;
+  color: var(--c-code-text);
   background: var(--c-code-bg);
   padding: .15em .35em;
 }
 
-/* コードブロック: Chroma(class出力)+ 自作のライトテーマ。
-   彩度のある色は使わず、既存の色トークン(--c-text/--c-meta/--c-muted)と
-   太字・斜体の組み合わせだけで意味を示す(活版印刷的な、無彩色の配色)。 */
+/* コードブロック: Chroma(class出力)+ 自作のライトテーマ。彩度は使わず
+   --c-code-text/--c-meta/--c-mutedと太字・斜体の組み合わせだけで意味を示す。
+   書体は明朝/ゴシック切替の影響を受けないため、色(--c-code-text)も固定する。 */
 .entry-content .highlight { margin: 0 0 1.4em; }
 .entry-content .highlight pre {
   padding: 1.1em 1.3em;
@@ -227,7 +229,7 @@ img { max-width: 100%; height: auto; }
 }
 .entry-content .highlight code { font-size: 1em; background: none; padding: 0; }
 
-.entry-content .chroma { color: var(--c-text); }
+.entry-content .chroma { color: var(--c-code-text); }
 
 .entry-content .chroma .k,
 .entry-content .chroma .kc,
