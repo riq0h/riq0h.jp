@@ -342,6 +342,11 @@ img { max-width: 100%; height: auto; }
 .footer-links a { color: var(--c-footer-link); }
 .footer-links .sep { color: var(--c-sep); margin: 0 .6em; }
 
+@media (max-width: 380px) {
+  .footer-links { font-size: .75rem; }
+  .footer-links .sep { margin: 0 .45em; }
+}
+
 .footer-font-toggle {
   background: none;
   border: none;
