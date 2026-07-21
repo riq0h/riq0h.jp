@@ -32,7 +32,7 @@
 <link rel="alternate" type="application/rss+xml" title="{{ site.Title }}" href="{{ .Permalink }}">
 {{- end }}
 <link rel="preconnect" href="https://fonts.bunny.net">
-<link href="https://fonts.bunny.net/css?family=noto-serif-jp:300,400,500,700|noto-sans-jp:300,400,600&display=swap" rel="stylesheet">
+<link href="https://fonts.bunny.net/css?family=noto-serif-jp:300,400,500,700|noto-sans-jp:300,400,600&display=block" rel="stylesheet">
 {{ $css := resources.Get "css/main.css" | minify | fingerprint }}
 <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
 {{ partial "math.html" . }}
