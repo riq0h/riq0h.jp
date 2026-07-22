@@ -31,8 +31,14 @@
 {{ with .OutputFormats.Get "rss" -}}
 <link rel="alternate" type="application/rss+xml" title="{{ site.Title }}" href="{{ .Permalink }}">
 {{- end }}
-<link rel="preconnect" href="https://fonts.bunny.net">
-<link href="https://fonts.bunny.net/css?family=noto-serif-jp:300,400,500,700|noto-sans-jp:300,400,600&display=block" rel="stylesheet">
+{{/* 記事ページは自分のディレクトリに、それ以外はサイトルートの共有サブセットを参照する
+     (scripts/subset_fonts.pyがビルド後に生成する) */}}
+{{ $fontBase := "" }}
+{{ if ne .Kind "page" }}{{ $fontBase = "/" }}{{ end }}
+<style>
+@font-face { font-family: "Noto Serif JP"; src: url("{{ $fontBase }}font-serif.woff2") format("woff2"); font-weight: 200 900; font-display: block; }
+@font-face { font-family: "Noto Sans JP"; src: url("{{ $fontBase }}font-sans.woff2") format("woff2"); font-weight: 200 900; font-display: block; }
+</style>
 {{ $css := resources.Get "css/main.css" | minify | fingerprint }}
 <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
 {{ partial "math.html" . }}

@@ -12,6 +12,13 @@ steps:
     commands:
       - hugo --noBuildLock
 
+  fonts:
+    image: hugomods/hugo:base
+    commands:
+      - apk add --no-cache python3 py3-pip curl
+      - pip install --break-system-packages --quiet fonttools brotli
+      - python3 ./scripts/subset_fonts.py
+
   ogimages:
     image: hugomods/hugo:base
     commands:

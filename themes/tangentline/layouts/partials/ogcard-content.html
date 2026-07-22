@@ -4,8 +4,11 @@
 <html lang="{{ site.Language.Locale }}">
 <head>
 <meta charset="utf-8">
-<link rel="preconnect" href="https://fonts.bunny.net">
-<link href="https://fonts.bunny.net/css?family=noto-serif-jp:300,400,500,700&display=swap" rel="stylesheet">
+{{- $fontBase := "" }}
+{{- if ne .Kind "page" }}{{ $fontBase = "/" }}{{ end }}
+<style>
+@font-face { font-family: "Noto Serif JP"; src: url("{{ $fontBase }}font-serif.woff2") format("woff2"); font-weight: 200 900; font-display: block; }
+</style>
 <link rel="stylesheet" href="{{ $css.RelPermalink }}">
 <link rel="stylesheet" href="{{ $ogcss.RelPermalink }}">
 </head>
