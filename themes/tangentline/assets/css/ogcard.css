@@ -39,5 +39,5 @@ html { overflow-y: hidden; scrollbar-gutter: auto; }
   font-weight: var(--w-title);
   color: var(--c-heading);
   text-align: center;
-  letter-spacing: -0.04em;
+  font-feature-settings: "palt";
 }
