@@ -4,6 +4,9 @@ set -eu
 PUBLIC_DIR="public"
 PORT=8080
 FALLBACK_PNG="themes/tangentline/images/ogp-fallback.png"
+FAIL_SENTINEL="/tmp/og-failed-sentinel"
+SCRIPT_DIR=$(dirname "$0")
+rm -f "$FAIL_SENTINEL"
 
 python3 -m http.server "$PORT" --directory "$PUBLIC_DIR" >/tmp/og-http-server.log 2>&1 &
 SERVER_PID=$!
@@ -23,45 +26,26 @@ fi
 
 find "$PUBLIC_DIR" -name 'ogcard.html' > /tmp/og-ogcard-list.txt
 
-FAILED=0
-
+: > /tmp/og-ogcard-todo.txt
 while IFS= read -r f; do
-  dir=$(dirname "$f")
   rel=${f#"$PUBLIC_DIR"}
   case "$rel" in
     */page/*)
       rm -f "$f"
-      continue
+      ;;
+    *)
+      echo "$f" >> /tmp/og-ogcard-todo.txt
       ;;
   esac
-  url="http://localhost:$PORT${rel}"
-  if timeout 20 chromium --headless=new --disable-gpu --no-sandbox \
-      --window-size=1200,630 --virtual-time-budget=1500 \
-      --screenshot="$dir/og.png" "$url" >/tmp/og-chromium.log 2>&1 \
-     && [ -s "$dir/og.png" ]; then
-    :
-  else
-    echo "WARN: OGP screenshot failed for $url" >&2
-    cat /tmp/og-chromium.log >&2
-    cp "$FALLBACK_PNG" "$dir/og.png"
-    FAILED=1
-  fi
-
-  # Twitter/X re-encodes opaque PNGs to lossy JPEG, which introduces visible
-  # artifacts on this design's thin lines and hairline rule. A PNG with any
-  # alpha channel is kept as-is, so nudge one corner pixel to 99% opacity
-  # (imperceptible) purely to keep the PNG format on that platform. og.png is
-  # already valid at this point either way, so a failure here is a warning,
-  # not a build failure.
-  if ! magick "$dir/og.png" -alpha set -channel A -fx "(i==0&&j==0)?0.99:1" "PNG32:$dir/og.png" 2>/tmp/og-magick.log; then
-    echo "WARN: alpha-pixel post-processing failed for $dir/og.png (kept as-is)" >&2
-    cat /tmp/og-magick.log >&2
-  fi
-
-  rm -f "$f"
 done < /tmp/og-ogcard-list.txt
 
-if [ "$FAILED" -eq 1 ]; then
+# Each screenshot is an independent chromium invocation with no shared state,
+# so they fan out across the available cores instead of running one at a time.
+JOBS=$(nproc)
+xargs -P "$JOBS" -I{} sh "$SCRIPT_DIR/og-worker.sh" {} "$PORT" "$PUBLIC_DIR" "$FALLBACK_PNG" "$FAIL_SENTINEL" \
+  < /tmp/og-ogcard-todo.txt
+
+if [ -f "$FAIL_SENTINEL" ]; then
   echo "One or more OGP screenshots failed; static fallback image was used." >&2
   exit 1
 fi

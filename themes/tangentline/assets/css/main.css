@@ -116,7 +116,7 @@ img { max-width: 100%; height: auto; }
   line-height: 1.4;
   margin: .35rem 0 .85rem;
   color: var(--c-heading);
-  font-feature-settings: "palt";
+  letter-spacing: -0.04em;
   overflow-wrap: break-word;
 }
 
@@ -164,7 +164,7 @@ img { max-width: 100%; height: auto; }
   line-height: 1.4;
   margin: 3.75rem 0 1em;
   color: var(--c-heading);
-  font-feature-settings: "palt";
+  letter-spacing: -0.04em;
   overflow-wrap: break-word;
 }
 
@@ -174,7 +174,7 @@ img { max-width: 100%; height: auto; }
   line-height: 1.4;
   margin: 2.625rem 0 1em;
   color: var(--c-heading);
-  font-feature-settings: "palt";
+  letter-spacing: -0.04em;
 }
 
 .entry-content ul, .entry-content ol {
