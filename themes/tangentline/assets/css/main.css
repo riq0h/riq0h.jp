@@ -300,7 +300,7 @@ img { max-width: 100%; height: auto; }
 .pager {
   display: flex;
   justify-content: space-between;
-  font-size: .875rem;
+  font-size: .85rem;
   font-weight: var(--w-pager);
   margin-top: 2.4rem;
 }
@@ -340,7 +340,7 @@ img { max-width: 100%; height: auto; }
   font-weight: var(--w-footer);
 }
 
-.footer-links { font-size: .875rem; }
+.footer-links { font-size: .85rem; }
 .footer-links a { color: var(--c-footer-link); }
 .footer-links .sep { color: var(--c-sep); margin: 0 .6em; }
 
