@@ -103,7 +103,7 @@ img { max-width: 100%; height: auto; }
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  font-size: .875rem;
+  font-size: .85rem;
   font-weight: var(--w-meta);
   color: var(--c-meta);
 }
@@ -123,7 +123,7 @@ img { max-width: 100%; height: auto; }
 .entry-title a { color: var(--c-heading); }
 
 .entry-summary {
-  font-size: 1.09rem;
+  font-size: 1.0625rem;
   text-align: justify;
 }
 
@@ -135,7 +135,7 @@ img { max-width: 100%; height: auto; }
   margin: .4rem 0 1.4142em; /* 下マージンは自身のフォントサイズの白銀比(√2)倍 */
 }
 
-.entry-content { font-size: 1.09rem; }
+.entry-content { font-size: 1.0625rem; }
 
 .entry-content p {
   margin-bottom: 1em;
@@ -317,10 +317,10 @@ img { max-width: 100%; height: auto; }
   margin-bottom: 2rem;
 }
 
-.tag-index { list-style: none; font-size: 1.09rem; }
+.tag-index { list-style: none; font-size: 1.0625rem; }
 .tag-index li { display: inline-block; margin: 0 1em .5em 0; }
 
-.notfound { text-align: center; font-size: 1.09rem; }
+.notfound { text-align: center; font-size: 1.0625rem; }
 .notfound p { margin-bottom: 1em; }
 .notfound a {
   text-decoration: underline;
