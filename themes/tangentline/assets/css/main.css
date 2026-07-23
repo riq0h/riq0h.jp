@@ -111,7 +111,7 @@ img { max-width: 100%; height: auto; }
 .entry-tags a { color: var(--c-meta); margin-left: .8em; }
 
 .entry-title {
-  font-size: 1.55rem;
+  font-size: 1.5rem;
   font-weight: var(--w-title);
   line-height: 1.4;
   margin: .35rem 0 .85rem;
@@ -131,7 +131,7 @@ img { max-width: 100%; height: auto; }
    記事ページ
    ========================================================================== */
 .entry-single .entry-title {
-  font-size: 1.55rem;
+  font-size: 1.5rem;
   margin: .4rem 0 1.4142em; /* 下マージンは自身のフォントサイズの白銀比(√2)倍 */
 }
 
