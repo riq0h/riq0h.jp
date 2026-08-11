@@ -9,10 +9,17 @@ PORT="$2"
 PUBLIC_DIR="$3"
 FALLBACK_PNG="$4"
 FAIL_SENTINEL="$5"
+RESULTS="$6"
 
 dir=$(dirname "$f")
 rel=${f#"$PUBLIC_DIR"}
 url="http://localhost:$PORT${rel}"
+
+# Recorded in the manifest on success so the next build can skip this card.
+# ogcard.html embeds the fingerprinted CSS URLs and the hashed font filename,
+# so its own content covers everything that affects the rendered image.
+# Must be read before the screenshot, since ogcard.html is deleted below.
+card_hash=$(sha256sum "$f" | cut -d' ' -f1)
 
 chromium_log="/tmp/og-chromium-$$.log"
 magick_log="/tmp/og-magick-$$.log"
@@ -27,6 +34,7 @@ magick_log="/tmp/og-magick-$$.log"
 MAX_ATTEMPTS=3
 
 attempt=1
+shot_ok=0
 while [ "$attempt" -le "$MAX_ATTEMPTS" ]; do
   # Concurrent chromium invocations must not share a profile dir (the default
   # ~/.config/chromium), or all but one fail to acquire its SingletonLock.
@@ -55,6 +63,7 @@ while [ "$attempt" -le "$MAX_ATTEMPTS" ]; do
       --window-size=1200,630 --virtual-time-budget=1500 \
       --screenshot="$dir/og.png" "$url" >"$chromium_log" 2>&1 \
      && [ -s "$dir/og.png" ]; then
+    shot_ok=1
     rm -rf "$user_data_dir"
     break
   fi
@@ -85,5 +94,13 @@ if ! magick "$dir/og.png" -alpha set -channel A -fx "(i==0&&j==0)?0.99:1" "PNG32
   cat "$magick_log" >&2
 fi
 rm -f "$magick_log"
+
+# Only a card that was actually rendered gets recorded, so a card that fell
+# back to the static image is absent from the manifest and gets another go on
+# the next build. Workers append concurrently under `xargs -P`; these lines
+# are far below PIPE_BUF, and >> opens O_APPEND, so the writes don't interleave.
+if [ "$shot_ok" -eq 1 ]; then
+  printf '%s\t%s\n' "$rel" "$card_hash" >> "$RESULTS"
+fi
 
 rm -f "$f"
