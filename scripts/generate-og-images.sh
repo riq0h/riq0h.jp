@@ -24,7 +24,6 @@ MANIFEST_OUT="$PUBLIC_DIR/$MANIFEST_NAME"
 MANIFEST_PREV="/tmp/og-manifest-prev.txt"
 CARRIED="/tmp/og-carried.txt"
 RESULTS="/tmp/og-results.txt"
-TAB=$(printf '\t')
 : > "$CARRIED"
 : > "$RESULTS"
 
@@ -64,7 +63,12 @@ while IFS= read -r f; do
   esac
 
   card_hash=$(sha256sum "$f" | cut -d' ' -f1)
-  prev_hash=$(grep -F "$rel$TAB" "$MANIFEST_PREV" | head -n 1 | cut -f2)
+  # Match the path column exactly. A substring search would let the home
+  # page's card (/ogcard.html) match every post's line, since each of those
+  # ends with that same string — so it never matched its own entry and was
+  # re-rendered on every build. rel is passed through the environment rather
+  # than awk -v, which would interpret backslash escapes in the value.
+  prev_hash=$(rel="$rel" awk -F'\t' '$1 == ENVIRON["rel"] { print $2; exit }' "$MANIFEST_PREV")
   if [ "$prev_hash" = "$card_hash" ]; then
     # Unchanged: leave the deployed og.png alone by producing nothing for it,
     # and carry its manifest entry forward so the skip holds next time too.
