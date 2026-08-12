@@ -115,8 +115,15 @@ def subset_post(args):
 def _init_worker(sources):
     # Runs once per forked worker; parses each master font a single time so
     # subset_post() tasks in this worker never touch the source files again.
+    #
+    # recalcTimestamp=False is what makes the output reproducible: fontTools
+    # otherwise stamps head.modified with the current time on save, so every
+    # build would emit different bytes for identical input. That would give
+    # each font a new hash — and therefore a new filename and a rewritten
+    # ogcard.html — on every single build, defeating both the long-lived CDN
+    # cache and the OGP manifest's ability to skip unchanged cards.
     for name, path in sources.items():
-        _MASTER_FONTS[name] = TTFont(path)
+        _MASTER_FONTS[name] = TTFont(path, recalcTimestamp=False)
 
 
 def main():
