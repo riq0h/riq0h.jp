@@ -8,5 +8,36 @@
     {{ end }}
   </div>
   <h2 class="entry-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ if .Draft }} ::Draft{{ end }}</h2>
-  <p class="entry-summary">{{ .Summary | plainify | safeHTML }}</p>
+  {{- /*
+    .Summary はHugoが語数(summaryLength)に達するまでブロックを積み、その
+    ブロックの末尾で切ったもの。そのまま出すと2つの理由で異常に長くなる。
+
+    1. コードブロック: hasCJKLanguage下では日本語が文字単位、ASCIIが単語
+       単位で数えられるため、シェルコマンドは語数をほとんど消費せずに
+       文字数だけを膨らませる。一覧の抜粋にコードが出るのも望ましくない。
+    2. 行末2スペースの強制改行を使う散文: 段落が分かれないため、1つの<p>が
+       数千文字に達する。最長の記事は5036文字(約107行)あった。
+
+    そこでコードブロックを落とし、残りを作者の改行位置(行)単位で積み上げて
+    上限で打ち切る。行単位にするのは、文単位で切ると鉤括弧の内側で切れて
+    閉じ括弧が落ちるため(「そんなことはないよ。 のように)。行なら作者が
+    書いた区切りなので、文も会話も割れない。
+
+    <rt> の除去はルビ対策。plainifyすると読みが本文に連結され、
+    「製品プロダクトの品質」のようになってしまう。
+  */ -}}
+  {{- $text := .Summary
+        | replaceRE "(?s)<pre.*?</pre>" ""
+        | replaceRE "<rt>.*?</rt>" ""
+        | plainify -}}
+  {{- $limit := 500 -}}
+  {{- $kept := slice }}{{ $n := 0 -}}
+  {{- range $line := split $text "\n" -}}
+    {{- if and (lt $n $limit) (ne (trim $line " ") "") -}}
+      {{- $kept = $kept | append $line -}}
+      {{- $n = add $n (strings.RuneCount $line) -}}
+    {{- end -}}
+  {{- end -}}
+  {{- with delimit $kept "\n" }}{{ $text = . }}{{ end -}}
+  <p class="entry-summary">{{ $text | safeHTML }}</p>
 </article>
