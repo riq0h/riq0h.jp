@@ -13,6 +13,13 @@
   --w-footer: 400;   /* フッター */
   --w-strong: 600;   /* 太字 */
 
+  /* 本文の寸法。--rhythm(見出しの上マージンの単位)がこの2つから計算される
+     ため、値を直に書かず変数を経由させている。ここを変えれば垂直リズムも
+     自動で追随し、コメントと実態が乖離しない。 */
+  --fs-body: 1.0625rem; /* 本文 17px。17/16 で、h2・h3と同じ8分割系列の16分割 */
+  --lh-body: 1.7;       /* 行送り倍率。ルビが行を押し広げない下限1.65を満たす */
+  --rhythm: calc(var(--fs-body) * var(--lh-body)); /* 記事本文の行送り 28.9px */
+
   --c-text: #080808;
   --c-heading: #000;
   --c-meta: #555;
@@ -55,12 +62,12 @@ body {
   font-weight: var(--w-body);
   color: var(--c-text);
   background: var(--c-bg);
-  line-height: 1.5;
+  line-height: var(--lh-body);
   text-spacing-trim: space-first; /* 対応ブラウザのみ */
 }
 
 .container {
-  max-width: 850px;
+  max-width: 728px; /* 内容幅680px = 本文17px * 40字ちょうど */
   margin: 0 auto;
   padding: 2.4rem 1.5rem 2rem;
 }
@@ -123,7 +130,7 @@ img { max-width: 100%; height: auto; }
 .entry-title a { color: var(--c-heading); }
 
 .entry-summary {
-  font-size: 1.0625rem;
+  font-size: var(--fs-body);
   text-align: justify;
 }
 
@@ -135,7 +142,7 @@ img { max-width: 100%; height: auto; }
   margin: .4rem 0 1.4142em; /* 下マージンは自身のフォントサイズの白銀比(√2)倍 */
 }
 
-.entry-content { font-size: 1.0625rem; }
+.entry-content { font-size: var(--fs-body); }
 
 .entry-content p {
   margin-bottom: 1em;
@@ -156,13 +163,16 @@ img { max-width: 100%; height: auto; }
 
 .entry-content strong { font-weight: var(--w-strong); }
 
-/* 上マージンは本文line-height(24px)の倍数(垂直リズム)に揃えている:
-   h2=2.5行、h3-h6=1.75行。下マージンは見出し自身のフォントサイズの1em。 */
+/* 上マージンは記事本文の行送り(--rhythm)の倍数に揃えている:
+   h2=2.5行、h3-h6=1.75行。下マージンは見出し自身のフォントサイズの1em。
+   基準を body(16px) ではなく .entry-content(--fs-body) の行送りに取るのは、
+   見出しが実際に隣接するのがその行だから。calc で式のまま書いているのは、
+   4.51562rem のような丸めた定数を埋めると根拠が読めなくなるため。 */
 .entry-content h2 {
   font-size: 1.299rem;
   font-weight: var(--w-title);
   line-height: 1.4;
-  margin: 3.75rem 0 1em;
+  margin: calc(var(--rhythm) * 2.5) 0 1em;
   color: var(--c-heading);
   font-feature-settings: "palt";
   overflow-wrap: break-word;
@@ -172,7 +182,7 @@ img { max-width: 100%; height: auto; }
   font-size: 1.125rem;
   font-weight: var(--w-h3);
   line-height: 1.4;
-  margin: 2.625rem 0 1em;
+  margin: calc(var(--rhythm) * 1.75) 0 1em;
   color: var(--c-heading);
   font-feature-settings: "palt";
 }
@@ -317,10 +327,10 @@ img { max-width: 100%; height: auto; }
   margin-bottom: 2rem;
 }
 
-.tag-index { list-style: none; font-size: 1.0625rem; }
+.tag-index { list-style: none; font-size: var(--fs-body); }
 .tag-index li { display: inline-block; margin: 0 1em .5em 0; }
 
-.notfound { text-align: center; font-size: 1.0625rem; }
+.notfound { text-align: center; font-size: var(--fs-body); }
 .notfound p { margin-bottom: 1em; }
 .notfound a {
   text-decoration: underline;
