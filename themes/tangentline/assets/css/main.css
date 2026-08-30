@@ -3,6 +3,12 @@
    ========================================================================== */
 :root {
   --font-body: "Noto Serif JP", "Noto Serif CJK JP", "Yu Mincho", "Hiragino Mincho ProN", "Noto Serif", serif;
+  /* 本文だけに使う。BIZ UDP は 400 と 700 しか持たない静的フォントで、本文が
+     使うのはちょうどその2つ。見出しは 300 を使うので --font-body のまま残す。
+     字幅がプロポーショナル(既定値に焼き込み)なので palt は効かず、また効かせる
+     必要もない。後続の Noto は BIZ UDP に無い絵文字・外国語用のフォールバック。
+     配信は scripts/subset_fonts.py が本文用とそれ以外に分けて生成する。 */
+  --font-text: "BIZ UDPMincho", "Noto Serif JP", "Noto Serif CJK JP", "Yu Mincho", "Hiragino Mincho ProN", "Noto Serif", serif;
   --font-mono: SFMono-Regular, "Liberation Mono", Menlo, Consolas, monospace;
 
   --w-title: 300;    /* 題字・記事タイトル・h2 */
@@ -11,14 +17,18 @@
   --w-meta: 400;     /* 日付・タグ */
   --w-pager: 400;    /* ページャ */
   --w-footer: 400;   /* フッター */
-  --w-strong: 600;   /* 太字 */
+  --w-strong: 700;   /* 太字 */
 
   /* 本文の寸法。--rhythm(見出しの上マージンの単位)がこの2つから計算される
      ため、値を直に書かず変数を経由させている。ここを変えれば垂直リズムも
      自動で追随し、コメントと実態が乖離しない。 */
   --fs-body: 1.0625rem; /* 本文 17px。17/16 で、h2・h3と同じ8分割系列の16分割 */
-  --lh-body: 1.85;      /* 行送り倍率。ルビの下限1.65と、50字の行長が要求する
-                           下限(約1.84)の両方を満たす */
+  --lh-body: 1.85;      /* 行送り倍率。ルビの下限1.65と、50em の行長が要求する
+                           下限(約1.84)の両方を満たす。基準は行長であって字数
+                           ではない。行送りが要るのは行末から次の行頭へ目を戻す
+                           距離が長いためで、その距離は級数比で 50em。本文の
+                           字詰め(palt/BIZ UDP)で1行の字数が増えても、行長は
+                           50em のまま動かないのでこの値も動かない */
   --rhythm: calc(var(--fs-body) * var(--lh-body)); /* 記事本文の行送り。具体値は
                            書かない(変更時に置き去りになるため) */
 
@@ -42,10 +52,11 @@
    -------------------------------------------------------------------------- */
 :root[data-font="gothic"] {
   --font-body: "Noto Sans JP", "Noto Sans CJK JP", sans-serif;
+  --font-text: "BIZ UDPGothic", "Noto Sans JP", "Noto Sans CJK JP", sans-serif;
   --w-body: 400;
   --w-meta: 400;
   --w-pager: 400;
-  --w-strong: 600;
+  --w-strong: 700;
   --c-text: #333;
   --c-rule: #333;
   --c-footer-link: #555;
@@ -69,7 +80,9 @@ body {
 }
 
 .container {
-  max-width: 898px; /* 内容幅850px = 本文17px * 50字ちょうど */
+  max-width: 898px; /* 内容幅850px = 本文17px * 50em ちょうど。em(全角換算)で
+                       持つのは、字数だと字詰めの有無で意味が変わるため。
+                       850/17=50em は級数を変えても字詰めを変えても保たれる */
   margin: 0 auto;
   padding: 2.4rem 1.5rem 2rem;
 }
@@ -133,6 +146,8 @@ img { max-width: 100%; height: auto; }
 
 .entry-summary {
   font-size: var(--fs-body);
+  font-family: var(--font-text);
+  font-feature-settings: "palt";
   text-align: justify;
 }
 
@@ -144,7 +159,7 @@ img { max-width: 100%; height: auto; }
   margin: .4rem 0 1.4142em; /* 下マージンは自身のフォントサイズの白銀比(√2)倍 */
 }
 
-.entry-content { font-size: var(--fs-body); }
+.entry-content { font-size: var(--fs-body); font-family: var(--font-text); font-feature-settings: "palt"; }
 
 .entry-content p {
   margin-bottom: 1em;
@@ -172,6 +187,7 @@ img { max-width: 100%; height: auto; }
    4.51562rem のような丸めた定数を埋めると根拠が読めなくなるため。 */
 .entry-content h2 {
   font-size: 1.299rem;
+  font-family: var(--font-body); /* 300を使うのでBIZ UDPの対象外 */
   font-weight: var(--w-title);
   line-height: 1.4;
   margin: calc(var(--rhythm) * 2.5) 0 1em;
@@ -182,6 +198,7 @@ img { max-width: 100%; height: auto; }
 
 .entry-content h3, .entry-content h4, .entry-content h5, .entry-content h6 {
   font-size: 1.125rem;
+  font-family: var(--font-body); /* h2に揃える */
   font-weight: var(--w-h3);
   line-height: 1.4;
   margin: calc(var(--rhythm) * 1.75) 0 1em;
@@ -224,6 +241,7 @@ img { max-width: 100%; height: auto; }
 
 .entry-content code {
   font-family: var(--font-mono);
+  font-feature-settings: normal; /* 等幅は詰めない */
   font-size: .85em;
   color: var(--c-code-text);
   background: var(--c-code-bg);
@@ -309,12 +327,17 @@ img { max-width: 100%; height: auto; }
 /* ==========================================================================
    ページャ
    ========================================================================== */
+/* palt を効かせるのは山括弧と「い」「し」のため。日付・タグ(.entry-meta)に
+   入れていないのは、あちらが数字・欧文・漢字だけで palt が1文字も動かさない
+   ため。題字と著作権表示も対象外で、あちらは letter-spacing を意図して持って
+   いる(題字の .hang は「。」が1em である前提で相殺量を計算している)。 */
 .pager {
   display: flex;
   justify-content: space-between;
   font-size: .85rem;
   font-weight: var(--w-pager);
   margin-top: 2.4rem;
+  font-feature-settings: "palt";
 }
 
 .pager a { color: var(--c-meta); }
@@ -352,7 +375,7 @@ img { max-width: 100%; height: auto; }
   font-weight: var(--w-footer);
 }
 
-.footer-links { font-size: .85rem; }
+.footer-links { font-size: .85rem; font-feature-settings: "palt"; }
 .footer-links a { color: var(--c-footer-link); }
 .footer-links .sep { color: var(--c-sep); margin: 0 .6em; }
 
@@ -386,17 +409,23 @@ img { max-width: 100%; height: auto; }
 /* ==========================================================================
    モバイル
 
-   行送りを画面幅で3段に分ける。.container は max-width なので画面が狭い
-   ほど1行の字数が減り、必要な行間も下がるため。デスクトップ用の値のまま
-   だと、18〜32字しかないスマホに50字向けの行間が乗って間延びする。
+   行送りを画面幅で4段に分ける。.container は max-width なので画面が狭い
+   ほど行長が短くなり、必要な行間も下がるため。デスクトップ用の値のままだと、
+   16〜23em しかないスマホに 50em 向けの行間が乗って間延びする。以下の em は
+   全角換算の行長(内容幅÷17px)で、実際に並ぶ字数ではない(字詰めにより字数は
+   これより約1割多くなる)。
 
-   各段が担当できる字数の上限は lh 1.65 → 33.2字、1.75 → 42.1字、
-   1.85 → 50.9字。ブレークポイントはこの上限に対応する幅に置いている
-   (600px で 33.0字、768px で 42.0字)。
+   各段が担当できる行長の上限は lh 1.55 → 24.4em、1.65 → 33.2em、
+   1.75 → 42.1em、1.85 → 50.9em。ブレークポイントはこの上限に対応する幅に
+   置いている(450px で 23.4em、600px で 32.2em、768px で 42.0em)。
+   どの段も要求値に対する余裕が +0.01〜+0.11 に揃う。
 
-   第1段だけは行長ではなくルビが制約になる。18〜32字が要求するのは
-   1.50〜1.64だが、ルビが行を押し広げない下限が1.65なので、これ以上は
-   詰められない。
+   第1段の 1.55 は実機の実測に基づく。320〜440px の端末が要求するのは
+   1.45〜1.53 で、iPhone 16 Pro Max(440px)でも 22.7em にしかならない。
+   かつてはここにルビの制約(行を押し広げない下限 1.65)が乗っていたが、
+   本文が BIZ UDP になって消えた。hhea の ascent が Noto Serif JP の 1.151 に
+   対し 0.880 と小さく、行ボックス内でルビが載る余白が増えたため、1.50 でも
+   ルビ有無で行間が変わらないことを実測で確認している。
    --rhythm が連動するので見出しの余白も各段で自動的に追随する。
    ========================================================================== */
 @media (max-width: 768px) {
@@ -407,4 +436,8 @@ img { max-width: 100%; height: auto; }
 
 @media (max-width: 600px) {
   :root { --lh-body: 1.65; }
+}
+
+@media (max-width: 450px) {
+  :root { --lh-body: 1.55; }
 }

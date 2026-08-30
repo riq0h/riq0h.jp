@@ -36,8 +36,16 @@
 {{ $fontBase := "" }}
 {{ if ne .Kind "page" }}{{ $fontBase = "/" }}{{ end }}
 <style>
+/* 見出し・日付・タグ・ページャ・フッター。可変フォント1本で300と400を賄う */
 @font-face { font-family: "Noto Serif JP"; src: url("{{ $fontBase }}font-serif.woff2") format("woff2"); font-weight: 200 900; font-display: block; }
 @font-face { font-family: "Noto Sans JP"; src: url("{{ $fontBase }}font-sans.woff2") format("woff2"); font-weight: 200 900; font-display: block; }
+/* 本文専用。BIZ UDPは400と700しか持たない静的フォントなのでウェイトごとに宣言する。
+   local()を先に置くのは、既に導入している閲覧者にダウンロードもブロック期間も
+   負わせないため。字幅は既定値に焼き込まれているのでpaltは効かない(不要) */
+@font-face { font-family: "BIZ UDPMincho"; src: local("BIZ UDPMincho"), local("BIZUDPMincho-Regular"), url("{{ $fontBase }}font-bizmincho.woff2") format("woff2"); font-weight: 400; font-display: block; }
+@font-face { font-family: "BIZ UDPMincho"; src: local("BIZ UDPMincho Bold"), local("BIZUDPMincho-Bold"), url("{{ $fontBase }}font-bizmincho-bold.woff2") format("woff2"); font-weight: 700; font-display: block; }
+@font-face { font-family: "BIZ UDPGothic"; src: local("BIZ UDPGothic"), local("BIZUDPGothic-Regular"), url("{{ $fontBase }}font-bizgothic.woff2") format("woff2"); font-weight: 400; font-display: block; }
+@font-face { font-family: "BIZ UDPGothic"; src: local("BIZ UDPGothic Bold"), local("BIZUDPGothic-Bold"), url("{{ $fontBase }}font-bizgothic-bold.woff2") format("woff2"); font-weight: 700; font-display: block; }
 </style>
 {{ $css := resources.Get "css/main.css" | minify | fingerprint }}
 <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
