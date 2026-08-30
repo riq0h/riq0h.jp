@@ -42,7 +42,9 @@ import io
 import multiprocessing
 import os
 import re
+import shutil
 import sys
+import time
 import urllib.request
 import zipfile
 from html.parser import HTMLParser
@@ -325,6 +327,32 @@ def verify(html_path, targets):
     )}
 
 
+def download(url, dest, attempts=3):
+    """Fetch one file, failing loudly rather than hanging.
+
+    urllib honours no timeout of its own, so a connection that stalls
+    mid-transfer would block the build until the runner kills the job.
+    The timeout bounds each read instead, and the retry covers the
+    transient failures this shared runner already shows in the OG image
+    step. Writing to a temporary name and renaming on success keeps a
+    half-downloaded file from being mistaken for a cached one later.
+    """
+    tmp = f"{dest}.part"
+    for attempt in range(1, attempts + 1):
+        try:
+            with urllib.request.urlopen(url, timeout=60) as r, open(tmp, "wb") as out:
+                shutil.copyfileobj(r, out)
+            os.replace(tmp, dest)
+            return
+        except Exception as exc:
+            if os.path.exists(tmp):
+                os.remove(tmp)
+            if attempt == attempts:
+                raise
+            print(f"  retrying ({attempt}/{attempts - 1}): {exc}", file=sys.stderr)
+            time.sleep(attempt * 2)
+
+
 def fetch_sources():
     """Download every master font, unpacking archive members as needed.
 
@@ -340,13 +368,13 @@ def fetch_sources():
             continue
         if member is None:
             print(f"downloading {name} source font...", file=sys.stderr)
-            urllib.request.urlretrieve(url, local_path)
+            download(url, local_path)
             continue
         if url not in archives:
             archives[url] = f"/tmp/font-archive-{hashlib.sha256(url.encode()).hexdigest()[:8]}.zip"
             if not os.path.exists(archives[url]):
                 print(f"downloading archive for {name}...", file=sys.stderr)
-                urllib.request.urlretrieve(url, archives[url])
+                download(url, archives[url])
         with zipfile.ZipFile(archives[url]) as zf, open(local_path, "wb") as out:
             out.write(zf.read(member))
     return sources
