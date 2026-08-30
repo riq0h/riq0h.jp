@@ -8,6 +8,11 @@
 {{- if ne .Kind "page" }}{{ $fontBase = "/" }}{{ end }}
 <style>
 @font-face { font-family: "Noto Serif JP"; src: url("{{ $fontBase }}font-serif.woff2") format("woff2"); font-weight: 200 900; font-display: block; }
+{{/* 日付とタグは .entry-meta が --font-text を使うため BIZ UDP で描かれる。
+     ここで宣言しないと、BIZ UDP を持たない環境(CI の chromium)だけ Noto に
+     落ちて、手元の確認結果と本番のカードが食い違う。local() は付けない。
+     カードは環境によらず同じ絵を出す必要があるため。 */}}
+@font-face { font-family: "BIZ UDPMincho"; src: url("{{ $fontBase }}font-bizmincho.woff2") format("woff2"); font-weight: 400; font-display: block; }
 </style>
 <link rel="stylesheet" href="{{ $css.RelPermalink }}">
 <link rel="stylesheet" href="{{ $ogcss.RelPermalink }}">

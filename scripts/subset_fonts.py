@@ -1,15 +1,20 @@
 #!/usr/bin/env python3
 """Generate per-post and shared font subsets for public/.
 
-Two typefaces share each page. Article text (.entry-content and the list
-excerpts in .entry-summary) is set in BIZ UDP Mincho/Gothic; everything
-else -- the masthead, headings, dates, tags, pager and footer -- stays on
-Noto Serif/Sans JP. Splitting the page's characters along that same line
-means neither family carries glyphs the other renders, which is what keeps
-six subsets cheaper to ship than the two whole-page ones they replace.
+Two typefaces share each page, split by weight rather than by role. BIZ UDP
+Mincho/Gothic ships only 400 and 700, so everything drawn at those weights
+uses it: the article text, the excerpts, h3-h6, dates, tags, the pager and
+the footer. What is left for Noto Serif/Sans JP is what needs weight 300 --
+the masthead, article titles, h2 and taxonomy titles. Splitting the page's
+characters along that same line means neither family carries glyphs the
+other renders.
 
-Headings nested inside .entry-content are part of the Noto side: they use
---font-body at weight 300, and BIZ UDP only ships 400 and 700.
+The split must track main.css exactly. If a rule moves between the two
+families and this file is not updated, the characters it draws end up only
+in the other family's subset; the browser then falls back per glyph and a
+single word renders in two typefaces. Local development hides this, because
+the @font-face rules list local() first and a machine with BIZ UDP installed
+resolves every character regardless of what shipped.
 
 BIZ UDP covers JIS X 0208 and X 0213 in full, so no Japanese ever falls
 through it. What it lacks -- emoji, Devanagari, Thai, simplified-only
@@ -117,8 +122,9 @@ class _PageChars(HTMLParser):
     face -- which is why main() re-checks the result against the page.
     """
 
-    BODY_CLASSES = frozenset(("entry-content", "entry-summary"))
-    HEADINGS = frozenset(("h1", "h2", "h3", "h4", "h5", "h6"))
+    # weight 300 で描かれるものだけが Noto に残る。main.css と対で保つこと。
+    CHROME_CLASSES = frozenset(("site-title", "entry-title", "term-title"))
+    CHROME_TAGS = frozenset(("h2",))
     MONO = frozenset(("code", "pre"))
     SKIP = frozenset(("script", "style"))
     VOID = frozenset((
@@ -133,8 +139,8 @@ class _PageChars(HTMLParser):
         self.strong = set()
         self.mono = set()
         self._stack = []
-        self._body_at = None    # stack depth where the body region opened
-        self._heading = 0
+        self._chrome_at = None  # stack depth where a weight-300 region opened
+        self._h2 = 0
         self._strong = 0
         self._mono = 0
         self._skip = 0
@@ -146,12 +152,12 @@ class _PageChars(HTMLParser):
         if tag in self.VOID:
             return
         self._stack.append(tag)
-        if self._body_at is None:
+        if self._chrome_at is None:
             classes = dict(attrs).get("class") or ""
-            if self.BODY_CLASSES & set(classes.split()):
-                self._body_at = len(self._stack)
-        if tag in self.HEADINGS:
-            self._heading += 1
+            if self.CHROME_CLASSES & set(classes.split()):
+                self._chrome_at = len(self._stack)
+        if tag in self.CHROME_TAGS:
+            self._h2 += 1
         elif tag == "strong":
             self._strong += 1
         elif tag in self.MONO:
@@ -166,10 +172,10 @@ class _PageChars(HTMLParser):
         if tag in self._stack:
             while self._stack and self._stack.pop() != tag:
                 pass
-        if self._body_at is not None and len(self._stack) < self._body_at:
-            self._body_at = None
-        if tag in self.HEADINGS:
-            self._heading = max(0, self._heading - 1)
+        if self._chrome_at is not None and len(self._stack) < self._chrome_at:
+            self._chrome_at = None
+        if tag in self.CHROME_TAGS:
+            self._h2 = max(0, self._h2 - 1)
         elif tag == "strong":
             self._strong = max(0, self._strong - 1)
         elif tag in self.MONO:
@@ -181,9 +187,8 @@ class _PageChars(HTMLParser):
         chars = {c for c in data if not c.isspace()}
         if not chars:
             return
-        # Headings keep --font-body even inside .entry-content, so their
-        # characters belong to the Noto side wherever they appear.
-        if self._body_at is None or self._heading:
+        # weight 300 のものだけ Noto。それ以外はすべて BIZ UDP が描く。
+        if self._chrome_at is not None or self._h2:
             self.chrome |= chars
             return
         # Code sets --font-mono, so it never reaches the body face. Keeping
