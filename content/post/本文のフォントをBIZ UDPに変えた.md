@@ -29,12 +29,12 @@ BIZ UDPは実に美しいフォントだ。まず、字間の均等さが美し�
 
 ついでに技術的な背景を説明する。当然ながらNotoとBIZ UDPをビルド時に両方取り込んで読者に丸ごとぶん投げていたら、一記事あたりの容量はメガバイト単位に膨れ上がってしまう。そのような記事はきっと宇宙の滅亡まで読まれないであろう。今時の読者はローディングに5秒も待ってくれるほど悠長ではない。
 
-そこで、ページごとに使う文字のみを取り込む「サブセット化」を行う。本文をBIZ UDPに任せる場合、Notoが担当するのは見出し・タイトル・日付・タグ・フッターだけになる。文字集合を役割で振り分けると、Notoのサブセットは平均638字から137字にまで削減された。この際、一記事あたりの配信量は変更前の平均441KBから390KBに下がっている。フォントの種類が増えたのに逆に軽くなったのだ。
+そこで、ページごとに使う文字のみを取り込む「サブセット化」を行う。ウェイトが400の部分をBIZ UDPに任せる場合、Notoが担当するのは大見出しとタイトルだけになる。文字集合を役割で振り分けると、Notoのサブセットは平均638字から120字にまで削減された。この際、一記事あたりの配信量は変更前の平均441KBから383KBに下がっている。フォントの種類が増えたのに逆に軽くなったのだ。
 
 ```python
 class _PageChars(HTMLParser):
-    BODY_CLASSES = frozenset(("entry-content", "entry-summary"))
-    HEADINGS = frozenset(("h1", "h2", "h3", "h4", "h5", "h6"))
+    CHROME_CLASSES = frozenset(("site-title", "entry-title", "term-title"))
+    CHROME_TAGS = frozenset(("h2",))
     MONO = frozenset(("code", "pre"))
     VOID = frozenset(("br", "img", "hr", "meta", "link", "input"))
 
@@ -42,20 +42,20 @@ class _PageChars(HTMLParser):
         super().__init__(convert_charrefs=True)
         self.chrome, self.body, self.mono = set(), set(), set()
         self._stack = []
-        self._body_at = None
-        self._heading = 0
+        self._chrome_at = None
+        self._h2 = 0
         self._mono = 0
 
     def handle_starttag(self, tag, attrs):
         if tag in self.VOID:
             return
         self._stack.append(tag)
-        if self._body_at is None:
+        if self._chrome_at is None:
             classes = dict(attrs).get("class") or ""
-            if self.BODY_CLASSES & set(classes.split()):
-                self._body_at = len(self._stack)
-        if tag in self.HEADINGS:
-            self._heading += 1
+            if self.CHROME_CLASSES & set(classes.split()):
+                self._chrome_at = len(self._stack)
+        if tag in self.CHROME_TAGS:
+            self._h2 += 1
         elif tag in self.MONO:
             self._mono += 1
 
@@ -65,21 +65,21 @@ class _PageChars(HTMLParser):
         if tag in self._stack:
             while self._stack and self._stack.pop() != tag:
                 pass
-        if self._body_at is not None and len(self._stack) < self._body_at:
-            self._body_at = None
-        if tag in self.HEADINGS:
-            self._heading = max(0, self._heading - 1)
+        if self._chrome_at is not None and len(self._stack) < self._chrome_at:
+            self._chrome_at = None
+        if tag in self.CHROME_TAGS:
+            self._h2 = max(0, self._h2 - 1)
         elif tag in self.MONO:
             self._mono = max(0, self._mono - 1)
 
     def handle_data(self, data):
         chars = {c for c in data if not c.isspace()}
-        if self._body_at is None or self._heading:
-            self.chrome |= chars        # 見出しは本文内でも別書体
+        if self._chrome_at is not None or self._h2:
+            self.chrome |= chars        # weight300 のものだけ Noto
         elif self._mono:
             self.mono |= chars          # コードは --font-mono で描かれる
         else:
-            self.body |= chars
+            self.body |= chars          # 残りはすべて BIZ UDP
 ```
 
 この処理が特に有効なのはコードブロックが含まれていない記事の時だ。コード行が含まれているとUDEV Gothic 35NFLGが必要なので660KB前後に膨れるが、それ以外では最初から配信しないことで不要なフォントの配信を抑え、多くの記事で変更前を上回る削減量を実現した。
