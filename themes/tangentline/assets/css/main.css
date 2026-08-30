@@ -413,7 +413,17 @@ img { max-width: 100%; height: auto; }
 .footer-links a { color: var(--c-footer-link); }
 .footer-links .sep { color: var(--c-sep); margin: 0 .6em; }
 
-@media (max-width: 380px) {
+/* フッターリンクを1行に収めるための段。.85rem に palt が効いた状態で必要な
+   幅は291.5pxで、padding 38.4px を足すと境界は画面幅330pxになる。palt導入前は
+   329.4px必要で境界が368pxだったため、ここは380pxに置かれていた。paltが約物
+   「｜」を全角から半角幅に、カタカナを締めたぶん38px縮んだ結果、最も普及して
+   いる360pxと375pxの端末が不必要に小さくされていた。
+
+   境界ちょうどの330pxではなく340pxにしているのは、320pxと360pxの間に実在する
+   端末がほぼ無く、10px余らせても救える端末が変わらないため。Webフォントの
+   読込に失敗するとpaltが効かず必要幅が329.4pxに戻るので、その余裕でもある。
+   320pxでは .85rem が約10px足りないので、この段自体は残す。 */
+@media (max-width: 340px) {
   .footer-links { font-size: .75rem; }
   .footer-links .sep { margin: 0 .45em; }
 }
