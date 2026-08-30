@@ -39,6 +39,15 @@ page = ["html", "ogcard"]
   [markup.goldmark.renderer]
   unsafe = true
 
+  # 段落内の改行が和文どうしの間で半角スペースになるのを止める。
+  # Markdownの改行は英語では単語区切りとして正しいが、日本語では
+  # 不要な空きになる。閉じタグ直後の改行には効かない(前が要素境界で
+  # 東アジア文字と判定されないため)。
+  [markup.goldmark.extensions.cjk]
+  enable = true
+  eastAsianLineBreaks = true
+  eastAsianLineBreaksStyle = 'simple'
+
   [markup.highlight]
   codeFences = true
   guessSyntax = true

@@ -21,6 +21,7 @@ $DOCKER run --rm \
   hugomods/hugo:base sh -c "
     apk add --no-cache python3 py3-pip curl >/dev/null 2>&1
     pip install --break-system-packages --quiet fonttools brotli >/dev/null 2>&1
+    python3 ./scripts/fix_cjk_breaks.py
     python3 ./scripts/subset_fonts.py
   "
 

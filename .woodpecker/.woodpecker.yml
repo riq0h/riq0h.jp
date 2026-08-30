@@ -12,11 +12,16 @@ steps:
     commands:
       - hugo --noBuildLock
 
-  fonts:
+  # HTML後処理とフォント生成。python3 の導入が要るのはこの2つだけなので、
+  # 工程を分けずにまとめている。fix_cjk_breaks.py が先なのは、以降の工程が
+  # 確定したHTMLを見るようにするため(フォントのサブセットは空白を含まない
+  # ので順序で結果は変わらないが、後から本文を書き換えるのは避ける)。
+  postprocess:
     image: hugomods/hugo:base
     commands:
       - apk add --no-cache python3 py3-pip curl
       - pip install --break-system-packages --quiet fonttools brotli
+      - python3 ./scripts/fix_cjk_breaks.py
       - python3 ./scripts/subset_fonts.py
 
   ogimages:
