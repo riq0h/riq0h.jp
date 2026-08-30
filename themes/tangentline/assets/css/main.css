@@ -246,10 +246,14 @@ img { max-width: 100%; height: auto; }
   text-align: left;
 }
 
+/* インラインコード。本文と同じ行に並ぶので、行ボックスを押し広げない範囲で
+   本文に寄せる。0.9emが行を伸ばさない上限で、0.95emだと段落が0.44px伸びて
+   行送りが乱れる(実測)。BIZ UDPMinchoとUDEV Gothicはx-heightの比率が0.555と
+   0.556でほぼ同じなので、級数の比がそのまま見かけの大小の比になる。 */
 .entry-content code {
   font-family: var(--font-mono);
   font-feature-settings: normal; /* 等幅は詰めない */
-  font-size: .85em;
+  font-size: .9em;
   color: var(--c-code-text);
   background: var(--c-code-bg);
   padding: .15em .35em;
@@ -257,16 +261,39 @@ img { max-width: 100%; height: auto; }
 
 /* コードブロック: Chroma(class出力)+ 自作のライトテーマ。彩度は使わず
    --c-code-text/--c-meta/--c-mutedと太字・斜体の組み合わせだけで意味を示す。
-   書体は明朝/ゴシック切替の影響を受けないため、色(--c-code-text)も固定する。 */
-.entry-content .highlight { margin: 0 0 1.4em; }
-.entry-content .highlight pre {
-  padding: 1.1em 1.3em;
-  overflow-x: auto;
+   書体は明朝/ゴシック切替の影響を受けないため、色(--c-code-text)も固定する。
+
+   指定は .highlight pre ではなく pre 自体に置く。Hugoがコードブロックを
+   .highlight で包むのはフェンス記法のときだけで、インデント4字の記法や
+   生HTMLの<pre>は包まれない。.highlight pre に付けていると、それらには
+   インラインコード用の指定が当たって背景付きの大きな文字になってしまう。
+   pre 自体が --font-mono を持つので、<code>の外にテキストが来ても書体が
+   変わらない。
+
+   本文の補足という位置づけなので級数は小さく、行送りも詰める。通常文字の
+   墨は上下で1.054em(12pxなら12.7px)なので、1.25でも行間に2.35px残る。
+   罫線素片(│など)は上下の行と繋がるよう墨が1.520emに及ぶので、詰めるほど
+   縦線が連続する。下マージンをremで持つのは、包まれる場合(.highlightが
+   本文17px基準)と包まれない場合(pre自体が12px基準)で同じ間隔にするため。 */
+.entry-content pre {
+  font-family: var(--font-mono);
+  font-feature-settings: normal;
   font-size: .75rem;
-  line-height: 1.4;
+  line-height: 1.25;
+  padding: 1.1em 1.3em;
+  margin: 0 0 1.5rem;
+  overflow-x: auto;
+  color: var(--c-code-text);
   background: var(--c-code-bg);
 }
-.entry-content .highlight code { font-size: 1em; background: none; padding: 0; }
+.entry-content pre code {
+  font-size: inherit;
+  color: inherit;
+  background: none;
+  padding: 0;
+}
+.entry-content .highlight { margin: 0 0 1.5rem; }
+.entry-content .highlight pre { margin: 0; }
 
 .entry-content .chroma { color: var(--c-code-text); }
 
