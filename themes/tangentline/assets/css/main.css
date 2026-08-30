@@ -39,13 +39,13 @@
   --rhythm: calc(var(--fs-body) * var(--lh-body)); /* 記事本文の行送り。具体値は
                            書かない(変更時に置き去りになるため) */
 
-  --c-text: #080808;
+  --c-text: #181818;
   --c-heading: #000;
   --c-meta: #555;
   --c-muted: #555;
   --c-sep: #aaa;
   --c-underline: #888;
-  --c-rule: #080808;
+  --c-rule: #181818;
   --c-quiet-rule: #ddd;
   --c-bg: #fff;
   --c-footer-link: #555;
