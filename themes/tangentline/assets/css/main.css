@@ -253,6 +253,7 @@ img { max-width: 100%; height: auto; }
 .entry-content code {
   font-family: var(--font-mono);
   font-feature-settings: normal; /* 等幅は詰めない */
+  word-break: break-all;         /* 行末で折り返せるようにする(下記) */
   font-size: .9em;
   color: var(--c-code-text);
   background: var(--c-code-bg);
@@ -287,6 +288,7 @@ img { max-width: 100%; height: auto; }
   background: var(--c-code-bg);
 }
 .entry-content pre code {
+  word-break: normal;            /* ブロックは white-space:pre で折り返さない */
   font-size: inherit;
   color: inherit;
   background: none;
