@@ -9,7 +9,14 @@
      必要もない。後続の Noto は BIZ UDP に無い絵文字・外国語用のフォールバック。
      配信は scripts/subset_fonts.py が本文用とそれ以外に分けて生成する。 */
   --font-text: "BIZ UDPMincho", "Noto Serif JP", "Noto Serif CJK JP", "Yu Mincho", "Hiragino Mincho ProN", "Noto Serif", serif;
-  --font-mono: SFMono-Regular, "Liberation Mono", Menlo, Consolas, monospace;
+  /* コードブロック用。UDEV Gothic は BIZ UDGothic と JetBrains Mono の合成で、
+     和文グリフの輪郭は BIZ UDGothic と一致する(検証済み)。本文の BIZ UDP は
+     その等幅版なので、書体としては本文とコードが同じ設計で揃う。コード内に
+     日本語を含む記事が全体の6割あり、自前配信しないとそこだけ読者ごとに
+     別の書体で描かれてしまう。35 は半角:全角を 1:2 ではなく 3:5 に詰めた版、
+     NF は Nerd Fonts のアイコン入り、LG は合字あり。 */
+  --font-mono: "UDEV Gothic 35NFLG", "UDEV Gothic 35NF", "UDEV Gothic 35",
+               "UDEV Gothic", SFMono-Regular, "Liberation Mono", Menlo, Consolas, monospace;
 
   --w-title: 300;    /* 題字・記事タイトル・h2 */
   --w-h3: 400;       /* h3以下の小見出し */

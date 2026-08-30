@@ -46,6 +46,12 @@
 @font-face { font-family: "BIZ UDPMincho"; src: local("BIZ UDPMincho Bold"), local("BIZUDPMincho-Bold"), url("{{ $fontBase }}font-bizmincho-bold.woff2") format("woff2"); font-weight: 700; font-display: block; }
 @font-face { font-family: "BIZ UDPGothic"; src: local("BIZ UDPGothic"), local("BIZUDPGothic-Regular"), url("{{ $fontBase }}font-bizgothic.woff2") format("woff2"); font-weight: 400; font-display: block; }
 @font-face { font-family: "BIZ UDPGothic"; src: local("BIZ UDPGothic Bold"), local("BIZUDPGothic-Bold"), url("{{ $fontBase }}font-bizgothic-bold.woff2") format("woff2"); font-weight: 700; font-display: block; }
+/* コードブロック用。Chroma が太字と斜体を単独でも同時でも使うため4面いる。
+   BIZ UDP と同じく local() を先に置く */
+@font-face { font-family: "UDEV Gothic 35NFLG"; src: local("UDEV Gothic 35NFLG"), local("UDEVGothic35NFLG-Regular"), url("{{ $fontBase }}font-mono.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: block; }
+@font-face { font-family: "UDEV Gothic 35NFLG"; src: local("UDEV Gothic 35NFLG Bold"), local("UDEVGothic35NFLG-Bold"), url("{{ $fontBase }}font-mono-bold.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: block; }
+@font-face { font-family: "UDEV Gothic 35NFLG"; src: local("UDEV Gothic 35NFLG Italic"), local("UDEVGothic35NFLG-Italic"), url("{{ $fontBase }}font-mono-italic.woff2") format("woff2"); font-weight: 400; font-style: italic; font-display: block; }
+@font-face { font-family: "UDEV Gothic 35NFLG"; src: local("UDEV Gothic 35NFLG BoldItalic"), local("UDEVGothic35NFLG-BoldItalic"), url("{{ $fontBase }}font-mono-bolditalic.woff2") format("woff2"); font-weight: 700; font-style: italic; font-display: block; }
 </style>
 {{ $css := resources.Get "css/main.css" | minify | fingerprint }}
 <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">

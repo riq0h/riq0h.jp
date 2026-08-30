@@ -6,7 +6,7 @@ excerpts in .entry-summary) is set in BIZ UDP Mincho/Gothic; everything
 else -- the masthead, headings, dates, tags, pager and footer -- stays on
 Noto Serif/Sans JP. Splitting the page's characters along that same line
 means neither family carries glyphs the other renders, which is what keeps
-these subsets cheaper to ship than the two whole-page ones they replace.
+six subsets cheaper to ship than the two whole-page ones they replace.
 
 Headings nested inside .entry-content are part of the Noto side: they use
 --font-body at weight 300, and BIZ UDP only ships 400 and 700.
@@ -44,6 +44,7 @@ import os
 import re
 import sys
 import urllib.request
+import zipfile
 from html.parser import HTMLParser
 
 from fontTools.subset import Options, Subsetter
@@ -53,17 +54,32 @@ PUBLIC_DIR = "public"
 
 _GF = "https://raw.githubusercontent.com/google/fonts/main/ofl"
 
-# name -> (source URL, which character bucket it must cover).
+# UDEV Gothic ships only as a release archive, so its four faces are pulled
+# from one download. Pinning the version keeps the build reproducible; bump
+# both constants together.
+_UDEV_VER = "v2.2.0"
+_UDEV_ZIP = (
+    f"https://github.com/yuru7/udev-gothic/releases/download/{_UDEV_VER}"
+    f"/UDEVGothic_NF_{_UDEV_VER}.zip"
+)
+_UDEV_DIR = f"UDEVGothic_NF_{_UDEV_VER}"
+
+# name -> (source URL, character bucket it must cover, archive member or None).
 #
 # "chrome" fonts also absorb any body character the BIZ UDP masters cannot
-# render; see subset_targets().
+# render; see subset_targets(). Code needs all four mono faces because the
+# Chroma theme sets bold and italic independently and together (.nc/.nb).
 FONT_SOURCES = {
-    "serif":          (f"{_GF}/notoserifjp/NotoSerifJP%5Bwght%5D.ttf", "chrome"),
-    "sans":           (f"{_GF}/notosansjp/NotoSansJP%5Bwght%5D.ttf",   "chrome"),
-    "bizmincho":      (f"{_GF}/bizudpmincho/BIZUDPMincho-Regular.ttf", "body"),
-    "bizmincho-bold": (f"{_GF}/bizudpmincho/BIZUDPMincho-Bold.ttf",    "strong"),
-    "bizgothic":      (f"{_GF}/bizudpgothic/BIZUDPGothic-Regular.ttf", "body"),
-    "bizgothic-bold": (f"{_GF}/bizudpgothic/BIZUDPGothic-Bold.ttf",    "strong"),
+    "serif":           (f"{_GF}/notoserifjp/NotoSerifJP%5Bwght%5D.ttf", "chrome", None),
+    "sans":            (f"{_GF}/notosansjp/NotoSansJP%5Bwght%5D.ttf",   "chrome", None),
+    "bizmincho":       (f"{_GF}/bizudpmincho/BIZUDPMincho-Regular.ttf", "body",   None),
+    "bizmincho-bold":  (f"{_GF}/bizudpmincho/BIZUDPMincho-Bold.ttf",    "strong", None),
+    "bizgothic":       (f"{_GF}/bizudpgothic/BIZUDPGothic-Regular.ttf", "body",   None),
+    "bizgothic-bold":  (f"{_GF}/bizudpgothic/BIZUDPGothic-Bold.ttf",    "strong", None),
+    "mono":            (_UDEV_ZIP, "mono", f"{_UDEV_DIR}/UDEVGothic35NFLG-Regular.ttf"),
+    "mono-bold":       (_UDEV_ZIP, "mono", f"{_UDEV_DIR}/UDEVGothic35NFLG-Bold.ttf"),
+    "mono-italic":     (_UDEV_ZIP, "mono", f"{_UDEV_DIR}/UDEVGothic35NFLG-Italic.ttf"),
+    "mono-bolditalic": (_UDEV_ZIP, "mono", f"{_UDEV_DIR}/UDEVGothic35NFLG-BoldItalic.ttf"),
 }
 
 # The masters whose coverage decides what has to be folded back into the
@@ -101,6 +117,7 @@ class _PageChars(HTMLParser):
 
     BODY_CLASSES = frozenset(("entry-content", "entry-summary"))
     HEADINGS = frozenset(("h1", "h2", "h3", "h4", "h5", "h6"))
+    MONO = frozenset(("code", "pre"))
     SKIP = frozenset(("script", "style"))
     VOID = frozenset((
         "area", "base", "br", "col", "embed", "hr", "img", "input",
@@ -112,10 +129,12 @@ class _PageChars(HTMLParser):
         self.chrome = set()
         self.body = set()
         self.strong = set()
+        self.mono = set()
         self._stack = []
         self._body_at = None    # stack depth where the body region opened
         self._heading = 0
         self._strong = 0
+        self._mono = 0
         self._skip = 0
 
     def handle_starttag(self, tag, attrs):
@@ -133,6 +152,8 @@ class _PageChars(HTMLParser):
             self._heading += 1
         elif tag == "strong":
             self._strong += 1
+        elif tag in self.MONO:
+            self._mono += 1
 
     def handle_endtag(self, tag):
         if tag in self.SKIP:
@@ -149,6 +170,8 @@ class _PageChars(HTMLParser):
             self._heading = max(0, self._heading - 1)
         elif tag == "strong":
             self._strong = max(0, self._strong - 1)
+        elif tag in self.MONO:
+            self._mono = max(0, self._mono - 1)
 
     def handle_data(self, data):
         if self._skip:
@@ -161,25 +184,33 @@ class _PageChars(HTMLParser):
         if self._body_at is None or self._heading:
             self.chrome |= chars
             return
+        # Code sets --font-mono, so it never reaches the body face. Keeping
+        # it out of the body bucket is what makes the mono subset free: the
+        # same characters would otherwise ride along in BIZ UDP unused.
+        if self._mono:
+            self.mono |= chars
+            return
         self.body |= chars
         if self._strong:
             self.strong |= chars
 
 
 def extract_chars(html_path):
-    """Return (chrome, body, strong) character sets for one rendered page."""
+    """Return (chrome, body, strong, mono) character sets for one page."""
     with open(html_path, encoding="utf-8") as f:
         parser = _PageChars()
         parser.feed(f.read())
-    return parser.chrome, parser.body, parser.strong
+    return parser.chrome, parser.body, parser.strong, parser.mono
 
 
-def subset_targets(chrome, body, strong, body_cmap):
+def subset_targets(chrome, body, strong, mono, body_cmap):
     """Map each font name to the exact character set it must carry.
 
     A face whose bucket is empty is left out entirely rather than built
-    from the ASCII floor, and rewrite_font_refs() then strips its
-    @font-face rule so nothing points at a missing file.
+    from the ASCII floor: most articles carry no code, and a bare-ASCII
+    subset of the mono faces still costs ~75KB each because the ligature
+    tables and hinting survive whatever the glyph count. remove_font_faces()
+    then strips their @font-face rules so nothing points at a missing file.
     """
     # Anything the body face cannot draw is handed back to Noto, which
     # covers a far wider repertoire, rather than left to a system font.
@@ -190,10 +221,14 @@ def subset_targets(chrome, body, strong, body_cmap):
         "chrome": chrome | gap | BASE_CHARS,
         "body": (body | BASE_CHARS) if body else set(),
         "strong": (strong | BASE_CHARS) if strong else set(),
+        # All four mono faces carry the same set: Chroma decides per token
+        # which face applies, and working out that split per page would be
+        # far more fragile than the few KB it would save.
+        "mono": (mono | BASE_CHARS) if mono else set(),
     }
     return {
         name: buckets[role]
-        for name, (_, role) in FONT_SOURCES.items()
+        for name, (_, role, _m) in FONT_SOURCES.items()
         if buckets[role]
     }
 
@@ -290,14 +325,35 @@ def verify(html_path, targets):
     )}
 
 
-def main():
+def fetch_sources():
+    """Download every master font, unpacking archive members as needed.
+
+    Several faces share one archive, so it is fetched once and each member
+    extracted from the cached copy rather than re-downloaded per face.
+    """
     sources = {}
-    for name, (url, _role) in FONT_SOURCES.items():
+    archives = {}
+    for name, (url, _role, member) in FONT_SOURCES.items():
         local_path = f"/tmp/font-{name}-source.ttf"
         sources[name] = local_path
-        if not os.path.exists(local_path):
+        if os.path.exists(local_path):
+            continue
+        if member is None:
             print(f"downloading {name} source font...", file=sys.stderr)
             urllib.request.urlretrieve(url, local_path)
+            continue
+        if url not in archives:
+            archives[url] = f"/tmp/font-archive-{hashlib.sha256(url.encode()).hexdigest()[:8]}.zip"
+            if not os.path.exists(archives[url]):
+                print(f"downloading archive for {name}...", file=sys.stderr)
+                urllib.request.urlretrieve(url, archives[url])
+        with zipfile.ZipFile(archives[url]) as zf, open(local_path, "wb") as out:
+            out.write(zf.read(member))
+    return sources
+
+
+def main():
+    sources = fetch_sources()
 
     all_pages = glob.glob(f"{PUBLIC_DIR}/**/index.html", recursive=True)
     post_pages = [p for p in all_pages if POST_PATH_RE.search(p)]
@@ -306,7 +362,7 @@ def main():
 
     _init_worker(sources)
 
-    shared = [set(), set(), set()]
+    shared = [set(), set(), set(), set()]
     for p in other_pages:
         for bucket, chars in zip(shared, extract_chars(p)):
             bucket |= chars
