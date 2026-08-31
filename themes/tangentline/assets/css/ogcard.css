@@ -19,7 +19,11 @@ html { overflow-y: hidden; scrollbar-gutter: auto; }
 .ogcard .site-title { font-size: 42px; }
 
 .ogcard .entry-meta {
-  font-size: 31.5px;
+  /* 題字42 → 日付31.5 → タイトル56 は完全四度の階段だったが、日付・タグだけが
+     --font-text(BIZ UDP)で描かれるようになり、この段だけ書体が変わった。
+     見かけの墨量が基準比 1.23 まで膨らむので、書体をまたぐこの段だけ
+     白銀比に広げて釣り合わせる。42 ÷ √2 = 29.7。他の2行は動かさない。 */
+  font-size: 29.7px;
   margin-bottom: 24px;
 }
 
