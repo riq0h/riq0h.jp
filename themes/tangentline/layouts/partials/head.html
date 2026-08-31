@@ -36,7 +36,10 @@
 {{ $fontBase := "" }}
 {{ if ne .Kind "page" }}{{ $fontBase = "/" }}{{ end }}
 <style>
-/* 見出し・日付・タグ・ページャ・フッター。可変フォント1本で300と400を賄う */
+/* ウェイト300を使う題字・記事タイトル・h2・タグ見出し。日付・タグ・ページャ・
+   フッターは400なので BIZ UDP 側に移っており、ここには含まれない。400も宣言に
+   含めるのは、BIZ UDP が持たない文字(絵文字・外国語)の受け皿を兼ねるため。
+   可変フォント1本で両方のウェイトを賄う */
 @font-face { font-family: "Noto Serif JP"; src: url("{{ $fontBase }}font-serif.woff2") format("woff2"); font-weight: 200 900; font-display: block; }
 @font-face { font-family: "Noto Sans JP"; src: url("{{ $fontBase }}font-sans.woff2") format("woff2"); font-weight: 200 900; font-display: block; }
 /* 本文専用。BIZ UDPは400と700しか持たない静的フォントなのでウェイトごとに宣言する。
