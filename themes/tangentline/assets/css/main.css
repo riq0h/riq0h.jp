@@ -32,23 +32,29 @@
   /* 本文の寸法。--rhythm(見出しの上マージンの単位)がこの2つから計算される
      ため、値を直に書かず変数を経由させている。ここを変えれば垂直リズムも
      自動で追随し、コメントと実態が乖離しない。 */
-  --fs-body: 1.0625rem; /* 本文 17px。17/16 で、h2・h3と同じ8分割系列の16分割 */
-  --lh-body: 1.75;      /* 行送り倍率。42em の行長が要求する下限(約1.75)。
+  --fs-body: 1rem;      /* 本文 16px。級数はここを基点に、長三度(1.25)を半段
+                           (√1.25 = 1.118)で刻んだ階段で決める。整数段が
+                           11.45 / 12.8 / 14.31 / 16 / 17.89 / 20 / 22.36 /
+                           25 / 27.95 / 31.25 と並び、うち偶数段(12.8 / 16 /
+                           20 / 25 / 31.25)が長三度そのもの。従来は本文と日付
+                           の間だけが長三度だったが、それを全体に広げた形。
+                           階段から外れる級数は無い。 */
+  --lh-body: 1.80;      /* 行送り倍率。45em の行長が要求する下限(約1.78)。
                            基準は行長であって字数ではない。行送りが要るのは
                            行末から次の行頭へ目を戻す距離が長いためで、その
-                           距離は級数比で 42em。本文の字詰め(palt/BIZ UDP)で
-                           1行の字数が増えても、行長は 42em のまま動かない
-                           のでこの値も動かない */
+                           距離は級数比で 45em。本文の字詰め(palt/BIZ UDP)で
+                           1行の字数が増えても、行長は変わらないのでこの値も
+                           動かない */
   --rhythm: calc(var(--fs-body) * var(--lh-body)); /* 記事本文の行送り。具体値は
                            書かない(変更時に置き去りになるため) */
 
-  --c-text: #181818;
+  --c-text: #080808;
   --c-heading: #000;
   --c-meta: #555;
   --c-muted: #555;
   --c-sep: #aaa;
   --c-underline: #888;
-  --c-rule: #181818;
+  --c-rule: #080808;
   --c-quiet-rule: #ddd;
   --c-bg: #fff;
   --c-footer-link: #555;
@@ -67,8 +73,8 @@
   --w-meta: 400;
   --w-pager: 400;
   --w-strong: 700;
-  --c-text: #454545;
-  --c-rule: #454545;
+  --c-text: #333;
+  --c-rule: #333;
   --c-footer-link: #555;
   --c-muted: #555;
 }
@@ -90,9 +96,9 @@ body {
 }
 
 .container {
-  max-width: 762px; /* 内容幅714px = 本文17px * 42em ちょうど。em(全角換算)で
+  max-width: 768px; /* 内容幅720px = 本文16px * 45em ちょうど。em(全角換算)で
                        持つのは、字数だと字詰めの有無で意味が変わるため。
-                       714/17=42em は級数を変えても字詰めを変えても保たれる */
+                       持つのは、字数だと字詰めの有無で意味が変わるため */
   margin: 0 auto;
   padding: 2.4rem 1.5rem 2rem;
 }
@@ -113,7 +119,7 @@ img { max-width: 100%; height: auto; }
 }
 
 .site-title {
-  font-size: 2rem;
+  font-size: 1.953125rem;   /* 31.25px = 16 * 1.25^3 */
   font-weight: var(--w-title);
   letter-spacing: .12em;
   color: var(--c-heading);
@@ -136,7 +142,7 @@ img { max-width: 100%; height: auto; }
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  font-size: .85rem;
+  font-size: .8rem;
   font-weight: var(--w-meta);
   color: var(--c-meta);
 }
@@ -144,7 +150,7 @@ img { max-width: 100%; height: auto; }
 .entry-tags a { color: var(--c-meta); margin-left: .8em; }
 
 .entry-title {
-  font-size: 1.5rem;
+  font-size: 1.5625rem;     /* 25px = 16 * 1.25^2 */
   font-weight: var(--w-title);
   line-height: 1.4;
   margin: .35rem 0 .85rem;
@@ -166,7 +172,7 @@ img { max-width: 100%; height: auto; }
    記事ページ
    ========================================================================== */
 .entry-single .entry-title {
-  font-size: 1.5rem;
+  font-size: 1.5625rem;
   margin: .4rem 0 1.4142em; /* 下マージンは自身のフォントサイズの白銀比(√2)倍 */
 }
 
@@ -197,7 +203,7 @@ img { max-width: 100%; height: auto; }
    見出しが実際に隣接するのがその行だから。calc で式のまま書いているのは、
    4.51562rem のような丸めた定数を埋めると根拠が読めなくなるため。 */
 .entry-content h2 {
-  font-size: 1.299rem;
+  font-size: 1.25rem;       /* 20px = 16 * 1.25 */
   font-family: var(--font-body); /* --w-title(300)は BIZ UDP に無いため */
   font-weight: var(--w-title);
   line-height: 1.4;
@@ -208,7 +214,7 @@ img { max-width: 100%; height: auto; }
 }
 
 .entry-content h3, .entry-content h4, .entry-content h5, .entry-content h6 {
-  font-size: 1.125rem;
+  font-size: 1.118rem;      /* 17.89px = 16 * √1.25。本文とh2の中間 */
   font-weight: var(--w-h3);
   line-height: 1.4;
   margin: calc(var(--rhythm) * 1.75) 0 1em;
@@ -237,7 +243,7 @@ img { max-width: 100%; height: auto; }
 .entry-content table {
   border-collapse: collapse;
   margin: 0 0 1.4em;
-  font-size: .875rem;
+  font-size: .8rem;         /* 12.8px = 16 / 1.25 */
   max-width: 100%;
   overflow-x: auto;
   display: block;
@@ -279,11 +285,11 @@ img { max-width: 100%; height: auto; }
    墨は上下で1.054em(12pxなら12.7px)なので、1.25でも行間に2.35px残る。
    罫線素片(│など)は上下の行と繋がるよう墨が1.520emに及ぶので、詰めるほど
    縦線が連続する。下マージンをremで持つのは、包まれる場合(.highlightが
-   本文17px基準)と包まれない場合(pre自体が12px基準)で同じ間隔にするため。 */
+   本文16px基準)と包まれない場合(pre自体が11.45px基準)で同じ間隔にするため。 */
 .entry-content pre {
   font-family: var(--font-mono);
   font-feature-settings: normal;
-  font-size: .75rem;
+  font-size: .7155rem;      /* 11.45px = 16 / 1.25^1.5 (-3段) */
   line-height: 1.25;
   padding: 1.1em 1.3em;
   margin: 0 0 1.5rem;
@@ -375,7 +381,7 @@ img { max-width: 100%; height: auto; }
   font-family: var(--font-text);
   display: flex;
   justify-content: space-between;
-  font-size: .85rem;
+  font-size: .8rem;
   font-weight: var(--w-pager);
   margin-top: 2.4rem;
   font-feature-settings: "palt";
@@ -417,31 +423,26 @@ img { max-width: 100%; height: auto; }
   font-weight: var(--w-footer);
 }
 
-.footer-links { font-size: .85rem; font-feature-settings: "palt"; }
+.footer-links { font-size: .8rem; font-feature-settings: "palt"; }
 .footer-links a { color: var(--c-footer-link); }
 .footer-links .sep { color: var(--c-sep); margin: 0 .6em; }
 
-/* フッターリンクを1行に収めるための段。.85rem に palt が効いた状態で必要な
-   幅は291.5pxで、padding 38.4px を足すと境界は画面幅330pxになる。palt導入前は
-   329.4px必要で境界が368pxだったため、ここは380pxに置かれていた。paltが約物
-   「｜」を全角から半角幅に、カタカナを締めたぶん38px縮んだ結果、最も普及して
-   いる360pxと375pxの端末が不必要に小さくされていた。
-
-   境界ちょうどの330pxではなく340pxにしているのは、320pxと360pxの間に実在する
-   端末がほぼ無く、10px余らせても救える端末が変わらないため。Webフォントの
-   読込に失敗するとpaltが効かず必要幅が329.4pxに戻るので、その余裕でもある。
-   320pxでは .85rem が約10px足りないので、この段自体は残す。 */
-@media (max-width: 340px) {
-  .footer-links { font-size: .75rem; }
-  .footer-links .sep { margin: 0 .45em; }
-}
+/* フッターリンクは1行に収まる。級数を長三度の -2段(12.8px)にしたことで
+   必要な幅が 275.1px になり、1行に収まる下限は画面幅 314px。現行の最小である
+   320px の端末でも 6.5px 余るので、級数を落とす段は置いていない。
+   以前は .85rem(13.6px)で 292.3px 必要だったため 340px に段があった。
+   フッターの項目を増やすか級数を上げる場合は、この 314px を測り直すこと。 */
 
 .footer-font-toggle {
   background: none;
   border: none;
   padding: 0;
   margin: 0;
+  /* button は font-family を継承しないので font: inherit で受けているが、
+     それだけだと body(--font-body)まで遡って隣のリンクと書体が食い違う。
+     --font-text を明示して .footer-links に揃える。 */
   font: inherit;
+  font-family: var(--font-text);
   cursor: pointer;
   color: var(--c-footer-link);
 }
@@ -452,7 +453,7 @@ img { max-width: 100%; height: auto; }
 }
 
 .footer-copyright {
-  font-size: .75rem;
+  font-size: .7155rem;      /* 11.45px。-3段 */
   letter-spacing: .15em;
   color: var(--c-muted);
   margin-top: .7rem;
@@ -463,17 +464,17 @@ img { max-width: 100%; height: auto; }
 
    行送りを画面幅で3段に分ける。.container は max-width なので画面が狭い
    ほど行長が短くなり、必要な行間も下がるため。デスクトップ用の値のままだと、
-   16〜23em しかないスマホに 42em 向けの行間が乗って間延びする。以下の em は
-   全角換算の行長(内容幅÷17px)で、実際に並ぶ字数ではない(字詰めにより字数は
+   17〜24em しかないスマホに 45em 向けの行間が乗って間延びする。以下の em は
+   全角換算の行長(内容幅÷16px)で、実際に並ぶ字数ではない(字詰めにより字数は
    これより約1割多くなる)。
 
-   各段が担当できる行長の上限は lh 1.55 → 24.4em、1.65 → 33.2em、
-   1.75 → 42.1em。ブレークポイントはこの上限に対応する幅に置いている
-   (450px で 23.4em、600px で 32.2em)。段幅が 42em で頭打ちなので、
-   601px 以上は最上段の 1.75 が最後まで受け持つ。
+   各段が担当できる行長の上限は lh 1.60 → 28.8em、1.70 → 37.7em、
+   1.80 → 46.5em。ブレークポイントは 450px(25.7em)、600px(35.1em)に置く。
+   段幅が 45em で頭打ちなので、601px 以上は最上段の 1.80 が最後まで受け持つ。
+   要求値に対する余裕は +0.017〜+0.045 に揃う。
 
-   第1段の 1.55 は実機の実測に基づく。320〜440px の端末が要求するのは
-   1.45〜1.53 で、iPhone 16 Pro Max(440px)でも 22.7em にしかならない。
+   第1段の 1.60 は実機の実測に基づく。320〜440px の端末が要求するのは
+   1.47〜1.56 で、iPhone 16 Pro Max(440px)でも 25.1em にしかならない。
    かつてはここにルビの制約(行を押し広げない下限 1.65)が乗っていたが、
    本文が BIZ UDP になって消えた。hhea の ascent が Noto Serif JP の 1.151 に
    対し 0.880 と小さく、行ボックス内でルビが載る余白が増えたため、1.50 でも
@@ -482,13 +483,12 @@ img { max-width: 100%; height: auto; }
    ========================================================================== */
 @media (max-width: 768px) {
   .container { padding: 2rem 1.2rem 1.6rem; }
-  .site-title { font-size: 1.7rem; }
 }
 
 @media (max-width: 600px) {
-  :root { --lh-body: 1.65; }
+  :root { --lh-body: 1.70; }
 }
 
 @media (max-width: 450px) {
-  :root { --lh-body: 1.55; }
+  :root { --lh-body: 1.60; }
 }
