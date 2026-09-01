@@ -29,12 +29,12 @@ BIZ UDPは実に美しいフォントだ。まず、字間の均等さが美し�
 
 ついでに技術的な背景を説明する。当然ながらNotoとBIZ UDPをビルド時に両方取り込んで読者に丸ごとぶん投げていたら、一記事あたりの容量はメガバイト単位に膨れ上がってしまう。そのような記事はきっと宇宙の滅亡まで読まれないであろう。今時の読者はローディングに5秒も待ってくれるほど悠長ではない。
 
-そこで、ページごとに使う文字のみを取り込む「サブセット化」を行う。ウェイトが400の部分をBIZ UDPに任せる場合、Notoが担当するのは大見出しとタイトルだけになる。文字集合を役割で振り分けると、Notoのサブセットは平均638字から120字にまで削減された。この際、一記事あたりの配信量は変更前の平均441KBから383KBに下がっている。フォントの種類が増えたのに逆に軽くなったのだ。
+そこで、ページごとに使う文字のみを取り込む「サブセット化」を行う。ウェイトが400の部分をBIZ UDPに任せる場合、Notoが担当するのは大見出しとタイトルだけになる。文字集合を役割で振り分けると、Notoのサブセットは平均638字から120字にまで削減された。この際、一記事あたりの配信量は変更前の平均441KBから404KBに下がっている。フォントの種類が増えたのに逆に軽くなったのだ。
 
 ```python
 class _PageChars(HTMLParser):
     CHROME_CLASSES = frozenset(("site-title", "entry-title", "term-title"))
-    CHROME_TAGS = frozenset(("h2",))
+    CHROME_TAGS = frozenset(("h1","h2"))
     MONO = frozenset(("code", "pre"))
     VOID = frozenset(("br", "img", "hr", "meta", "link", "input"))
 
@@ -75,13 +75,13 @@ class _PageChars(HTMLParser):
     def handle_data(self, data):
         chars = {c for c in data if not c.isspace()}
         if self._chrome_at is not None or self._h2:
-            self.chrome |= chars        # weight300 のものだけ Noto
+            self.chrome |= chars        # weight200と300のものだけNoto
         elif self._mono:
-            self.mono |= chars          # コードは --font-mono で描かれる
+            self.mono |= chars          # コードは--font-monoで描かれる
         else:
-            self.body |= chars          # 残りはすべて BIZ UDP
+            self.body |= chars          # 残りはすべてBIZ UDP
 ```
 
-この処理が特に有効なのはコードブロックが含まれていない記事の時だ。コード行が含まれているとUDEV Gothic 35NFLGが必要なので660KB前後に膨れるが、それ以外では最初から配信しないことで不要なフォントの配信を抑え、多くの記事で変更前を上回る削減量を実現した。
+この処理が特に有効なのはコードブロックが含まれていない記事の時だ。コード行が含まれているとUDEV Gothic 35NFLGが必要なので580KB前後に膨れるが、それ以外では最初から配信しないことで不要なフォントの配信を抑え、多くの記事で変更前を上回る削減量を実現した。
 
 複数のフォントを自前で配信するなどと言うととてつもない大鉈に感じるが、上記のように工夫次第では読者にほとんど意識させずに好みのフォントを押しつける悪行が可能となる。ある種の文芸的追求においては、文章を構成する実装要素それ自体もコンテンツの一部である。だから「Google Fontsから引っ張ってくればいいだけじゃん」とか野暮なことは言わないでほしい。
