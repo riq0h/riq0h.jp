@@ -34,19 +34,25 @@ BIZ UDPは実に美しいフォントだ。まず、字間の均等さが美し�
 ```python
 class _PageChars(HTMLParser):
     CHROME_CLASSES = frozenset(("site-title", "entry-title", "term-title"))
-    CHROME_TAGS = frozenset(("h1","h2"))
+    CHROME_TAGS = frozenset(("h1", "h2"))
     MONO = frozenset(("code", "pre"))
+    SKIP = frozenset(("script", "style"))
     VOID = frozenset(("br", "img", "hr", "meta", "link", "input"))
 
     def __init__(self):
         super().__init__(convert_charrefs=True)
-        self.chrome, self.body, self.mono = set(), set(), set()
+        self.chrome, self.body, self.strong, self.mono = set(), set(), set(), set()
         self._stack = []
         self._chrome_at = None
         self._h2 = 0
+        self._strong = 0
         self._mono = 0
+        self._skip = 0
 
     def handle_starttag(self, tag, attrs):
+        if tag in self.SKIP:
+            self._skip += 1
+            return
         if tag in self.VOID:
             return
         self._stack.append(tag)
@@ -56,10 +62,15 @@ class _PageChars(HTMLParser):
                 self._chrome_at = len(self._stack)
         if tag in self.CHROME_TAGS:
             self._h2 += 1
+        elif tag == "strong":
+            self._strong += 1
         elif tag in self.MONO:
             self._mono += 1
 
     def handle_endtag(self, tag):
+        if tag in self.SKIP:
+            self._skip = max(0, self._skip - 1)
+            return
         if tag in self.VOID:
             return
         if tag in self._stack:
@@ -69,17 +80,23 @@ class _PageChars(HTMLParser):
             self._chrome_at = None
         if tag in self.CHROME_TAGS:
             self._h2 = max(0, self._h2 - 1)
+        elif tag == "strong":
+            self._strong = max(0, self._strong - 1)
         elif tag in self.MONO:
             self._mono = max(0, self._mono - 1)
 
     def handle_data(self, data):
+        if self._skip:
+            return
         chars = {c for c in data if not c.isspace()}
         if self._chrome_at is not None or self._h2:
-            self.chrome |= chars        # weight200と300のものだけNoto
+            self.chrome |= chars        # weight 200と300のものだけNoto
         elif self._mono:
             self.mono |= chars          # コードは--font-monoで描かれる
         else:
             self.body |= chars          # 残りはすべてBIZ UDP
+            if self._strong:
+                self.strong |= chars
 ```
 
 この処理が特に有効なのはコードブロックが含まれていない記事の時だ。コード行が含まれているとUDEV Gothic 35NFLGが必要なので580KB前後に膨れるが、それ以外では最初から配信しないことで不要なフォントの配信を抑え、多くの記事で変更前を上回る削減量を実現した。
