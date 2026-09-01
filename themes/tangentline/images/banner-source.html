@@ -2,14 +2,21 @@
 <!--
   88x31バナーリンク用ソース。352x124(4倍)でレンダリングし、Box法で
   352x124(配布用)と88x31(実寸参考)へ縮小する。
-  font-size: 1px * 1.333^7 (完全4度7段) * 4倍
-  タイトル-罫線間ギャップ: 1px * 1.25^5 (長3度5段) * 4倍 ≒ 12.207
-  罫線yは上記ギャップから逆算した値(81.73)をピクセル行境界回避のため81.5へ丸め
+
+  級数と余白は 88x31 という外寸から起こした独自の値で、サイト本体の
+  階段(16px を √1.25 刻み)には乗らない。別の紙面なので揃える必要は無い。
+    font-size: 1px * 1.333^7 * 4倍 = 29.9138
+    タイトル-罫線間ギャップ: 1px * 1.25^5 * 4倍 ≒ 12.207
+    罫線yは上記ギャップから逆算した値(81.73)をピクセル行境界回避のため81.5へ丸め
+
+  一方、書体・ウェイト・色・字間はサイトの題字と揃える。ここが食い違うと
+  同じ題字が2種類あることになる。現在は Noto Serif JP / 200 / #000 / .12em。
+  題字のウェイトを変えたらこのファイルも直して banner.png を作り直すこと。
 -->
 <html lang="ja">
 <head>
 <meta charset="utf-8">
-<link href="https://fonts.bunny.net/css?family=noto-serif-jp:300,400,500,700&display=swap" rel="stylesheet">
+<link href="https://fonts.bunny.net/css?family=noto-serif-jp:200&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: #f0f0f0; padding: 40px; }
@@ -26,9 +33,9 @@
     left: 0; right: 0; top: 32.37px;
     text-align: center;
     font-size: 29.9138px;
-    font-weight: 300;
+    font-weight: 200;
     letter-spacing: .12em;
-    color: #080808;
+    color: #000;
     white-space: nowrap;
   }
   .title .hang { margin-right: calc(-1em - .24em); }
@@ -38,8 +45,8 @@
 
 <div class="banner">
   <svg width="352" height="124" viewBox="0 0 352 124">
-    <rect x="0.4" y="0.4" width="351.2" height="123.2" fill="none" stroke="#080808" stroke-width="0.8"/>
-    <line x1="36" y1="81.5" x2="316" y2="81.5" stroke="#080808" stroke-width="0.8"/>
+    <rect x="0.4" y="0.4" width="351.2" height="123.2" fill="none" stroke="#000" stroke-width="0.8"/>
+    <line x1="36" y1="81.5" x2="316" y2="81.5" stroke="#000" stroke-width="0.8"/>
   </svg>
   <div class="title">点と接線<span class="hang">。</span></div>
 </div>
