@@ -22,8 +22,20 @@
   --font-mono: "UDEV Gothic 35NFLG", "UDEV Gothic 35NF", "UDEV Gothic 35",
                "UDEV Gothic", SFMono-Regular, "Liberation Mono", Menlo, Consolas, monospace;
 
-  --w-title: 300;    /* 題字・記事タイトル・h2・タグ見出し。BIZ UDPに無い唯一の
-                        ウェイトなので、ここだけ --font-body(Noto)が要る */
+  /* 級数とウェイトは逆相関させる。大きく組むほど線を細くしないと黒く見え、
+     小さく組むほど太くしないと掠れる。ただし細くできる下限は級数で決まる。
+     『点と接線』を描いて墨画素のうち指定色に届く「芯」の割合を測ると、
+     DPR 1 では 200 が 300 に対してこう落ちる。
+
+       31.25px  87%    25px  91%    20px  39%    17.89px  17%
+
+     25px までは1割の損失で済むが、22.36px で 66%、20px で 39% まで落ちる。
+     よって 200 を当てられるのは 25px 以上。22.36px と 20px は 300、
+     それ以下は 400。結果として級数の階段2段ごとにウェイトが1段下がる。
+     DPR 2 以上ではこの崖は消える(20px でも 79%)が、低画素環境に合わせる。 */
+  --w-title: 200;    /* 題字31.25px・記事タイトル25px */
+  --w-h1: 300;       /* 本文中の h1(22.36px)。200 では 300 の 66% まで落ちる */
+  --w-h2: 300;       /* h2・タグ見出し(20px)。200 では 39% まで落ちる */
   --w-h3: 400;       /* h3以下の小見出し */
   --w-body: 400;     /* 本文 */
   --w-meta: 400;     /* 日付・タグ */
@@ -51,6 +63,12 @@
                            動かない */
   --rhythm: calc(var(--fs-body) * var(--lh-body)); /* 記事本文の行送り。具体値は
                            書かない(変更時に置き去りになるため) */
+  --half: calc(var(--rhythm) / 2); /* 半行。本文の段落と見出しのアキは、行そのもの
+                           ではなくこの半行を単位に取る。1行アキだとWeb記事として
+                           空きすぎ、アキ無し(一字下げ)は小説以外の記事に合わない。
+                           半行なら現行の 1em(16px)より 1.6px 詰まるだけで、
+                           それでいて全部が同じ格子に乗る。--lh-body が画面幅で
+                           変わるとこれも追随するので、格子は各段で保たれる。 */
 
   /* 明朝とゴシックが同じ濃さに見えるよう、墨画素の平均輝度で釣り合わせた値。
      本文16pxで同じ文を描くと、ゴシック(#333)が136.4、明朝(#121212)が136.2。
@@ -78,14 +96,11 @@
 :root[data-font="gothic"] {
   --font-body: "Noto Sans JP", "Noto Sans CJK JP", sans-serif;
   --font-text: "BIZ UDPGothic", "Noto Sans JP", "Noto Sans CJK JP", sans-serif;
-  --w-body: 400;
-  --w-meta: 400;
-  --w-pager: 400;
-  --w-strong: 700;
+  /* ウェイトは明朝と共通。以前はここで上書きしていたが、いまは同じ値なので
+     置かない。逆相関の階段(200/300/400)は書体を問わず同じ。
+     色だけが違うのは、同じ指定色でもゴシックの方が芯画素が多く濃く見えるため。 */
   --c-text: #333;
   --c-rule: #333;
-  --c-footer-link: #555;
-  --c-muted: #555;
 }
 
 /* ==========================================================================
@@ -190,7 +205,7 @@ img { max-width: 100%; height: auto; }
 .entry-content { font-size: var(--fs-body); font-family: var(--font-text); font-feature-settings: "palt"; }
 
 .entry-content p {
-  margin-bottom: 1em;
+  margin-bottom: var(--half);
   text-align: justify;
   overflow-wrap: break-word;
 }
@@ -208,17 +223,47 @@ img { max-width: 100%; height: auto; }
 
 .entry-content strong { font-weight: var(--w-strong); }
 
-/* 上マージンは記事本文の行送り(--rhythm)の倍数に揃えている:
-   h2=2.5行、h3-h6=1.75行。下マージンは見出し自身のフォントサイズの1em。
-   基準を body(16px) ではなく .entry-content(--fs-body) の行送りに取るのは、
-   見出しが実際に隣接するのがその行だから。calc で式のまま書いているのは、
-   4.51562rem のような丸めた定数を埋めると根拠が読めなくなるため。 */
+/* 見出しの行取り。和文組版の作法にならい、見出しが占める高さを本文の行の
+   整数倍にして、見出しをまたいでも本文の行位置がずれないようにする。
+   単位は半行(--half)。
+
+     見出し     上アキ   行box   下アキ   総高
+     h1        7半行    2半行   1半行   10半行 = 5行
+     h2        5半行    2半行   1半行    8半行 = 4行
+     h3-h6     3半行    2半行   1半行    6半行 = 3行
+
+   行ボックスを --rhythm(本文1行)に固定するので、見出しの line-height は
+   級数ごとに変わる(22.36px なら 1.288、20px なら 1.44)。値は不揃いに
+   見えるが「28.8 ÷ 級数」という一つの規則から出る。共通の 1.4 を置くより
+   根拠が明快で、かつ格子に乗る。
+
+   以前は h2=2.5行 / h3=1.75行 で、これは手置き値を丸めたものだった。
+   h2 の上アキ 72px は偶然すでに 5半行ちょうどで、格子上にあった。
+
+   格子が保てるのは文字だけで組まれた範囲に限る。pre・table・figure・img は
+   それぞれ固有の高さを持ち、半行の倍数にならないので、そこで位相が切れる。
+   本文と見出しの連なりを揃えるのが目的なので、そこまでは追わない。 */
+/* 本文中の h1。記事の表題が既に <h1 class="entry-title"> なので、
+   本文の h1 はそれに従属する位置に置く。級数は階段の +3段で、h2(20px)と
+   記事タイトル(25px)の間に唯一空いている段。ウェイトは 22.36px では 200 が
+   持たないため h2 と同じ 300 になるので、h2 との差は級数と上マージンが担う。 */
+.entry-content h1 {
+  font-size: 1.3975rem;     /* 22.36px = 16 * 1.25^1.5 (+3段) */
+  font-family: var(--font-body); /* --w-h1(300)は BIZ UDP に無いため */
+  font-weight: var(--w-h1);
+  line-height: var(--rhythm);
+  margin: calc(var(--half) * 7) 0 var(--half);
+  color: var(--c-heading);
+  font-feature-settings: "palt";
+  overflow-wrap: break-word;
+}
+
 .entry-content h2 {
   font-size: 1.25rem;       /* 20px = 16 * 1.25 */
-  font-family: var(--font-body); /* --w-title(300)は BIZ UDP に無いため */
-  font-weight: var(--w-title);
-  line-height: 1.4;
-  margin: calc(var(--rhythm) * 2.5) 0 1em;
+  font-family: var(--font-body); /* --w-h2(300)は BIZ UDP に無いため */
+  font-weight: var(--w-h2);
+  line-height: var(--rhythm);
+  margin: calc(var(--half) * 5) 0 var(--half);
   color: var(--c-heading);
   font-feature-settings: "palt";
   overflow-wrap: break-word;
@@ -227,33 +272,38 @@ img { max-width: 100%; height: auto; }
 .entry-content h3, .entry-content h4, .entry-content h5, .entry-content h6 {
   font-size: 1.118rem;      /* 17.89px = 16 * √1.25。本文とh2の中間 */
   font-weight: var(--w-h3);
-  line-height: 1.4;
-  margin: calc(var(--rhythm) * 1.75) 0 1em;
+  line-height: var(--rhythm);
+  margin: calc(var(--half) * 3) 0 var(--half);
   color: var(--c-heading);
   font-feature-settings: "palt";
 }
 
 .entry-content ul, .entry-content ol {
-  margin: 0 0 1em;
+  margin: 0 0 var(--half);
   padding-left: 1.6em;
 }
 
-.entry-content li { margin-bottom: .2em; }
+/* 項目間を空けない。li は本文の行送りを継承するので、アキを0にすると
+   リスト全体の高さが行数ぶんちょうどになり格子に乗る。.2em(3.2px)では
+   3項目で 6.442 半行と半端になっていた。 */
+.entry-content li { margin-bottom: 0; }
 
 .entry-content blockquote {
-  margin: 0 1em 1em;
+  margin: 0 1em var(--half);
   color: #555;
 }
 
 .entry-content hr {
   border: none;
   border-top: 1px solid var(--c-quiet-rule);
-  margin: 2em 0;
+  /* 罫線そのものが 1px の高さを持つので、その分を下アキから引いて
+     全体をちょうど4半行に収める。引かないと位相が 1px ずつ狂う。 */
+  margin: calc(var(--half) * 2) 0 calc(var(--half) * 2 - 1px);
 }
 
 .entry-content table {
   border-collapse: collapse;
-  margin: 0 0 1.4em;
+  margin: 0 0 calc(var(--half) * 2);
   font-size: .8rem;         /* 12.8px = 16 / 1.25 */
   max-width: 100%;
   overflow-x: auto;
@@ -302,15 +352,17 @@ img { max-width: 100%; height: auto; }
    墨は上下で1.050emなので、11.45pxなら12.02px。行送り1.25(14.31px)でも
    行間に2.29px残る。罫線素片(│など)は上下の行と繋がるよう墨が1.520em
    (17.40px)に及び、行送りを3.09px超えるので、詰めるほど縦線が連続する。
-   下マージンをremで持つのは、包まれる場合(.highlightが本文16px基準)と
-   包まれない場合(pre自体が11.45px基準)で同じ間隔にするため。 */
+   下マージンを --half 基準で持つのは、包まれる場合(.highlight)と包まれない
+   場合(pre自体)で同じ間隔にするため。emだとpre自身の11.45pxが基準になって
+   食い違う。ただしコードブロック自身の高さは半行の倍数にならない(padding
+   1.1em と行送り14.31pxのため)ので、ここで格子の位相は切れる。 */
 .entry-content pre {
   font-family: var(--font-mono);
   font-feature-settings: normal;
   font-size: .7155rem;      /* 11.45px = 16 / 1.25^1.5 (-3段) */
   line-height: 1.25;
   padding: 1.1em 1.3em;
-  margin: 0 0 1.5rem;
+  margin: 0 0 calc(var(--half) * 2);
   overflow-x: auto;
   color: var(--c-code-text);
   background: var(--c-code-bg);
@@ -322,7 +374,7 @@ img { max-width: 100%; height: auto; }
   background: none;
   padding: 0;
 }
-.entry-content .highlight { margin: 0 0 1.5rem; }
+.entry-content .highlight { margin: 0 0 calc(var(--half) * 2); }
 .entry-content .highlight pre { margin: 0; }
 
 .entry-content .chroma { color: var(--c-code-text); }
@@ -379,14 +431,14 @@ img { max-width: 100%; height: auto; }
 .entry-content .chroma .cp,
 .entry-content .chroma .cpf { color: var(--c-muted); font-weight: 700; }
 
-.entry-content figure { margin: 1.6em 0; text-align: center; }
-.entry-content p img { display: block; margin: 1.6em auto; }
+.entry-content figure { margin: calc(var(--half) * 2) 0; text-align: center; }
+.entry-content p img { display: block; margin: calc(var(--half) * 2) auto; }
 
-.entry-content .letter-embed { margin-bottom: 1em; }
+.entry-content .letter-embed { margin-bottom: var(--half); }
 /* embed.jsが読み込み後にcontainer.style.marginを0で上書きするため、
    letter-embed自体ではなく、間に挟まるscriptタグの次の要素側に
    空白行ぶんの余白を足す */
-.entry-content .letter-embed + script + * { margin-top: 1.5em; }
+.entry-content .letter-embed + script + * { margin-top: calc(var(--half) * 2); }
 
 /* ==========================================================================
    ページャ
@@ -412,7 +464,7 @@ img { max-width: 100%; height: auto; }
    ========================================================================== */
 .term-title {
   font-size: 1.25rem;
-  font-weight: var(--w-title);
+  font-weight: var(--w-h2);   /* h2 と同じ 20px なので同じウェイト */
   color: var(--c-heading);
   margin-bottom: 2rem;
 }

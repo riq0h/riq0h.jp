@@ -4,10 +4,10 @@
 Two typefaces share each page, split by weight rather than by role. BIZ UDP
 Mincho/Gothic ships only 400 and 700, so everything drawn at those weights
 uses it: the article text, the excerpts, h3-h6, dates, tags, the pager and
-the footer. What is left for Noto Serif/Sans JP is what needs weight 300 --
-the masthead, article titles, h2 and taxonomy titles. Splitting the page's
-characters along that same line means neither family carries glyphs the
-other renders.
+the footer. What is left for Noto Serif/Sans JP is what needs a lighter
+weight -- the masthead and article titles at 200, in-body h1, h2 and
+taxonomy titles at 300. Splitting the page's characters along that same
+line means neither family carries glyphs the other renders.
 
 The split must track main.css exactly. If a rule moves between the two
 families and this file is not updated, the characters it draws end up only
@@ -122,9 +122,11 @@ class _PageChars(HTMLParser):
     face -- which is why main() re-checks the result against the page.
     """
 
-    # weight 300 で描かれるものだけが Noto に残る。main.css と対で保つこと。
+    # BIZ UDP が持たないウェイト(200/300)で描かれるものだけが Noto に残る。
+    # main.css と対で保つこと。h1 は本文中のものと <h1 class="entry-title">
+    # の両方を指すが、どちらも Noto なのでタグ名だけで拾ってよい。
     CHROME_CLASSES = frozenset(("site-title", "entry-title", "term-title"))
-    CHROME_TAGS = frozenset(("h2",))
+    CHROME_TAGS = frozenset(("h1", "h2"))
     MONO = frozenset(("code", "pre"))
     SKIP = frozenset(("script", "style"))
     VOID = frozenset((
